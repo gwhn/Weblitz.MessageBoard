@@ -1,0 +1,10 @@
+*.user
+
+*.cache
+
+*.suo
+
+_ReSharper.Weblitz.MessageBoard
+**/**/bin
+
+**/**/obj
