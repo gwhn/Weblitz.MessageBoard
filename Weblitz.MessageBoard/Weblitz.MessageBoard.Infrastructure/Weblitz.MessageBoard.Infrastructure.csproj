@@ -52,10 +52,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NHibernate\Mappings\Attachment.hbm.xml" />
-    <Content Include="NHibernate\Mappings\Entry.hbm.xml" />
-    <Content Include="NHibernate\Mappings\Post.hbm.xml" />
-    <Content Include="NHibernate\Mappings\Topic.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mappings\Attachment.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mappings\Entry.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mappings\Post.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mappings\Topic.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NHibernate\Mappings\Forum.hbm.xml" />
