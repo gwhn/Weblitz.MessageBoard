@@ -7,5 +7,9 @@
         public virtual Forum Forum { get; set; }
 
         public virtual Post[] Posts { get; set; }
+
+        public virtual bool Sticky { get; set; }
+
+        public virtual bool Closed { get; set; }
     }
 }

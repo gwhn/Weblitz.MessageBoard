@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\..\..\Components\NHibernate-2.1.2.GA-bin\Required_Bins\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +50,15 @@
       <Project>{5D974FED-FF4B-4A1A-BA37-64D3AD24FB2A}</Project>
       <Name>Weblitz.MessageBoard.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NHibernate\Mappings\Attachment.hbm.xml" />
+    <Content Include="NHibernate\Mappings\Entry.hbm.xml" />
+    <Content Include="NHibernate\Mappings\Post.hbm.xml" />
+    <Content Include="NHibernate\Mappings\Topic.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NHibernate\Mappings\Forum.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

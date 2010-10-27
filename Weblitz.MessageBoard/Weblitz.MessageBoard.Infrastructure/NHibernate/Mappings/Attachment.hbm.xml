@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Weblitz.MessageBoard.Core"
+                   namespace="Weblitz.MessageBoard.Core.Domain.Model">
+
+  <class name="Attachment">
+    <id name="Id">
+      <generator class="guid.comb"/>
+    </id>
+    <property name="FileName"/>
+    <property name="ContentType"/>
+    <property name="ContentLength"/>
+  </class>
+
+</hibernate-mapping>
