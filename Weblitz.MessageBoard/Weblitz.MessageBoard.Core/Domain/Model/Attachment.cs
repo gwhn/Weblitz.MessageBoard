@@ -2,10 +2,8 @@
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
-    public class Attachment : IEntity
+    public class Attachment : Entity
     {
-        public virtual Guid Id { get; set; }
-
         public virtual Entry Entry { get; set; }
 
         public virtual string FileName { get; set; }

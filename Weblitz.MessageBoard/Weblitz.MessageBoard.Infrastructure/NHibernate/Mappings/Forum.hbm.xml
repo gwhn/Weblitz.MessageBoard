@@ -2,12 +2,14 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
                    assembly="Weblitz.MessageBoard.Core"
                    namespace="Weblitz.MessageBoard.Core.Domain.Model">
-
   <class name="Forum">
     <id name="Id">
       <generator class="guid.comb"/>
     </id>
     <property name="Name"/>
+    <set name="Topics" order-by="ModifiedOn desc" inverse="true" lazy="true">
+      <key column="ForumId"/>
+      <one-to-many class="Topic"/>
+    </set>
   </class>
-  
 </hibernate-mapping>

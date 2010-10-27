@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
-    public class Entry : IEntity
+    public abstract class Entry : Entity
     {
-        public virtual Guid Id { get; set; }
-
         public virtual string Body { get; set; }
 
         public virtual DateTime CreatedOn { get; set; }
@@ -16,6 +15,6 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual string ModifiedBy { get; set; }
 
-        public virtual Attachment[] Attachments { get; set; }
+        public virtual ISet<Attachment> Attachments { get; set; }
     }
 }

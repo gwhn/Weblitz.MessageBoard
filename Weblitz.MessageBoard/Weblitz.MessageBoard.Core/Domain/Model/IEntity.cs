@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {

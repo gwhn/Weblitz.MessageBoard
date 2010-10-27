@@ -8,7 +8,7 @@ namespace Weblitz.MessageBoard.Tests.Integration
     public class NHibernateConfigurationTests
     {
         [Test]
-        public void ShouldGenerateDatabaseSchema()
+        public void ShouldExportDatabaseSchema()
         {
             // Arrange
             var config = new Configuration()
