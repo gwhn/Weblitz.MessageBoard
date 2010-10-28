@@ -53,7 +53,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate.Scopes
 
         private void AddInstance(string key, Func<T> builder)
         {
-            T instance = builder.Invoke();
+            var instance = builder.Invoke();
             Dictionary.Add(key, instance);
         }
     }
