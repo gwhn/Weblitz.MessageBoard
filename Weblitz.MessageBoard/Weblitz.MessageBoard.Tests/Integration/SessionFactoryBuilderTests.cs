@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Infrastructure.NHibernate;
+using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
 
 namespace Weblitz.MessageBoard.Tests.Integration
 {

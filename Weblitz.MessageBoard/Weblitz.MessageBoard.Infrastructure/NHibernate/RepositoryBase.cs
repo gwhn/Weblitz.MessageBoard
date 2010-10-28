@@ -2,6 +2,7 @@
 using NHibernate;
 using Weblitz.MessageBoard.Core;
 using Weblitz.MessageBoard.Core.Domain.Model;
+using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {
@@ -24,8 +25,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 
         public virtual T[] GetAll()
         {
-            var criteria = Session.CreateCriteria(typeof(T));
-            return criteria.List<T>().ToArray();
+            return Session.CreateCriteria(typeof(T)).List<T>().ToArray();
         }
 
         public virtual void Delete(T entity)

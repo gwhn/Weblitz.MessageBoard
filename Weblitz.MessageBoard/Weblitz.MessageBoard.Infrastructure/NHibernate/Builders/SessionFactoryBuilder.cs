@@ -1,9 +1,9 @@
-using System.Reflection;
+﻿using System.Reflection;
 using NHibernate;
 using NHibernate.Cfg;
 using Weblitz.MessageBoard.Infrastructure.NHibernate.Scopes;
 
-namespace Weblitz.MessageBoard.Infrastructure.NHibernate
+namespace Weblitz.MessageBoard.Infrastructure.NHibernate.Builders
 {
     public class SessionFactoryBuilder : ISessionFactoryBuilder
     {

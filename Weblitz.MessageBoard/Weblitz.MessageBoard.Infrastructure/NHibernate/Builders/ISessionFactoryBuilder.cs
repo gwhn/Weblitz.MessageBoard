@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace Weblitz.MessageBoard.Infrastructure.NHibernate
+namespace Weblitz.MessageBoard.Infrastructure.NHibernate.Builders
 {
     public interface ISessionFactoryBuilder
     {

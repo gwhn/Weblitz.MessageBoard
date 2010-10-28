@@ -3,7 +3,7 @@ using NHibernate;
 using Weblitz.MessageBoard.Core;
 using Weblitz.MessageBoard.Infrastructure.NHibernate.Scopes;
 
-namespace Weblitz.MessageBoard.Infrastructure.NHibernate
+namespace Weblitz.MessageBoard.Infrastructure.NHibernate.Builders
 {
     public class SessionBuilder : AbstractFactoryBase<EmptyInterceptor>, ISessionBuilder
     {

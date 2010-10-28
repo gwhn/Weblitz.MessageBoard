@@ -47,9 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NHibernate\ISessionBuilder.cs" />
-    <Compile Include="NHibernate\ISessionFactoryBuilder.cs" />
-    <Compile Include="NHibernate\NHibernateHttpModule.cs" />
+    <Compile Include="NHibernate\Builders\ISessionBuilder.cs" />
+    <Compile Include="NHibernate\Builders\ISessionFactoryBuilder.cs" />
+    <Compile Include="NHibernate\Builders\SessionBuilder.cs" />
+    <Compile Include="NHibernate\Builders\SessionFactoryBuilder.cs" />
     <Compile Include="NHibernate\RepositoryBase.cs" />
     <Compile Include="NHibernate\Scopes\HttpContextInstanceScoper.cs" />
     <Compile Include="NHibernate\Scopes\HybridInstanceScoper.cs" />
@@ -57,9 +58,6 @@
     <Compile Include="NHibernate\Scopes\InstanceScoperBase.cs" />
     <Compile Include="NHibernate\Scopes\SingletonInstanceScoper.cs" />
     <Compile Include="NHibernate\Scopes\ThreadStaticInstanceScoper.cs" />
-    <Compile Include="NHibernate\SessionBuilder.cs" />
-    <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
-    <Compile Include="NHibernate\SessionManager.cs" />
     <Compile Include="NHibernate\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,6 +80,9 @@
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="StructureMap\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

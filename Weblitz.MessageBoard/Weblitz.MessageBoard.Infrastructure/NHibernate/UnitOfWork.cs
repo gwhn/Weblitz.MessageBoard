@@ -1,6 +1,7 @@
 ﻿using System;
 using NHibernate;
 using Weblitz.MessageBoard.Core;
+using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {
