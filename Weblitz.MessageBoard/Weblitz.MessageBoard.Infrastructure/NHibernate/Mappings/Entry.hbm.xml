@@ -8,10 +8,12 @@
     </id>
     <version name="Version"/>
     <property name="Body"/>
-    <property name="CreatedOn"/>
-    <property name="CreatedBy"/>
-    <property name="ModifiedOn"/>
-    <property name="ModifiedBy"/>
+    <component name="AuditInfo">
+      <property name="CreatedOn"/>
+      <property name="CreatedBy"/>
+      <property name="ModifiedOn"/>
+      <property name="ModifiedBy"/>
+    </component>
     <set name="Attachments" inverse="true" lazy="true">
       <key column="EntryId"/>
       <one-to-many class="Attachment"/>

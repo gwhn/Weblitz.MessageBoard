@@ -4,9 +4,9 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 {
     public abstract class Entity : IEntity, IEquatable<Entity>
     {
-        public virtual Guid Id { get; protected set; }
+        public virtual Guid Id { get; set; }
 
-        public virtual int Version { get; protected set; }
+        public virtual int Version { get; set; }
 
         public virtual bool Equals(Entity other)
         {

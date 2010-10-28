@@ -8,7 +8,7 @@
     <property name="Sticky"/>
     <property name="Closed"/>
     <many-to-one name="Forum" column="ForumId"/>
-    <set name="Posts" order-by="ModifiedOn asc" inverse="true" lazy="true">
+    <set name="Posts" order-by="CreatedOn asc" inverse="true" lazy="true">
       <key column="TopicId"/>
       <one-to-many class="Post"/>
     </set>

@@ -8,11 +8,13 @@
     </id>
     <version name="Version"/>
     <property name="Name"/>
-    <property name="CreatedOn"/>
-    <property name="CreatedBy"/>
-    <property name="ModifiedOn"/>
-    <property name="ModifiedBy"/>
-    <set name="Topics" order-by="ModifiedOn desc" inverse="true" lazy="true">
+    <component name="AuditInfo">
+      <property name="CreatedOn"/>
+      <property name="CreatedBy"/>
+      <property name="ModifiedOn"/>
+      <property name="ModifiedBy"/>
+    </component>
+    <set name="Topics" order-by="CreatedOn desc" inverse="true" lazy="true">
       <key column="ForumId"/>
       <one-to-many class="Topic"/>
     </set>

@@ -4,8 +4,9 @@
                    namespace="Weblitz.MessageBoard.Core.Domain.Model">
   <joined-subclass name="Post" extends="Entry">
     <key column="Id"/>
+    <property name="Flagged"/>
     <many-to-one name="Topic" column="TopicId"/>
-    <set name="Children" order-by="ModifiedOn asc" inverse="true" lazy="true">
+    <set name="Children" order-by="CreatedOn asc" inverse="true" lazy="true">
       <key column="ParentId"/>
       <one-to-many class="Post"/>
     </set>

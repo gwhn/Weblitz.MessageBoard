@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
     <Reference Include="NHibernate">
       <HintPath>..\..\..\..\Components\NHibernate-2.1.2.GA-bin\Required_Bins\NHibernate.dll</HintPath>
     </Reference>
@@ -69,7 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fixtures\ForumFixtures.cs" />
     <Compile Include="Integration\IntegrationTestBase.cs" />
+    <Compile Include="Integration\Mappings\DataTestBase.cs" />
+    <Compile Include="Integration\Mappings\ForumMappingTests.cs" />
     <Compile Include="Integration\NHibernateConfigurationTests.cs" />
     <Compile Include="Integration\SessionBuilderTests.cs" />
     <Compile Include="Integration\SessionFactoryBuilderTests.cs" />
