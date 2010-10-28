@@ -8,24 +8,26 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual int Version { get; protected set; }
 
-        public bool Equals(Entity other)
+        public virtual bool Equals(Entity other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return other.Id.Equals(Id);
+            return other.Id.Equals(Id) && other.Version == Version;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Entity)) return false;
-            return Equals((Entity) obj);
+            return obj.GetType() == typeof (Entity) && Equals((Entity) obj);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            unchecked
+            {
+                return (Id.GetHashCode()*397) ^ Version;
+            }
         }
 
         public static bool operator ==(Entity left, Entity right)

@@ -34,6 +34,9 @@
     <Reference Include="NHibernate">
       <HintPath>..\..\..\..\Components\NHibernate-2.1.2.GA-bin\Required_Bins\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate.ByteCode.LinFu">
+      <HintPath>..\..\..\..\Components\NHibernate-2.1.2.GA-bin\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -56,6 +59,7 @@
     <Compile Include="NHibernate\Scopes\ThreadStaticInstanceScoper.cs" />
     <Compile Include="NHibernate\SessionBuilder.cs" />
     <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
+    <Compile Include="NHibernate\SessionManager.cs" />
     <Compile Include="NHibernate\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

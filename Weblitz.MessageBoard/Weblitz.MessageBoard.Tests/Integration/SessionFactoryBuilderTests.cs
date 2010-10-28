@@ -21,23 +21,23 @@ namespace Weblitz.MessageBoard.Tests.Integration
 
             var type = typeof (Forum);
             var forum = factory.GetClassMetadata(type);
-            Assert.That(forum.EntityName == type.Name);
+            Assert.That(forum.EntityName.Contains(type.Name));
 
             type = typeof (Entry);
             var entry = factory.GetClassMetadata(type);
-            Assert.That(entry.EntityName == type.Name);
+            Assert.That(entry.EntityName.Contains(type.Name));
 
             type = typeof (Topic);
             var topic = factory.GetClassMetadata(type);
-            Assert.That(topic.EntityName == type.Name);
+            Assert.That(topic.EntityName.Contains(type.Name));
 
             type = typeof (Post);
             var post = factory.GetClassMetadata(type);
-            Assert.That(post.EntityName == type.Name);
+            Assert.That(post.EntityName.Contains(type.Name));
 
             type = typeof (Attachment);
             var attachment = factory.GetClassMetadata(type);
-            Assert.That(attachment.EntityName == type.Name);
+            Assert.That(attachment.EntityName.Contains(type.Name));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Weblitz.MessageBoard.Tests.Integration
             Assert.IsNotNull(factory1);
             Assert.IsNotNull(factory2);
 
-            Assert.ReferenceEquals(factory1, factory2);
+            Assert.That(ReferenceEquals(factory1, factory2));
         }
     }
 }

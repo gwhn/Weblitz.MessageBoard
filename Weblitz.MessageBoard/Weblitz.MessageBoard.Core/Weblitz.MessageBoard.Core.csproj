@@ -45,6 +45,7 @@
     <Compile Include="Domain\Model\Entry.cs" />
     <Compile Include="Domain\Model\Forum.cs" />
     <Compile Include="Domain\Model\Entity.cs" />
+    <Compile Include="Domain\Model\IAuditableEntity.cs" />
     <Compile Include="Domain\Model\IEntity.cs" />
     <Compile Include="Domain\Model\Post.cs" />
     <Compile Include="Domain\Model\Topic.cs" />
