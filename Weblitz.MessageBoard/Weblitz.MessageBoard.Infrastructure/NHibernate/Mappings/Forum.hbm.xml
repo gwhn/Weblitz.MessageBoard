@@ -6,6 +6,7 @@
     <id name="Id">
       <generator class="guid.comb"/>
     </id>
+    <version name="Version"/>
     <property name="Name"/>
     <set name="Topics" order-by="ModifiedOn desc" inverse="true" lazy="true">
       <key column="ForumId"/>

@@ -6,6 +6,7 @@
     <id name="Id">
       <generator class="guid.comb"/>
     </id>
+    <version name="Version"/>
     <property name="FileName"/>
     <property name="ContentType"/>
     <property name="ContentLength"/>

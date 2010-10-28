@@ -40,6 +40,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\nunit\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\..\Components\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="StoryQ">
+      <HintPath>..\..\..\..\Components\StoryQ-2.0.4\StoryQ.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,9 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\NHibernateConfigurationTests.cs" />
+    <Compile Include="Integration\SessionFactoryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
+    <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

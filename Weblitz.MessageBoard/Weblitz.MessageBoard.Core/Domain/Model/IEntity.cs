@@ -5,5 +5,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
     public interface IEntity
     {
         Guid Id { get; }
+  
+        int Version { get; }
     }
 }

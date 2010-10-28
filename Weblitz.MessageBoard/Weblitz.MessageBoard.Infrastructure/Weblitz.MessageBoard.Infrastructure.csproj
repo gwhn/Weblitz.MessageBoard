@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,6 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NHibernate\ISessionBuilder.cs" />
+    <Compile Include="NHibernate\ISessionFactoryBuilder.cs" />
+    <Compile Include="NHibernate\NHibernateHttpModule.cs" />
+    <Compile Include="NHibernate\RepositoryBase.cs" />
+    <Compile Include="NHibernate\Scopes\HttpContextInstanceScoper.cs" />
+    <Compile Include="NHibernate\Scopes\HybridInstanceScoper.cs" />
+    <Compile Include="NHibernate\Scopes\IInstanceScoper.cs" />
+    <Compile Include="NHibernate\Scopes\InstanceScoperBase.cs" />
+    <Compile Include="NHibernate\Scopes\SingletonInstanceScoper.cs" />
+    <Compile Include="NHibernate\Scopes\ThreadStaticInstanceScoper.cs" />
+    <Compile Include="NHibernate\SessionBuilder.cs" />
+    <Compile Include="NHibernate\SessionFactoryBuilder.cs" />
+    <Compile Include="NHibernate\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
