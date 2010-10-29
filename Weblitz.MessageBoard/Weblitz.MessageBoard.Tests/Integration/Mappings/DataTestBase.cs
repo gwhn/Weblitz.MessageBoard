@@ -15,7 +15,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             }
         }
 
-        protected static void AssertLoadedEntityMatch<T>(T entity) where T : Entity
+        protected static void AssertPersistedEntityMatchesLoadedEntity<T>(T entity) where T : Entity
         {
             using (var s = Session())
             {

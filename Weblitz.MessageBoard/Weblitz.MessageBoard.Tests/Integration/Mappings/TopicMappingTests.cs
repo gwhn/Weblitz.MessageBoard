@@ -12,14 +12,14 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var entity = TopicFixtures.TopicWithNoPostsAndNoAttachments;
-            entity.Forum = forum;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            topic.Forum = forum;
 
             // Act
-            Persist(entity);
+            Persist(topic);
 
             // Assert
-            AssertLoadedEntityMatch(entity);
+            AssertPersistedEntityMatchesLoadedEntity(topic);
         }
     }
 }

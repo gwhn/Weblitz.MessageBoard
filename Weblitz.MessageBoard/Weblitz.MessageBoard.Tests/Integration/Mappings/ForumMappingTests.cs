@@ -10,13 +10,13 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
         public void ShouldPersistForumWithNoTopics()
         {
             // Arrange
-            var entity = ForumFixtures.ForumWithNoTopics;
+            var forum = ForumFixtures.ForumWithNoTopics;
 
             // Act
-            Persist(entity);
+            Persist(forum);
 
             // Assert
-            AssertLoadedEntityMatch(entity);
+            AssertPersistedEntityMatchesLoadedEntity(forum);
         }
     }
 }
