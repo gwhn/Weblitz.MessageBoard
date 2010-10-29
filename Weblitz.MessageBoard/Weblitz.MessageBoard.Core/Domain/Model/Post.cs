@@ -15,7 +15,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
             protected set { _children = value as ISet<Post>; }
         }
 
-        public virtual void AddChild(Post child)
+        public virtual void Add(Post child)
         {
             child.Parent = this;
             child.Topic = Topic;

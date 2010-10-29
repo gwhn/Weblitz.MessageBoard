@@ -5,8 +5,8 @@
   <joined-subclass name="Post" extends="Entry">
     <key column="Id"/>
     <property name="Flagged"/>
-    <many-to-one name="Topic" column="TopicId"/>
-    <set name="Children" order-by="CreatedOn asc" inverse="true" lazy="true">
+    <many-to-one name="Topic" column="TopicId" not-null="true"/>
+    <set name="Children" order-by="CreatedOn asc" inverse="true" lazy="true" cascade="all-delete-orphan">
       <key column="ParentId"/>
       <one-to-many class="Post"/>
     </set>

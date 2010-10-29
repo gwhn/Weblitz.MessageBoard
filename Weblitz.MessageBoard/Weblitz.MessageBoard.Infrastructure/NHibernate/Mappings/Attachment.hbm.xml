@@ -10,6 +10,6 @@
     <property name="FileName"/>
     <property name="ContentType"/>
     <property name="ContentLength"/>
-    <many-to-one name="Entry" column="EntryId"/>
+    <many-to-one name="Entry" column="EntryId" not-null="true"/>
   </class>
 </hibernate-mapping>

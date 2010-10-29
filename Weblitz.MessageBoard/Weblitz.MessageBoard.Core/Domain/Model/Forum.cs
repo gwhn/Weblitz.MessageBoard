@@ -13,7 +13,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
             protected set { _topics = value as ISet<Topic>; }
         }
 
-        public virtual void AddTopic(Topic topic)
+        public virtual void Add(Topic topic)
         {
             topic.Forum = this;
             _topics.Add(topic);

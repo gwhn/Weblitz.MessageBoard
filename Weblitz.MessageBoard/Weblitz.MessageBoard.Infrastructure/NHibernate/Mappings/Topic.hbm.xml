@@ -7,8 +7,8 @@
     <property name="Title"/>
     <property name="Sticky"/>
     <property name="Closed"/>
-    <many-to-one name="Forum" column="ForumId"/>
-    <set name="Posts" order-by="CreatedOn asc" inverse="true" lazy="true">
+    <many-to-one name="Forum" column="ForumId" not-null="true"/>
+    <set name="Posts" order-by="CreatedOn asc" inverse="true" lazy="true" cascade="all-delete-orphan">
       <key column="TopicId"/>
       <one-to-many class="Post"/>
     </set>
