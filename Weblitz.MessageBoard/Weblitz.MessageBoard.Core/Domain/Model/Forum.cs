@@ -1,3 +1,4 @@
+using System.Linq;
 using Iesi.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
@@ -6,17 +7,11 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
     {
         public virtual string Name { get; set; }
 
-        private ISet<Topic> _topics = new HashedSet<Topic>();
+        private readonly ISet<Topic> _topics = new HashedSet<Topic>();
 
-        public virtual ISet<Topic> Topics
+        public virtual Topic[] Topics
         {
-            get { return _topics; }
-            protected set { _topics = value; }
-        }
-
-        public virtual int TopicCount
-        {
-            get { return _topics.Count; }
+            get { return _topics.ToArray(); }
         }
 
         public virtual void Add(Topic topic)

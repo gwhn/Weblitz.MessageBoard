@@ -1,4 +1,5 @@
-﻿using Iesi.Collections.Generic;
+﻿using System.Linq;
+using Iesi.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
@@ -8,17 +9,11 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual Forum Forum { get; set; }
 
-        private ISet<Post> _posts = new HashedSet<Post>();
+        private readonly ISet<Post> _posts = new HashedSet<Post>();
 
-        public virtual ISet<Post> Posts
+        public virtual Post[] Posts
         {
-            get { return _posts; }
-            protected set { _posts = value; }
-        }
-
-        public virtual int PostCount
-        {
-            get { return _posts.Count; }
+            get { return _posts.ToArray(); }
         }
 
         public virtual void Add(Post post)

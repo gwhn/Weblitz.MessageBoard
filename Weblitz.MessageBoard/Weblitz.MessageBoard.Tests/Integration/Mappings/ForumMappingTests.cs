@@ -50,7 +50,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             using (var s = Session())
             {
                 forum = s.Load<Forum>(id);
-                foreach (var t in forum.Topics.ToList()) forum.Remove(t);
+                foreach (var t in forum.Topics) forum.Remove(t);
                 s.SaveOrUpdate(forum);
                 s.Flush();
             }

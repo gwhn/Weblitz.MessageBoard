@@ -1,4 +1,5 @@
-﻿using Iesi.Collections.Generic;
+﻿using System.Linq;
+using Iesi.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
@@ -6,17 +7,11 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
     {
         public virtual string Body { get; set; }
 
-        private ISet<Attachment> _attachments = new HashedSet<Attachment>();
+        private readonly ISet<Attachment> _attachments = new HashedSet<Attachment>();
 
-        public virtual ISet<Attachment> Attachments
+        public virtual Attachment[] Attachments
         {
-            get { return _attachments; }
-            protected set { _attachments = value; }
-        }
-
-        public virtual int AttachmentCount
-        {
-            get { return _attachments.Count; }
+            get { return _attachments.ToArray(); }
         }
 
         public virtual void Add(Attachment attachment)

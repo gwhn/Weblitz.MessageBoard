@@ -2,13 +2,20 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
                    assembly="Weblitz.MessageBoard.Core"
                    namespace="Weblitz.MessageBoard.Core.Domain.Model">
-  <joined-subclass name="Topic" extends="Entry">
+  <joined-subclass name="Topic" 
+                   extends="Entry">
     <key column="Id"/>
     <property name="Title"/>
     <property name="Sticky"/>
     <property name="Closed"/>
-    <many-to-one name="Forum" column="ForumId" not-null="true"/>
-    <set name="Posts" inverse="true" lazy="true" cascade="all-delete-orphan">
+    <many-to-one name="Forum" 
+                 column="ForumId" 
+                 not-null="true"/>
+    <set name="Posts" 
+         inverse="true" 
+         lazy="true" 
+         cascade="all-delete-orphan"
+         access="field.camelcase-underscore">
       <key column="TopicId"/>
       <one-to-many class="Post"/>
     </set>
