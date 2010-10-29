@@ -13,7 +13,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
             protected set { _attachments = value as ISet<Attachment>; }
         }
 
-        public virtual void AddAttachment(Attachment attachment)
+        public virtual void Add(Attachment attachment)
         {
             attachment.Entry = this;
             _attachments.Add(attachment);

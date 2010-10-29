@@ -7,7 +7,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     public class PostMappingTests : DataTestBase
     {
         [Test]
-        public void ShouldPersistRootPostWithNoChildren()
+        public void ShouldPersistRootPostWithNoChildrenAndNoAttachments()
         {
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
@@ -15,18 +15,18 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
             topic.Forum = forum;
             Persist(topic);
-            var post = PostFixtures.RootPostWithNoChildren;
-            post.Topic = topic;
+            var root = PostFixtures.RootPostWithNoChildren;
+            root.Topic = topic;
 
             // Act
-            Persist(post);
+            Persist(root);
 
             // Assert
-            AssertPersistedEntityMatchesLoadedEntity(post);
+            AssertPersistedEntityMatchesLoadedEntity(root);
         }
 
         [Test]
-        public void ShouldPersistBranchPostWithNoChildren()
+        public void ShouldPersistBranchPostWithNoChildrenAndNoAttachments()
         {
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
@@ -46,5 +46,71 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Assert
             AssertPersistedEntityMatchesLoadedEntity(branch);
         }
+
+        [Test]
+        public void ShouldPersistRootPostWithOneChildAndNoAttachments()
+        {
+            // Arrange
+            var forum = ForumFixtures.ForumWithNoTopics;
+            Persist(forum);
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            topic.Forum = forum;
+            Persist(topic);
+            var root = PostFixtures.RootPostWithNoChildren;
+            root.Topic = topic;
+            var branch = PostFixtures.BranchPostWithNoChildren;
+            root.Add(branch);
+
+            // Act
+            Persist(root);
+
+            // Assert
+            AssertPersistedEntityMatchesLoadedEntity(root);
+        }
+
+        [Test]
+        public void ShouldPersistRootPostWithNoChildrenAndOneAttachment()
+        {
+            // Arrange
+            var forum = ForumFixtures.ForumWithNoTopics;
+            Persist(forum);
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            topic.Forum = forum;
+            Persist(topic);
+            var root = PostFixtures.RootPostWithNoChildren;
+            root.Topic = topic;
+            var attachment = AttachmentFixtures.Attachment;
+            root.Add(attachment);
+
+            // Act
+            Persist(root);
+
+            // Assert
+            AssertPersistedEntityMatchesLoadedEntity(root);
+        }
+
+        [Test]
+        public void ShouldPersistRootPostWithOneChildAndOneAttachment()
+        {
+            // Arrange
+            var forum = ForumFixtures.ForumWithNoTopics;
+            Persist(forum);
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            topic.Forum = forum;
+            Persist(topic);
+            var root = PostFixtures.RootPostWithNoChildren;
+            root.Topic = topic;
+            var branch = PostFixtures.BranchPostWithNoChildren;
+            root.Add(branch);
+            var attachment = AttachmentFixtures.Attachment;
+            root.Add(attachment);
+
+            // Act
+            Persist(root);
+
+            // Assert
+            AssertPersistedEntityMatchesLoadedEntity(root);
+        }
+
     }
 }

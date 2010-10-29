@@ -18,5 +18,20 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Assert
             AssertPersistedEntityMatchesLoadedEntity(forum);
         }
+
+        [Test]
+        public void ShouldPersistForumWithOneTopic()
+        {
+            // Arrange
+            var forum = ForumFixtures.ForumWithNoTopics;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            forum.Add(topic);
+
+            // Act
+            Persist(forum);
+
+            // Assert
+            AssertPersistedEntityMatchesLoadedEntity(forum);
+        }
     }
 }
