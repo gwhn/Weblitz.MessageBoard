@@ -38,6 +38,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             root.Topic = topic;
             Persist(root);
             var branch = PostFixtures.BranchPostWithNoChildren;
+            branch.Topic = topic;
             branch.Parent = root;
 
             // Act
