@@ -9,10 +9,10 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
         public virtual Post Parent { get; set; }
 
         private ISet<Post> _children = new HashSet<Post>();
-        public virtual ISet<Post> Children
+        public virtual IEnumerable<Post> Children
         {
             get { return _children; }
-            protected set { _children = value; }
+            protected set { _children = value as ISet<Post>; }
         }
 
         public virtual void AddChild(Post child)

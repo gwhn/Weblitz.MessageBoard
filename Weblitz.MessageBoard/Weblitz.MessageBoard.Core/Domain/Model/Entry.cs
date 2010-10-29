@@ -7,10 +7,10 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
         public virtual string Body { get; set; }
 
         private ISet<Attachment> _attachments = new HashSet<Attachment>();
-        public virtual ISet<Attachment> Attachments
+        public virtual IEnumerable<Attachment> Attachments
         {
             get { return _attachments; }
-            protected set { _attachments = value; }
+            protected set { _attachments = value as ISet<Attachment>; }
         }
 
         public virtual void AddAttachment(Attachment attachment)

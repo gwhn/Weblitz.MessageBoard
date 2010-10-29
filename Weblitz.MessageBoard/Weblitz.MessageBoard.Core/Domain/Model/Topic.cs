@@ -9,10 +9,10 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
         public virtual Forum Forum { get; set; }
 
         private ISet<Post> _posts = new HashSet<Post>();
-        public virtual ISet<Post> Posts
+        public virtual IEnumerable<Post> Posts
         {
             get { return _posts; }
-            protected set { _posts = value; }
+            protected set { _posts = value as ISet<Post>; }
         }
 
         public virtual void AddPost(Post post)

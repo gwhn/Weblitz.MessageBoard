@@ -8,10 +8,7 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
         {
             get
             {
-                return new Forum
-                           {
-                               Name = "First forum with no topics"
-                           };
+                return new Forum {Name = "Name of forum with no topics"};
             }
         }
     }

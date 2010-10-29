@@ -4,13 +4,16 @@ using Weblitz.MessageBoard.Tests.Fixtures;
 namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 {
     [TestFixture]
-    public class ForumMappingTests : DataTestBase
+    public class TopicMappingTests : DataTestBase
     {
         [Test]
-        public void ShouldPersistForumWithNoTopics()
+        public void ShouldPersistTopicWithNoPostsAndNoAttachments()
         {
             // Arrange
-            var entity = ForumFixtures.ForumWithNoTopics;
+            var forum = ForumFixtures.ForumWithNoTopics;
+            Persist(forum);
+            var entity = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            entity.Forum = forum;
 
             // Act
             Persist(entity);
