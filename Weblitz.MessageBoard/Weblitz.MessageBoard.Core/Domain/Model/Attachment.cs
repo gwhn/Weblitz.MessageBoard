@@ -7,7 +7,7 @@
         public virtual string FileName { get; set; }
 
         public virtual string ContentType { get; set; }
-        
+
         public virtual int ContentLength { get; set; }
     }
 }

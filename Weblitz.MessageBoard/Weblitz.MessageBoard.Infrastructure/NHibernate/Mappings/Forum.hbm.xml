@@ -14,7 +14,7 @@
       <property name="ModifiedOn"/>
       <property name="ModifiedBy"/>
     </component>
-    <set name="Topics" order-by="CreatedOn desc" inverse="true" lazy="true" cascade="all-delete-orphan">
+    <set name="Topics" inverse="true" lazy="true" cascade="all-delete-orphan">
       <key column="ForumId"/>
       <one-to-many class="Topic"/>
     </set>

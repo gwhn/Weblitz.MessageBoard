@@ -5,6 +5,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
     public abstract class Entity : IEntity
     {
         private Guid _id = Guid.Empty;
+
         public virtual Guid Id
         {
             get { return _id; }
