@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\..\..\Components\NHibernate-2.1.2.GA-bin\Required_Bins\Iesi.Collections.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AbstractFactoryBase.cs" />
     <Compile Include="Domain\Model\Attachment.cs" />
+    <Compile Include="Domain\Model\AuditedEntity.cs" />
     <Compile Include="Domain\Model\AuditInfo.cs" />
     <Compile Include="Domain\Model\Entry.cs" />
     <Compile Include="Domain\Model\Forum.cs" />

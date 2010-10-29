@@ -8,7 +8,19 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual Post Parent { get; set; }
 
-        public virtual ISet<Post> Children { get; set; }
+        private ISet<Post> _children = new HashSet<Post>();
+        public virtual ISet<Post> Children
+        {
+            get { return _children; }
+            protected set { _children = value; }
+        }
+
+        public virtual void AddChild(Post child)
+        {
+            child.Parent = this;
+            child.Topic = Topic;
+            _children.Add(child);
+        }
 
         public virtual bool Flagged { get; set; }
     }

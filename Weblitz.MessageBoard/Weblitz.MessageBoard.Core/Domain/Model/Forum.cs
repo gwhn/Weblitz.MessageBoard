@@ -1,19 +1,22 @@
-using System;
-using Iesi.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
-    public class Forum : Entity, IAuditable
+    public class Forum : AuditedEntity
     {
-        public Forum()
-        {
-            Topics = new HashedSet<Topic>();
-        }
-
         public virtual string Name { get; set; }
 
-        public virtual ISet<Topic> Topics { get; set; }
+        private ISet<Topic> _topics = new HashSet<Topic>();
+        public virtual IEnumerable<Topic> Topics
+        {
+            get { return _topics; }
+            protected set { _topics = value as ISet<Topic>; }
+        }
 
-        public virtual AuditInfo AuditInfo { get; protected set; }
+        public virtual void AddTopic(Topic topic)
+        {
+            topic.Forum = this;
+            _topics.Add(topic);
+        }
     }
 }

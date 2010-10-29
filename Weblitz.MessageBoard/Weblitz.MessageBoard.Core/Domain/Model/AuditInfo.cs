@@ -4,7 +4,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 {
     public class AuditInfo
     {
-        public virtual DateTime CreatedOn { get; set; }
+        public virtual DateTime? CreatedOn { get; set; }
 
         public virtual string CreatedBy { get; set; }
 

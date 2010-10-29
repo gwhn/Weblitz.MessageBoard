@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Weblitz.MessageBoard.Core.Domain.Model
+﻿namespace Weblitz.MessageBoard.Core.Domain.Model
 {
     public class Attachment : Entity
     {

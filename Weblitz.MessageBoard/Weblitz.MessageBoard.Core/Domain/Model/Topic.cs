@@ -8,7 +8,19 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual Forum Forum { get; set; }
 
-        public virtual ISet<Post> Posts { get; set; }
+        private ISet<Post> _posts = new HashSet<Post>();
+        public virtual ISet<Post> Posts
+        {
+            get { return _posts; }
+            protected set { _posts = value; }
+        }
+
+        public virtual void AddPost(Post post)
+        {
+            post.Topic = this;
+            post.Parent = null;
+            _posts.Add(post);
+        }
 
         public virtual bool Sticky { get; set; }
 

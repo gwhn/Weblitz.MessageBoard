@@ -9,7 +9,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     {
         protected void Persist(Entity entity)
         {
-            using (var session = Session)
+            using (var session = Session())
             {
                 session.SaveOrUpdate(entity);
                 session.Flush();
@@ -18,7 +18,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
         protected void Persist(IEnumerable<Entity> entities)
         {
-            using (var session = Session)
+            using (var session = Session())
             {
                 foreach (var entity in entities)
                 {
@@ -30,7 +30,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
         protected T Load<T>(object id) where T : Entity
         {
-            using (var session = Session)
+            using (var session = Session())
             {
                 return session.Load<T>(id);
             }
@@ -38,7 +38,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
         protected void Reload<T>(ref T entity) where T : Entity
         {
-            using (var session = Session)
+            using (var session = Session())
             {
                 if (session.Contains(entity))
                 {

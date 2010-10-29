@@ -1,14 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
 {
-    public abstract class Entry : Entity, IAuditable
+    public abstract class Entry : AuditedEntity
     {
         public virtual string Body { get; set; }
 
-        public virtual ISet<Attachment> Attachments { get; set; }
+        private ISet<Attachment> _attachments = new HashSet<Attachment>();
+        public virtual ISet<Attachment> Attachments
+        {
+            get { return _attachments; }
+            protected set { _attachments = value; }
+        }
 
-        public virtual AuditInfo AuditInfo { get; protected set; }
+        public virtual void AddAttachment(Attachment attachment)
+        {
+            attachment.Entry = this;
+            _attachments.Add(attachment);
+        }
     }
 }
