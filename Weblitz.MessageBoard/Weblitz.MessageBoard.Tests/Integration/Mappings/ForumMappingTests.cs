@@ -50,15 +50,23 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             using (var s = Session())
             {
                 forum = s.Load<Forum>(id);
-                foreach (var t in forum.Topics) forum.Remove(t);
+                forum.Remove(forum.Topics[0]);
                 s.SaveOrUpdate(forum);
                 s.Flush();
             }
 
             // Assert
-            AssertPersistedEntityMatchesLoadedEntity(forum);
+            using (var s = Session())
+            {
+                var actual = s.Load<Forum>(id);
+
+                Assert.That(actual, Is.EqualTo(forum));
+                Assert.That(actual, Is.Not.SameAs(forum));
+
+                var count = actual.Topics.Count();
+                Assert.That(count == 0);
+                Assert.That(count, Is.EqualTo(forum.Topics.Count()));
+            }
         }
-
-
     }
 }

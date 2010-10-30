@@ -1,4 +1,6 @@
+using System.Linq;
 using NUnit.Framework;
+using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Tests.Fixtures;
 
 namespace Weblitz.MessageBoard.Tests.Integration.Mappings
@@ -113,5 +115,43 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             AssertPersistedEntityMatchesLoadedEntity(root);
         }
 
+        [Test]
+        public void ShouldDeleteOrphanBranchPostWhenRemovedFromRootPost()
+        {
+            // Arrange
+            var forum = ForumFixtures.ForumWithNoTopics;
+            Persist(forum);
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            topic.Forum = forum;
+            Persist(topic);
+            var root = PostFixtures.RootPostWithNoChildren;
+            root.Topic = topic;
+            var branch = PostFixtures.BranchPostWithNoChildren;
+            root.Add(branch);
+            Persist(root);
+            var id = root.Id;
+
+            // Act
+            using (var s = Session())
+            {
+                root = s.Load<Post>(id);
+                root.Remove(root.Children[0]);
+                s.SaveOrUpdate(root);
+                s.Flush();
+            }
+
+            // Assert
+            using (var s = Session())
+            {
+                var actual = s.Load<Post>(id);
+
+                Assert.That(actual, Is.EqualTo(root));
+                Assert.That(actual, Is.Not.SameAs(root));
+
+                var count = actual.Children.Count();
+                Assert.That(count == 0);
+                Assert.That(count, Is.EqualTo(root.Children.Count()));
+            }
+        }
     }
 }

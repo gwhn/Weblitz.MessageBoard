@@ -13,7 +13,11 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual Post[] Children
         {
-            get { return _children.ToArray(); }
+            get
+            {
+                _children.Select(grandchild => grandchild.Children);
+                return _children.ToArray();
+            }
         }
 
         public virtual void Add(Post child)
