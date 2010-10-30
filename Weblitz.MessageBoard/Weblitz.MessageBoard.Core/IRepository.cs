@@ -1,10 +1,11 @@
-﻿using Weblitz.MessageBoard.Core.Domain.Model;
+﻿using System;
+using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Core
 {
     public interface IRepository<T> where T : Entity
     {
-        T GetById(object id);
+        T GetById(Guid id);
 
         void Save(T entity);
         

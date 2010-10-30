@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NHibernate;
 using Weblitz.MessageBoard.Core;
 using Weblitz.MessageBoard.Core.Domain.Model;
@@ -13,7 +14,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
             get { return new SessionBuilder().Construct(); }
         }
 
-        public virtual T GetById(object id)
+        public virtual T GetById(Guid id)
         {
             return Session.Get<T>(id);
         }
