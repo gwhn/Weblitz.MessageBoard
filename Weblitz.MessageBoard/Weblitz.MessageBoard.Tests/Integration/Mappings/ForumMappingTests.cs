@@ -14,11 +14,9 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     {
         private Forum _forum;
         private Guid _id;
-        private readonly IList<Topic> _added = new List<Topic>();
-        private readonly IList<Topic> _removed = new List<Topic>();
+        private readonly IList<Topic> _addedTopics = new List<Topic>();
+        private readonly IList<Topic> _removedTopics = new List<Topic>();
 
-        private const string Opened = "Opened";
-        private const string Closed = "Closed";
         private const string Loaded = "Loaded";
         private const string Saved = "Saved";
         private const string Modified = "Modified";
@@ -133,23 +131,6 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             }
         }
 
-        private void SessionIs_(string action)
-        {
-            switch (action)
-            {
-                case Opened:
-                    Session = BuildSession();
-                    Assert.That(Session.IsOpen);
-                    break;
-
-                case Closed:
-                    Session.Close();
-                    Assert.That(!Session.IsOpen);
-                    Session.Dispose();
-                    break;
-            }
-        }
-
         private void ForumIs_(string action)
         {
             switch (action)
@@ -193,7 +174,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             for (var i = 0; i < count; i++)
             {
                 var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(i);
-                _added.Add(topic);
+                _addedTopics.Add(topic);
                 _forum.Add(topic);
             }
         }
@@ -205,7 +186,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             for (var i = 0; i < count; i++)
             {
                 var topic = _forum.Topics[0];
-                _removed.Add(topic);
+                _removedTopics.Add(topic);
                 _forum.Remove(topic);
             }
         }
@@ -218,11 +199,11 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             {
                 if (contains)
                 {
-                    Assert.IsTrue(_added.Contains(topic));
+                    Assert.IsTrue(_addedTopics.Contains(topic));
                 }
                 else
                 {
-                    Assert.IsFalse(_added.Contains(topic));
+                    Assert.IsFalse(_addedTopics.Contains(topic));
                 }
             }
         }
@@ -235,11 +216,11 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             {
                 if (contains)
                 {
-                    Assert.IsTrue(_removed.Contains(topic));
+                    Assert.IsTrue(_removedTopics.Contains(topic));
                 }
                 else
                 {
-                    Assert.IsFalse(_removed.Contains(topic));
+                    Assert.IsFalse(_removedTopics.Contains(topic));
                 }
             }
         }

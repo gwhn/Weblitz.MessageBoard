@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 using NUnit.Framework;
@@ -12,6 +10,9 @@ namespace Weblitz.MessageBoard.Tests.Integration
     {
         protected ISession Session;
 
+        protected const string Opened = "Opened";
+        protected const string Closed = "Closed";
+
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
@@ -21,6 +22,23 @@ namespace Weblitz.MessageBoard.Tests.Integration
         protected static ISession BuildSession()
         {
             return new SessionBuilder().Construct();
+        }
+
+        protected void SessionIs_(string action)
+        {
+            switch (action)
+            {
+                case Opened:
+                    Session = BuildSession();
+                    Assert.That(Session.IsOpen);
+                    break;
+
+                case Closed:
+                    Session.Close();
+                    Assert.That(!Session.IsOpen);
+                    Session.Dispose();
+                    break;
+            }
         }
 
         protected static void AssertObjectsMatch(object obj1, object obj2)
