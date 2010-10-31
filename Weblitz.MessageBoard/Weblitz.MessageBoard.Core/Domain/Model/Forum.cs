@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using Iesi.Collections.Generic;
 
@@ -24,6 +25,27 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
         {
             topic.Forum = null;
             _topics.Remove(topic);
+        }
+
+        public virtual bool Equals(Forum other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(other.Name, Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return ReferenceEquals(this, obj) || Equals(obj as Forum);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode()*397) ^ (Name != null ? Name.GetHashCode() : 0);
+            }
         }
     }
 }

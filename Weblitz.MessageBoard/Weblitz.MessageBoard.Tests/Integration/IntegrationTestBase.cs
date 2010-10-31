@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 using NUnit.Framework;
@@ -8,21 +10,23 @@ namespace Weblitz.MessageBoard.Tests.Integration
     [TestFixture]
     public class IntegrationTestBase : TestBase
     {
+        protected ISession Session;
+
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
             SessionBuilder.GetDefault = () => null;
         }
 
-        protected static ISession Session()
+        protected static ISession BuildSession()
         {
             return new SessionBuilder().Construct();
         }
 
         protected static void AssertObjectsMatch(object obj1, object obj2)
         {
-            Assert.AreNotSame(obj1, obj2);
-            Assert.AreEqual(obj1, obj2);
+            Assert.That(obj1, Is.EqualTo(obj2));
+            Assert.That(obj1, Is.Not.SameAs(obj2));
 
             var infos = obj1.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var info in infos)

@@ -4,18 +4,15 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class TopicFixtures
     {
-        public static Topic TopicWithNoPostsAndNoAttachments
+        public static Topic TopicWithNoPostsAndNoAttachments(int index)
         {
-            get
-            {
-                return new Topic
-                           {
-                               Title = "Title of topic with no posts or attachments",
-                               Body = "Body of topic with no posts or attachments",
-                               Closed = true,
-                               Sticky = true,
-                           };
-            }
+            return new Topic
+                       {
+                           Title = string.Format("Title of topic {0} with no posts or attachments", index),
+                           Body = string.Format("Body of topic {0} with no posts or attachments", index),
+                           Closed = true,
+                           Sticky = true,
+                       };
         }
     }
 }

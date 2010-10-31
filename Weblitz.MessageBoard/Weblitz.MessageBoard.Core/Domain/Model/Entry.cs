@@ -25,5 +25,26 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
             attachment.Entry = null;
             _attachments.Remove(attachment);
         }
+
+        public virtual bool Equals(Entry other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(other.Body, Body);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return ReferenceEquals(this, obj) || Equals(obj as Entry);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode()*397) ^ (Body != null ? Body.GetHashCode() : 0);
+            }
+        }
     }
 }

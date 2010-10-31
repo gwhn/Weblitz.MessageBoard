@@ -35,5 +35,27 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
         }
 
         public virtual bool Flagged { get; set; }
+
+        public virtual bool Equals(Post other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && other.Flagged.Equals(Flagged);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as Post);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode()*397) ^ Flagged.GetHashCode();
+            }
+        }
     }
 }

@@ -8,21 +8,18 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     {
         protected static void Persist<T>(T entity) where T : Entity
         {
-            using (var s = Session())
+            using (var session = BuildSession())
             {
-                s.SaveOrUpdate(entity);
-                s.Flush();
+                session.SaveOrUpdate(entity);
+                session.Flush();
             }
         }
 
         protected static void AssertPersistedEntityMatchesLoadedEntity<T>(T entity) where T : Entity
         {
-            using (var s = Session())
+            using (var session = BuildSession())
             {
-                var actual = s.Load<T>(entity.Id);
-
-                Assert.That(actual, Is.EqualTo(entity));
-                Assert.That(actual, Is.Not.SameAs(entity));
+                var actual = session.Load<T>(entity.Id);
 
                 AssertObjectsMatch(entity, actual);
             }

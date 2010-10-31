@@ -14,7 +14,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -33,7 +33,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -56,7 +56,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -77,7 +77,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -98,7 +98,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -121,7 +121,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             // Arrange
             var forum = ForumFixtures.ForumWithNoTopics;
             Persist(forum);
-            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments;
+            var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
             var root = PostFixtures.RootPostWithNoChildren;
@@ -132,7 +132,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var id = root.Id;
 
             // Act
-            using (var s = Session())
+            using (var s = BuildSession())
             {
                 root = s.Load<Post>(id);
                 root.Remove(root.Children[0]);
@@ -141,7 +141,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             }
 
             // Assert
-            using (var s = Session())
+            using (var s = BuildSession())
             {
                 var actual = s.Load<Post>(id);
 
