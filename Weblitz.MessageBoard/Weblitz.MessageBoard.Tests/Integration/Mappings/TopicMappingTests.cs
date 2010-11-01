@@ -1,5 +1,8 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
+using StoryQ;
+using StoryQ.Formatting.Parameters;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Tests.Fixtures;
 
@@ -152,5 +155,256 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             }
         }
 
+        [Test]
+        public void TopicMapping()
+        {
+            new Story("topic mapping")
+                .InOrderTo("check topic persistence")
+                .AsA("developer")
+                .IWant("to create, read, update and delete topics")
+
+                        .WithScenario("create topic with no associated posts or attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 0)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("create topic with associated posts but no attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 1, 0)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainAddedPosts, true)
+                                .And(AssociatedAttachments_Exist, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("create topic with associated attachments but no posts")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 1)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainAddedAttachments, true)
+                                .And(AssociatedPosts_Exist, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("create topic with associated posts and attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 3, 2)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainAddedPosts, true)
+                                .And(Topic_ContainAddedAttachments, true)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("update topic with no associated posts or attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Loaded)
+                                .And(TopicIs_, Modified)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("update topic with posts added")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Loaded)
+                                .And(TopicIs_, Modified)
+                                .And(_PostsAddedToTopic, 2)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainAddedPosts, true)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("update topic with attachments added")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Loaded)
+                                .And(TopicIs_, Modified)
+                                .And(_AttachmentsAddedToTopic, 2)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainAddedAttachments, true)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("update topic with posts removed")
+                            .Given(TopicWith_PostsAnd_Attachments, 2, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Loaded)
+                                .And(TopicIs_, Modified)
+                                .And(_PostsRemovedFromTopic, 1)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainRemovedPosts, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("update topic with attachments removed")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 3)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Loaded)
+                                .And(TopicIs_, Modified)
+                                .And(_AttachmentsRemovedFromTopic, 2)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(LoadedTopic_MatchSavedTopic, true)
+                                .And(Topic_ContainRemovedAttachments, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("delete topic with no associated posts or attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Deleted)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(Topic_Exist, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("delete forum with associated posts but no attachments")
+                            .Given(TopicWith_PostsAnd_Attachments, 2, 0)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Deleted)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(Topic_Exist, false)
+                                .And(AssociatedPosts_Exist, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("delete forum with associated attachments but no posts")
+                            .Given(TopicWith_PostsAnd_Attachments, 0, 3)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Deleted)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(Topic_Exist, false)
+                                .And(AssociatedAttachments_Exist, false)
+                                .And(SessionIs_, Closed)
+
+                        .WithScenario("delete forum with associated attachments and posts")
+                            .Given(TopicWith_PostsAnd_Attachments, 3, 2)
+                                .And(SessionIs_, Opened)
+                                .And(TopicIs_, Saved)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .When(TopicIs_, Deleted)
+                                .And(SessionIs_, Closed)
+                                .And(SessionIs_, Opened)
+                            .Then(Topic_Exist, false)
+                                .And(AssociatedPosts_Exist, false)
+                                .And(AssociatedAttachments_Exist, false)
+                                .And(SessionIs_, Closed)
+                .Execute();
+        }
+
+        private void TopicWith_PostsAnd_Attachments(int postCount, int attachmentCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void TopicIs_(string action)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LoadedTopic_MatchSavedTopic([BooleanParameterFormat("should", "should not")] bool matches)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Topic_ContainAddedPosts([BooleanParameterFormat("should", "should not")] bool contains)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AssociatedAttachments_Exist([BooleanParameterFormat("should", "should not")] bool exists)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Topic_ContainAddedAttachments([BooleanParameterFormat("should", "should not")] bool contains)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AssociatedPosts_Exist([BooleanParameterFormat("should", "should not")] bool exists)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _PostsAddedToTopic(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _AttachmentsAddedToTopic(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _PostsRemovedFromTopic(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Topic_ContainRemovedPosts([BooleanParameterFormat("should", "should not")] bool contains)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _AttachmentsRemovedFromTopic(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Topic_ContainRemovedAttachments([BooleanParameterFormat("should", "should not")] bool contains)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Topic_Exist([BooleanParameterFormat("should", "should not")] bool exists)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

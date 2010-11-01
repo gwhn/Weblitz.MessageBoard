@@ -12,6 +12,10 @@ namespace Weblitz.MessageBoard.Tests.Integration
 
         protected const string Opened = "Opened";
         protected const string Closed = "Closed";
+        protected const string Loaded = "Loaded";
+        protected const string Saved = "Saved";
+        protected const string Modified = "Modified";
+        protected const string Deleted = "Deleted";
 
         [TestFixtureSetUp]
         public virtual void FixtureSetup()

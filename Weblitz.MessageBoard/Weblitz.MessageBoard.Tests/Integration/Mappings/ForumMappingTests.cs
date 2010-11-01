@@ -17,11 +17,6 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
         private readonly IList<Topic> _addedTopics = new List<Topic>();
         private readonly IList<Topic> _removedTopics = new List<Topic>();
 
-        private const string Loaded = "Loaded";
-        private const string Saved = "Saved";
-        private const string Modified = "Modified";
-        private const string Deleted = "Deleted";
-
         [Test]
         public void ForumMapping()
         {
@@ -46,6 +41,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
                                 .And(SessionIs_, Closed)
                                 .And(SessionIs_, Opened)
                             .Then(LoadedForum_MatchSavedForum, true)
+                                .And(Forum_ContainAddedTopics, true)
                                 .And(SessionIs_, Closed)
 
                         .WithScenario("update forum with no associated topics")
@@ -125,10 +121,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
         {
             _forum = ForumFixtures.ForumWithNoTopics;
             if (count < 1) return;
-            for (var i = 0; i < count; i++)
-            {
-                _forum.Add(TopicFixtures.TopicWithNoPostsAndNoAttachments(i));
-            }
+            _TopicsAddedToForum(count);
         }
 
         private void ForumIs_(string action)
