@@ -4,28 +4,22 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class PostFixtures
     {
-        public static Post RootPostWithNoChildren
+        public static Post RootPostWithNoChildren(int index)
         {
-            get
-            {
-                return new Post
-                           {
-                               Body = "Body of root post with no children",
-                               Flagged = true
-                           };
-            }
+            return new Post
+                       {
+                           Body = string.Format("Body of root post {0} with no children", index),
+                           Flagged = true
+                       };
         }
 
-        public static Post BranchPostWithNoChildren
+        public static Post BranchPostWithNoChildren(int index)
         {
-            get
-            {
-                return new Post
-                           {
-                               Body = "Body of branch post with no children",
-                               Flagged = true
-                           };
-            }
+            return new Post
+                       {
+                           Body = string.Format("Body of branch post {0} with no children", index),
+                           Flagged = false
+                       };
         }
     }
 }

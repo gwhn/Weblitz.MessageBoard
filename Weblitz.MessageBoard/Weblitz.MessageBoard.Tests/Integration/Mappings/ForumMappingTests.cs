@@ -12,10 +12,10 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     [TestFixture]
     public class ForumMappingTests : DataTestBase
     {
-        private Forum _forum;
-        private Guid _id;
-        private readonly IList<Topic> _addedTopics = new List<Topic>();
-        private readonly IList<Topic> _removedTopics = new List<Topic>();
+        protected Forum _forum;
+        protected Guid _id;
+        protected readonly IList<Topic> _addedTopics = new List<Topic>();
+        protected readonly IList<Topic> _removedTopics = new List<Topic>();
 
         [Test]
         public void ForumMapping()
@@ -124,6 +124,19 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             _TopicsAddedToForum(count);
         }
 
+        private void _TopicsAddedToForum(int count)
+        {
+            Assert.That(count > 0);
+            Assert.IsNotNull(_forum);
+
+            for (var i = 0; i < count; i++)
+            {
+                var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(i);
+                _addedTopics.Add(topic);
+                _forum.Add(topic);
+            }
+        }
+
         private void ForumIs_(string action)
         {
             switch (action)
@@ -157,19 +170,6 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
             Assert.That(actual, Is.EqualTo(_forum));
             Assert.That(actual, Is.Not.SameAs(_forum));
-        }
-
-        private void _TopicsAddedToForum(int count)
-        {
-            Assert.That(count > 0);
-            Assert.IsNotNull(_forum);
-
-            for (var i = 0; i < count; i++)
-            {
-                var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(i);
-                _addedTopics.Add(topic);
-                _forum.Add(topic);
-            }
         }
 
         private void _TopicsRemovedFromForum(int count)

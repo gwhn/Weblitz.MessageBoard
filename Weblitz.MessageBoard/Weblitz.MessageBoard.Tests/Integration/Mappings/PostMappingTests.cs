@@ -20,7 +20,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
 
             // Act
@@ -39,10 +39,10 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
             Persist(root);
-            var branch = PostFixtures.BranchPostWithNoChildren;
+            var branch = PostFixtures.BranchPostWithNoChildren(1);
             branch.Topic = topic;
             branch.Parent = root;
 
@@ -62,9 +62,9 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
-            var branch = PostFixtures.BranchPostWithNoChildren;
+            var branch = PostFixtures.BranchPostWithNoChildren(1);
             root.Add(branch);
 
             // Act
@@ -83,9 +83,9 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
-            var attachment = AttachmentFixtures.Attachment;
+            var attachment = AttachmentFixtures.Attachment(1);
             root.Add(attachment);
 
             // Act
@@ -104,11 +104,11 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
-            var branch = PostFixtures.BranchPostWithNoChildren;
+            var branch = PostFixtures.BranchPostWithNoChildren(1);
             root.Add(branch);
-            var attachment = AttachmentFixtures.Attachment;
+            var attachment = AttachmentFixtures.Attachment(1);
             root.Add(attachment);
 
             // Act
@@ -127,9 +127,9 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var root = PostFixtures.RootPostWithNoChildren;
+            var root = PostFixtures.RootPostWithNoChildren(1);
             root.Topic = topic;
-            var branch = PostFixtures.BranchPostWithNoChildren;
+            var branch = PostFixtures.BranchPostWithNoChildren(1);
             root.Add(branch);
             Persist(root);
             var id = root.Id;

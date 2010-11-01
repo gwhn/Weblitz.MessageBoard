@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NHibernate;
 using NUnit.Framework;
+using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
+using Weblitz.MessageBoard.Tests.Fixtures;
 
 namespace Weblitz.MessageBoard.Tests.Integration
 {

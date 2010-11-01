@@ -18,7 +18,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var attachment = AttachmentFixtures.Attachment;
+            var attachment = AttachmentFixtures.Attachment(1);
             attachment.Entry = topic;
             
             // Act
@@ -37,10 +37,10 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
             var topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
             topic.Forum = forum;
             Persist(topic);
-            var post = PostFixtures.RootPostWithNoChildren;
+            var post = PostFixtures.RootPostWithNoChildren(1);
             post.Topic = topic;
             Persist(post);
-            var attachment = AttachmentFixtures.Attachment;
+            var attachment = AttachmentFixtures.Attachment(1);
             attachment.Entry = post;
             
             // Act

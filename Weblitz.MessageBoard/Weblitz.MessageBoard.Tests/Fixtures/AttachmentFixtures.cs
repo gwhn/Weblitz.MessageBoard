@@ -4,17 +4,14 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class AttachmentFixtures
     {
-        public static Attachment Attachment
+        public static Attachment Attachment(int index)
         {
-            get
-            {
-                return new Attachment
-                           {
-                               FileName = "path/to/test/file.name",
-                               ContentType = "some/type",
-                               ContentLength = 1234
-                           };
-            }
+            return new Attachment
+                        {
+                            FileName = string.Format("path/to/test/file{0}.name", index),
+                            ContentType = "some/type",
+                            ContentLength = 1234
+                        };
         }
     }
 }
