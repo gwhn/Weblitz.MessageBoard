@@ -295,7 +295,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
                             .Then(Topic_Exist, false)
                                 .And(SessionIs_, Closed)
 
-                        .WithScenario("delete forum with associated posts but no attachments")
+                        .WithScenario("delete topic with associated posts but no attachments")
                             .Given(TopicWith_PostsAnd_Attachments, 2, 0)
                                 .And(SessionIs_, Opened)
                                 .And(TopicIs_, Saved)
@@ -308,7 +308,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
                                 .And(AssociatedPosts_Exist, false)
                                 .And(SessionIs_, Closed)
 
-                        .WithScenario("delete forum with associated attachments but no posts")
+                        .WithScenario("delete topic with associated attachments but no posts")
                             .Given(TopicWith_PostsAnd_Attachments, 0, 3)
                                 .And(SessionIs_, Opened)
                                 .And(TopicIs_, Saved)
@@ -321,7 +321,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
                                 .And(AssociatedAttachments_Exist, false)
                                 .And(SessionIs_, Closed)
 
-                        .WithScenario("delete forum with associated attachments and posts")
+                        .WithScenario("delete topic with associated posts and attachments")
                             .Given(TopicWith_PostsAnd_Attachments, 3, 2)
                                 .And(SessionIs_, Opened)
                                 .And(TopicIs_, Saved)
