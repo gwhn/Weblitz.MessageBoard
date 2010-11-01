@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
@@ -10,7 +8,7 @@ using StoryQ.Formatting.Parameters;
 namespace Weblitz.MessageBoard.Tests.Integration
 {
     [TestFixture]
-    public class NHibernateConfigurationTests
+    public class DatabaseConfigurationTests
     {
         private Configuration _config;
         private List<string> _scripts;

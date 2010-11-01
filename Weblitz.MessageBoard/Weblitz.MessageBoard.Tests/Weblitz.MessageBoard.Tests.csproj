@@ -80,7 +80,7 @@
     <Compile Include="Integration\Mappings\ForumMappingTests.cs" />
     <Compile Include="Integration\Mappings\PostMappingTests.cs" />
     <Compile Include="Integration\Mappings\TopicMappingTests.cs" />
-    <Compile Include="Integration\NHibernateConfigurationTests.cs" />
+    <Compile Include="Integration\DatabaseConfigurationTests.cs" />
     <Compile Include="Integration\SessionBuilderTests.cs" />
     <Compile Include="Integration\SessionFactoryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
