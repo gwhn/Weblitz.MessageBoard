@@ -4,12 +4,9 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class ForumFixtures
     {
-        public static Forum ForumWithNoTopics
+        public static Forum ForumWithNoTopics(int index)
         {
-            get
-            {
-                return new Forum {Name = "Name of forum with no topics"};
-            }
+            return new Forum {Name = string.Format("Name of forum {0} with no topics", index)};
         }
     }
 }

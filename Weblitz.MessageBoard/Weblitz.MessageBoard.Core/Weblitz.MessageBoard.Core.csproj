@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\IMapper.cs" />
     <Compile Include="Domain\Model\Attachment.cs" />
     <Compile Include="Domain\Model\AuditedEntity.cs" />
     <Compile Include="Domain\Model\AuditInfo.cs" />
@@ -53,7 +54,8 @@
     <Compile Include="Domain\Model\IEntity.cs" />
     <Compile Include="Domain\Model\Post.cs" />
     <Compile Include="Domain\Model\Topic.cs" />
-    <Compile Include="IRepository.cs" />
+    <Compile Include="Domain\Repositories\IForumRepository.cs" />
+    <Compile Include="Domain\Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

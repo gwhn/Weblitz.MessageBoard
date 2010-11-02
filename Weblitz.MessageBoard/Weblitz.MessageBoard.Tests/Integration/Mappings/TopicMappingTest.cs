@@ -231,7 +231,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
         private void ForumWith_Topics(int count)
         {
-            _forum = ForumFixtures.ForumWithNoTopics;
+            _forum = ForumFixtures.ForumWithNoTopics(1);
             for (var i = 0; i < count; i++)
             {
                 _forum.Add(TopicFixtures.TopicWithNoPostsAndNoAttachments(i));

@@ -119,7 +119,7 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 
         private void ForumWith_Topics(int count)
         {
-            _forum = ForumFixtures.ForumWithNoTopics;
+            _forum = ForumFixtures.ForumWithNoTopics(1);
             if (count < 1) return;
             _TopicsAddedToForum(count);
         }

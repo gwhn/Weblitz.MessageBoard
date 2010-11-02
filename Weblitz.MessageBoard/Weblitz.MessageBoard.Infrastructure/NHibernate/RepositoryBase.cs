@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NHibernate;
-using Weblitz.MessageBoard.Core;
 using Weblitz.MessageBoard.Core.Domain.Model;
+using Weblitz.MessageBoard.Core.Domain.Repositories;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {

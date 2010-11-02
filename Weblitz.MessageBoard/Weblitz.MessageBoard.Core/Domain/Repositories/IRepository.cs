@@ -1,7 +1,7 @@
 ﻿using System;
 using Weblitz.MessageBoard.Core.Domain.Model;
 
-namespace Weblitz.MessageBoard.Core
+namespace Weblitz.MessageBoard.Core.Domain.Repositories
 {
     public interface IRepository<T> where T : Entity
     {
