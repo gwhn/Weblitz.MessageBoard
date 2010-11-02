@@ -70,19 +70,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ControllerTestBase.cs" />
+    <Compile Include="Controllers\ForumControllerTest.cs" />
+    <Compile Include="Controllers\PostControllerTest.cs" />
+    <Compile Include="Controllers\TopicControllerTest.cs" />
     <Compile Include="Fixtures\AttachmentFixtures.cs" />
     <Compile Include="Fixtures\ForumFixtures.cs" />
     <Compile Include="Fixtures\PostFixtures.cs" />
     <Compile Include="Fixtures\TopicFixtures.cs" />
     <Compile Include="Integration\IntegrationTestBase.cs" />
-    <Compile Include="Integration\Mappings\AttachmentMappingTests.cs" />
+    <Compile Include="Integration\Mappings\AttachmentMappingTest.cs" />
     <Compile Include="Integration\Mappings\DataTestBase.cs" />
-    <Compile Include="Integration\Mappings\ForumMappingTests.cs" />
-    <Compile Include="Integration\Mappings\PostMappingTests.cs" />
-    <Compile Include="Integration\Mappings\TopicMappingTests.cs" />
-    <Compile Include="Integration\DatabaseConfigurationTests.cs" />
+    <Compile Include="Integration\Mappings\ForumMappingTest.cs" />
+    <Compile Include="Integration\Mappings\PostMappingTest.cs" />
+    <Compile Include="Integration\Mappings\TopicMappingTest.cs" />
+    <Compile Include="Integration\DatabaseConfigurationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

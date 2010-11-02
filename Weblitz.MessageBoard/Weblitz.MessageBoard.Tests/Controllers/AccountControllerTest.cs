@@ -1,11 +1,9 @@
-﻿using System;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using NUnit.Framework;
-using Weblitz.MessageBoard.Web;
 using Weblitz.MessageBoard.Web.Controllers;
 using Weblitz.MessageBoard.Web.Models;
 

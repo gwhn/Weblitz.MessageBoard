@@ -10,7 +10,7 @@ using Weblitz.MessageBoard.Tests.Fixtures;
 namespace Weblitz.MessageBoard.Tests.Integration.Mappings
 {
     [TestFixture]
-    public class ForumMappingTests : DataTestBase
+    public class ForumMappingTest : DataTestBase
     {
         private Forum _forum;
         private Guid _id;

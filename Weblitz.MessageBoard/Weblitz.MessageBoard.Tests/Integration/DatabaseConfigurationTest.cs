@@ -8,7 +8,7 @@ using StoryQ.Formatting.Parameters;
 namespace Weblitz.MessageBoard.Tests.Integration
 {
     [TestFixture]
-    public class DatabaseConfigurationTests
+    public class DatabaseConfigurationTest
     {
         private Configuration _config;
         private List<string> _scripts;

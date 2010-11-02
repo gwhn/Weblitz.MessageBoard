@@ -6,19 +6,15 @@ using System.Web.Mvc;
 
 namespace Weblitz.MessageBoard.Web.Controllers
 {
-    [HandleError]
-    public class HomeController : Controller
+    public class ForumController : Controller
     {
+        //
+        // GET: /Forum/
+
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
             return View();
         }
 
-        public ActionResult About()
-        {
-            return View();
-        }
     }
 }

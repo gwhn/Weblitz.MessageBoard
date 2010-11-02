@@ -33,6 +33,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
             }
 
             session.Close();
+            session.Dispose();
         }
 
         public void Dispose()
