@@ -13,7 +13,6 @@
     <property name="connection.connection_string">
       Data Source=.\sqlexpress;Initial Catalog=MessageBoard;Integrated Security=True;Pooling=True
     </property>
-    <property name="show_sql">true</property>
     <property name="adonet.batch_size">10</property>
     <property name="use_outer_join">true</property>
     <property name="command_timeout">60</property>
@@ -26,6 +25,5 @@
     <property name="current_session_context_class">
       NHibernate.Context.ManagedWebSessionContext, NHibernate
     </property>
-    <property name="generate_statistics">true</property>
   </session-factory>
 </hibernate-configuration>
