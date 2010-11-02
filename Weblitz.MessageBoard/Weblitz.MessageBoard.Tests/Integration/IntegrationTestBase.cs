@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using NHibernate;
 using NUnit.Framework;
-using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
-using Weblitz.MessageBoard.Tests.Fixtures;
+using Weblitz.MessageBoard.Infrastructure.NHibernate;
 
 namespace Weblitz.MessageBoard.Tests.Integration
 {
@@ -24,12 +19,16 @@ namespace Weblitz.MessageBoard.Tests.Integration
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
-            SessionBuilder.GetDefault = () => null;
         }
 
-        protected static ISession BuildSession()
+        [TestFixtureTearDown]
+        public virtual void FixtureTearDown()
         {
-            return new SessionBuilder().Construct();
+        }
+
+        protected static ISession OpenSession()
+        {
+            return SessionManager.Instance.OpenSession();
         }
 
         protected void SessionIs_(string action)
@@ -37,7 +36,7 @@ namespace Weblitz.MessageBoard.Tests.Integration
             switch (action)
             {
                 case Opened:
-                    Session = BuildSession();
+                    Session = OpenSession();
                     Assert.That(Session.IsOpen);
                     break;
 
@@ -46,20 +45,6 @@ namespace Weblitz.MessageBoard.Tests.Integration
                     Assert.That(!Session.IsOpen);
                     Session.Dispose();
                     break;
-            }
-        }
-
-        protected static void AssertObjectsMatch(object obj1, object obj2)
-        {
-            Assert.That(obj1, Is.EqualTo(obj2));
-            Assert.That(obj1, Is.Not.SameAs(obj2));
-
-            var infos = obj1.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var info in infos)
-            {
-                var value1 = info.GetValue(obj1, null);
-                var value2 = info.GetValue(obj2, null);
-                Assert.AreEqual(value1, value2, string.Format("Property {0} doesn't match", info.Name));
             }
         }
     }

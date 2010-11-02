@@ -47,18 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NHibernate\Builders\ISessionBuilder.cs" />
-    <Compile Include="NHibernate\Builders\ISessionFactoryBuilder.cs" />
-    <Compile Include="NHibernate\Builders\SessionBuilder.cs" />
-    <Compile Include="NHibernate\Builders\SessionFactoryBuilder.cs" />
     <Compile Include="NHibernate\RepositoryBase.cs" />
-    <Compile Include="NHibernate\Scopes\HttpContextInstanceScoper.cs" />
-    <Compile Include="NHibernate\Scopes\HybridInstanceScoper.cs" />
-    <Compile Include="NHibernate\Scopes\IInstanceScoper.cs" />
-    <Compile Include="NHibernate\Scopes\InstanceScoperBase.cs" />
-    <Compile Include="NHibernate\Scopes\SingletonInstanceScoper.cs" />
-    <Compile Include="NHibernate\Scopes\ThreadStaticInstanceScoper.cs" />
-    <Compile Include="NHibernate\UnitOfWork.cs" />
+    <Compile Include="NHibernate\SessionContextModule.cs" />
+    <Compile Include="NHibernate\SessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

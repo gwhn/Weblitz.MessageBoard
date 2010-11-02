@@ -3,7 +3,6 @@ using System.Linq;
 using NHibernate;
 using Weblitz.MessageBoard.Core;
 using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Infrastructure.NHibernate.Builders;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {
@@ -11,7 +10,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
     {
         protected ISession Session
         {
-            get { return new SessionBuilder().Construct(); }
+            get { return SessionManager.Instance.SessionFactory.GetCurrentSession(); }
         }
 
         public virtual T GetById(Guid id)
