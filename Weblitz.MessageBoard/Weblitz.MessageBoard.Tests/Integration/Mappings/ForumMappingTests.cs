@@ -12,10 +12,10 @@ namespace Weblitz.MessageBoard.Tests.Integration.Mappings
     [TestFixture]
     public class ForumMappingTests : DataTestBase
     {
-        protected Forum _forum;
-        protected Guid _id;
-        protected readonly IList<Topic> _addedTopics = new List<Topic>();
-        protected readonly IList<Topic> _removedTopics = new List<Topic>();
+        private Forum _forum;
+        private Guid _id;
+        private readonly IList<Topic> _addedTopics = new List<Topic>();
+        private readonly IList<Topic> _removedTopics = new List<Topic>();
 
         [Test]
         public void ForumMapping()

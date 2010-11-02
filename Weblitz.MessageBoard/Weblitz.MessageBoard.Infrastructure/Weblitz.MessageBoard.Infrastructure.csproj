@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NHibernate\AuditInterceptor.cs" />
     <Compile Include="NHibernate\RepositoryBase.cs" />
     <Compile Include="NHibernate\SessionContextModule.cs" />
     <Compile Include="NHibernate\SessionManager.cs" />

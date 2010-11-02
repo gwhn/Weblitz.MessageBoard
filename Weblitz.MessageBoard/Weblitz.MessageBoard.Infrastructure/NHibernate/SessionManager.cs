@@ -16,6 +16,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
             _factory = new Configuration()
                 .Configure()
                 .AddAssembly(Assembly.GetExecutingAssembly())
+                .SetInterceptor(new AuditInterceptor())
                 .BuildSessionFactory();
         }
 
