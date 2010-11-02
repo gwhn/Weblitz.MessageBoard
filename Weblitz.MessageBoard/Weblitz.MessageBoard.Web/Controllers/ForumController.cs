@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Web.Models;
-using Weblitz.MessageBoard.Web.Models.Mappings;
+using Weblitz.MessageBoard.Web.Models.Mappers;
 
 namespace Weblitz.MessageBoard.Web.Controllers
 {

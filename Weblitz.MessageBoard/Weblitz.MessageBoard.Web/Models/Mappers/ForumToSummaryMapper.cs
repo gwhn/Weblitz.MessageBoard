@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Weblitz.MessageBoard.Core.Domain;
 using Weblitz.MessageBoard.Core.Domain.Model;
 
-namespace Weblitz.MessageBoard.Web.Models.Mappings
+namespace Weblitz.MessageBoard.Web.Models.Mappers
 {
     public class ForumToSummaryMapper : IMapper<Forum, ForumSummary>
     {
@@ -15,15 +16,20 @@ namespace Weblitz.MessageBoard.Web.Models.Mappings
                               };
 
             var topics = source.Topics;
-            
+
             summary.TopicCount = topics.Length;
-            
+
             foreach (var posts in topics.Select(topic => topic.Posts))
             {
-                summary.PostCount += posts.Length;
+                summary.PostCount += Count(posts);
             }
 
             return summary;
+        }
+
+        private static int Count(ICollection<Post> posts)
+        {
+            return posts.Count + posts.Where(post => post.Children.Length > 0).Sum(post => Count(post.Children));
         }
     }
 }
