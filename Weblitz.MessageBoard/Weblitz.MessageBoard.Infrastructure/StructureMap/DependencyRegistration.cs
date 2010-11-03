@@ -11,6 +11,7 @@ namespace Weblitz.MessageBoard.Infrastructure.StructureMap
 
             ObjectFactory.Initialize(x => x.Scan(s =>
                                                      {
+                                                         s.WithDefaultConventions();
                                                          s.TheCallingAssembly();
                                                          s.LookForRegistries();
                                                          s.AddAllTypesOf<IRequiresConfigurationOnStartup>();
