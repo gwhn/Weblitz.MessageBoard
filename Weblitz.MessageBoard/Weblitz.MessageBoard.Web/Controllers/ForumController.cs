@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Weblitz.MessageBoard.Core.Domain.Repositories;
@@ -28,6 +29,25 @@ namespace Weblitz.MessageBoard.Web.Controllers
             summaries.AddRange(forums.Select(forum => new ForumToSummaryMapper().Map(forum)));
 
             return View(summaries.ToArray());
+        }
+
+        //
+        // GET: /Forum/Details/59450...95340
+
+        public ActionResult Details(Guid id)
+        {
+            var forum = _repository.GetById(id);
+
+            if (forum != null)
+            {
+                var details = new ForumToDetailMapper().Map(forum);
+
+                return View(details);                
+            }
+
+            TempData["Message"] = string.Format("No forum matches ID {0}", id);
+            
+            return RedirectToAction("Index");
         }
 
     }

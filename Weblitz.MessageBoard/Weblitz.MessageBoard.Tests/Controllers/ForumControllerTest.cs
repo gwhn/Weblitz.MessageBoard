@@ -20,7 +20,12 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     {
         private IList<Forum> _forums;
         private IForumRepository _repository;
-        private ViewResult _result;
+        private ActionResult _result;
+        private Forum _forum;
+        private Guid _id;
+        private Guid _goodId;
+        private Guid _badId;
+        private ForumController _controller;
 
         [Test]
         public void ForumIndex()
@@ -35,7 +40,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
-                                .And(ShouldRenderIndexView)
+                                .And(ShouldRenderDefaultView)
                                 .And(ViewModel_ContainSummaries, true)
 
                         .WithScenario("forums but no existing topics")
@@ -43,7 +48,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
-                                .And(ShouldRenderIndexView)
+                                .And(ShouldRenderDefaultView)
                                 .And(ViewModel_ContainSummaries, true)
 
                         .WithScenario("forums each with existing topics")
@@ -52,7 +57,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
-                                .And(ShouldRenderIndexView)
+                                .And(ShouldRenderDefaultView)
                                 .And(ViewModel_ContainSummaries, true)
 
                         .WithScenario("forums each with existing topics but no existing posts")
@@ -61,7 +66,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
-                                .And(ShouldRenderIndexView)
+                                .And(ShouldRenderDefaultView)
                                 .And(ViewModel_ContainSummaries, true)
 
                         .WithScenario("forums each with existing topics each with existing posts")
@@ -71,9 +76,54 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
-                                .And(ShouldRenderIndexView)
+                                .And(ShouldRenderDefaultView)
                                 .And(ViewModel_ContainSummaries, true)
                 .Execute();
+        }
+
+        [Test]
+        public void ForumDetails()
+        {
+            new Story("forum details")
+                .InOrderTo("browse topics in a forum")
+                .AsA("user")
+                .IWant("to view forum details")
+
+                        .WithScenario("forum found")
+                            .Given(IdOfForumThat_Exist, true)
+                                .And(ForumRepositoryIsInitialized)
+                            .When(DetailsActionIsRequestedWith_Id, true)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_ContainDetails, true)
+
+                        .WithScenario("forum not found")
+                            .Given(IdOfForumThat_Exist, false)
+                                .And(ForumRepositoryIsInitialized)
+                            .When(DetailsActionIsRequestedWith_Id, false)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(ShouldWriteErrorMessage)
+                                .And(ShouldRedirectTo_, "Index")
+                .Execute();
+        }
+
+        private void ShouldRedirectTo_(string action)
+        {
+            var result = _result as RedirectToRouteResult;
+            Assert.IsNotNull(result);
+
+            Assert.That(result.RouteValues["action"].ToString() == action);
+        }
+
+        private void ShouldWriteErrorMessage()
+        {
+            Assert.That(_controller.TempData.ContainsKey("Message"));
+        }
+
+        private void ShouldReturnRedirectToRouteResult()
+        {
+            Assert.IsNotNull(_result);
+            Assert.IsInstanceOf<RedirectToRouteResult>(_result);
         }
 
         private void ListWith_Forums(int count)
@@ -89,40 +139,40 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private void ForumRepositoryIsInitialized()
         {
             _repository = Stub<IForumRepository>();
-
-            _repository.Stub(r => r.GetAll()).Return(_forums.ToArray());
         }
 
         private void IndexActionRequested()
         {
-            _result = new ForumController(_repository).Index();
+            _repository.Stub(r => r.GetAll()).Return(_forums.ToArray());
+
+            _controller = new ForumController(_repository);
+
+            _result = _controller.Index();
         }
 
         private void ShouldReturnViewResult()
         {
             Assert.IsNotNull(_result);
-        }
-
-        private void ShouldRenderIndexView()
-        {
-            Assert.That(_result.AssertViewRendered().ViewName == string.Empty);
+            Assert.IsInstanceOf<ViewResult>(_result);
         }
 
         private void ViewModel_ContainSummaries([BooleanParameterFormat("should", "should not")] bool contains)
         {
-            Assert.IsNotNull(_result);
-            Assert.IsNotNull(_result.ViewData);
-            Assert.IsNotNull(_result.ViewData.Model);
+            var result = _result as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.ViewData);
+            Assert.IsNotNull(result.ViewData.Model);
 
             if (contains)
             {
-                Assert.IsInstanceOf<ForumSummary[]>(_result.ViewData.Model);
-                var model = _result.ViewData.Model as ForumSummary[];
+                Assert.IsInstanceOf<ForumSummary[]>(result.ViewData.Model);
+                var model = result.ViewData.Model as ForumSummary[];
                 Assert.That(model.Length == _forums.Count);
             }
             else
             {
-                Assert.IsNotInstanceOf<ForumSummary[]>(_result.ViewData.Model);
+                Assert.IsNotInstanceOf<ForumSummary[]>(result.ViewData.Model);
             }
         }
 
@@ -148,7 +198,73 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             }
         }
 
-        private void Forum_WasCreatedOn_(int index, DateTime createdOn)
+        private void IdOfForumThat_Exist([BooleanParameterFormat("does", "does not")] bool exists)
+        {
+            if (exists)
+            {
+                _goodId = Guid.NewGuid();
+            }
+            else
+            {
+                _badId = Guid.Empty;
+            }
+        }
+
+        private void DetailsActionIsRequestedWith_Id([BooleanParameterFormat("matching", "unmatched")] bool matches)
+        {
+            _controller = new ForumController(_repository);
+
+            if (matches)
+            {
+                var match = ForumFixtures.ForumWithNoTopics(_goodId);
+
+                _repository.Stub(r => r.GetById(_goodId)).IgnoreArguments().Return(match);
+
+                _result = _controller.Details(_goodId);
+            }
+            else
+            {
+                var unmatched = default(Forum);
+
+                _repository.Stub(r => r.GetById(_badId)).IgnoreArguments().Return(unmatched);
+
+                _result = _controller.Details(_badId);
+            }
+        }
+
+        private void ShouldRenderDefaultView()
+        {
+            var result = _result as ViewResult;
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.AssertViewRendered().ViewName == string.Empty);
+        }
+
+        private void ViewModel_ContainDetails([BooleanParameterFormat("should", "should not")] bool contains)
+        {
+            var result = _result as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.ViewData);
+            Assert.IsNotNull(result.ViewData.Model);
+
+            if (contains)
+            {
+                Assert.IsInstanceOf<ForumDetail>(result.ViewData.Model);
+            }
+            else
+            {
+                Assert.IsNotInstanceOf<ForumDetail>(result.ViewData.Model);
+            }
+        }
+
+        private void ShouldReturnActionResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShouldRedirectToNotFoundAction()
         {
             throw new NotImplementedException();
         }

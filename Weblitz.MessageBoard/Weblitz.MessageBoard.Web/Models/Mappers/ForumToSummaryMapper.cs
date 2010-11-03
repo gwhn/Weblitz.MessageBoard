@@ -9,6 +9,8 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
     {
         public ForumSummary Map(Forum source)
         {
+            if (source == null) return null;
+
             var summary = new ForumSummary
                               {
                                   Id = source.Id,
@@ -21,15 +23,10 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             foreach (var posts in topics.Select(topic => topic.Posts))
             {
-                summary.PostCount += Count(posts);
+                summary.PostCount += Post.Count(posts);
             }
 
             return summary;
-        }
-
-        private static int Count(ICollection<Post> posts)
-        {
-            return posts.Count + posts.Where(post => post.Children.Length > 0).Sum(post => Count(post.Children));
         }
     }
 }

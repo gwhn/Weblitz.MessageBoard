@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Iesi.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Model
@@ -9,7 +10,7 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual Post Parent { get; set; }
 
-        private readonly ISet<Post> _children = new HashedSet<Post>();
+        private readonly Iesi.Collections.Generic.ISet<Post> _children = new HashedSet<Post>();
 
         public virtual Post[] Children
         {
@@ -56,6 +57,11 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
             {
                 return (base.GetHashCode()*397) ^ Flagged.GetHashCode();
             }
+        }
+
+        public static int Count(ICollection<Post> posts)
+        {
+            return posts.Count + posts.Where(post => post.Children.Length > 0).Sum(post => Count(post.Children));
         }
     }
 }
