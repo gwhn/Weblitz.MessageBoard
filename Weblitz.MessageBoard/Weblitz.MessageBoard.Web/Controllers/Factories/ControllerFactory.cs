@@ -12,7 +12,7 @@ namespace Weblitz.MessageBoard.Web.Controllers.Factories
         {
             if (controllerType == null) return null;
 
-            return (Controller) CreateDependency(controllerType);
+            return CreateDependency(controllerType) as IController;
         }
     }
 }

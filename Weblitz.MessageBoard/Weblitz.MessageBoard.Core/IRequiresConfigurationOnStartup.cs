@@ -1,6 +1,6 @@
 namespace Weblitz.MessageBoard.Core
 {
-    public interface IRequireConfigurationOnStartup
+    public interface IRequiresConfigurationOnStartup
     {
         void Configure();
     }

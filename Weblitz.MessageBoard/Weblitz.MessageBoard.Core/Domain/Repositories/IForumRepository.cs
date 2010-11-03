@@ -5,6 +5,5 @@ namespace Weblitz.MessageBoard.Core.Domain.Repositories
     public interface IForumRepository : IRepository<Forum>
     {
 
-
     }
 }

@@ -4,7 +4,7 @@ using Weblitz.MessageBoard.Web.Controllers.Factories;
 
 namespace Weblitz.MessageBoard.Infrastructure
 {
-    public class DefaultFactoryInitializer : IRequireConfigurationOnStartup
+    public class DefaultFactoryInitializer : IRequiresConfigurationOnStartup
     {
         public void Configure()
         {

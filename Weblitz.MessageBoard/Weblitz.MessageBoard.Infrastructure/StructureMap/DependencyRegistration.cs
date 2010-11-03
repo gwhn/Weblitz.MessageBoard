@@ -13,12 +13,10 @@ namespace Weblitz.MessageBoard.Infrastructure.StructureMap
                                                      {
                                                          s.TheCallingAssembly();
                                                          s.LookForRegistries();
-                                                         s.AddAllTypesOf<IRequireConfigurationOnStartup>();
+                                                         s.AddAllTypesOf<IRequiresConfigurationOnStartup>();
                                                      }));
 
-//            ObjectFactory.Initialize(x => x.AddRegistry<ServiceRegistry>());
-
-            foreach (var instance in ObjectFactory.GetAllInstances<IRequireConfigurationOnStartup>())
+            foreach (var instance in ObjectFactory.GetAllInstances<IRequiresConfigurationOnStartup>())
             {
                 instance.Configure();
             }
