@@ -76,6 +76,9 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
                 return RedirectToAction("Details", new {forum.Id});
             }
+
+            TempData["Message"] = "Failed to create forum";
+
             return View(new ForumInput());
         }
     }
