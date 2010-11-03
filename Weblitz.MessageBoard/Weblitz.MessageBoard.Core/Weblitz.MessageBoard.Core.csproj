@@ -56,6 +56,7 @@
     <Compile Include="Domain\Model\Topic.cs" />
     <Compile Include="Domain\Repositories\IForumRepository.cs" />
     <Compile Include="Domain\Repositories\IRepository.cs" />
+    <Compile Include="IRequireConfigurationOnStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

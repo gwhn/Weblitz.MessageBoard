@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
+using Weblitz.MessageBoard.Web.Controllers.Factories;
 
 namespace Weblitz.MessageBoard.Web
 {
@@ -19,7 +16,7 @@ namespace Weblitz.MessageBoard.Web
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Forum", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }
@@ -29,6 +26,8 @@ namespace Weblitz.MessageBoard.Web
             AreaRegistration.RegisterAllAreas();
 
             RegisterRoutes(RouteTable.Routes);
+
+            ControllerBuilder.Current.SetControllerFactory(new ControllerFactory());
         }
     }
 }
