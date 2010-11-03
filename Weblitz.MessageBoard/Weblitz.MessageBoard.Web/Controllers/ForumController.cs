@@ -81,5 +81,18 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
             return View(new ForumInput());
         }
+
+        //
+        // GET: /Forum/Edit/5
+
+        public ViewResult Edit(Guid id)
+        {
+            var forum = _repository.GetById(id);
+
+            var input = new ForumToInputMapper().Map(forum);
+
+            return View(input);
+        }
+
     }
 }

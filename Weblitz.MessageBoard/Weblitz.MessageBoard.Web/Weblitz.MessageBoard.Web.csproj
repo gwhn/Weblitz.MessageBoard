@@ -81,6 +81,7 @@
     <Compile Include="Models\ForumInput.cs" />
     <Compile Include="Models\ForumSummary.cs" />
     <Compile Include="Models\Mappers\ForumToDetailMapper.cs" />
+    <Compile Include="Models\Mappers\ForumToInputMapper.cs" />
     <Compile Include="Models\Mappers\ForumToSummaryMapper.cs" />
     <Compile Include="Models\Mappers\InputToForumMapper.cs" />
     <Compile Include="Models\Mappers\TopicToSummaryMapper.cs" />
@@ -95,7 +96,8 @@
     </Content>
     <Content Include="Views\Forum\Create.aspx" />
     <Content Include="Views\Forum\Details.aspx" />
-    <Content Include="Views\Forum\Forum.ascx" />
+    <Content Include="Views\Forum\Edit.aspx" />
+    <Content Include="Views\Forum\Form.ascx" />
     <Content Include="Views\Forum\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

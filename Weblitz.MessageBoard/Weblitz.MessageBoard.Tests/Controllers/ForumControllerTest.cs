@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
@@ -23,8 +24,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private ActionResult _result;
         private Forum _forum;
         private Guid _id;
-        private Guid _goodId;
-        private Guid _badId;
         private ForumController _controller;
         private ForumInput _input;
 
@@ -40,6 +39,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
+                                .And(ForumControllerCallsGetAllOnRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -49,6 +49,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
+                                .And(ForumControllerCallsGetAllOnRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -59,6 +60,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
                                 .And(EachForumContains_Topics, 2)
+                                .And(ForumControllerCallsGetAllOnRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -69,6 +71,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
                                 .And(EachForumContains_Topics, 2)
+                                .And(ForumControllerCallsGetAllOnRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -80,6 +83,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ListWith_Forums, 1)
                                 .And(EachForumContains_Topics, 2)
                                 .And(EachTopicContains_Posts, 3)
+                                .And(ForumControllerCallsGetAllOnRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -99,6 +103,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
+                                .And(ForumControllerCallsGetByIdOnRepository)
                             .When(DetailsActionIsRequestedWith_Id, true)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -121,7 +126,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             new Story("forum get create")
                 .InOrderTo("start a new discussion")
                 .AsA("administrator")
-                .IWant("to input name of new forum")
+                .IWant("to input new forum data")
 
                         .WithScenario("new forum")
                             .Given(ForumRepositoryIsInitialized)
@@ -145,6 +150,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_ForumInput, true)
+                                .And(ForumControllerCallsSaveOnRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "created successfully")
@@ -162,6 +168,63 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void ForumGetEdit()
+        {
+            new Story("forum get edit")
+                .InOrderTo("modify the subject of discussion")
+                .AsA("administrator")
+                .IWant("to input modified forum data")
+
+                        .WithScenario("edit forum")
+                            .Given(ForumRepositoryIsInitialized)
+                                .And(ForumControllerIsInitialized)
+                                .And(IdOfForumThat_Exist, true)
+                                .And(ForumControllerCallsGetByIdOnRepository)
+                                .And(ForumControllerCallsSaveOnRepository)
+                            .When(EditActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModelShouldContainPopulatedInput)
+                .Execute();
+        }
+
+        private void ForumControllerCallsSaveOnRepository()
+        {
+            _repository.Stub(r => r.Save(_forum));
+
+            _forum.GetType()
+                .GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
+                .SetValue(_forum, Guid.NewGuid(), null);
+        }
+
+        private void ForumControllerCallsGetByIdOnRepository()
+        {
+            _repository.Stub(r => r.GetById(_id)).Return(_forum);
+        }
+
+        private void ForumControllerCallsGetAllOnRepository()
+        {
+            _repository.Stub(r => r.GetAll()).Return(_forums.ToArray());
+        }
+
+        private void EditActionIsRequestedWithGetVerb()
+        {
+            _result = _controller.Edit(_id);
+        }
+
+        private void ViewModelShouldContainPopulatedInput()
+        {
+            var result = _result as ViewResult;
+            Assert.IsNotNull(result);
+
+            var model = result.ViewData.Model as ForumInput;
+            Assert.IsNotNull(model);
+
+            Assert.That(model.Id != Guid.Empty);
+            Assert.That(model.Name != null);
+        }
+
         private void ForumControllerIsInitialized()
         {
             _controller = new ForumController(_repository);
@@ -171,7 +234,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         {
             if (valid)
             {
-                _input = new ForumInput {Name = ForumFixtures.ForumWithNoTopics(1).Name};                
+                _forum = ForumFixtures.ForumWithNoTopics(1);
+
+                _input = new ForumInput {Name = _forum.Name};                
             }
             else
             {
@@ -251,8 +316,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void IndexActionRequested()
         {
-            _repository.Stub(r => r.GetAll()).Return(_forums.ToArray());
-
             _result = _controller.Index();
         }
 
@@ -308,11 +371,15 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         {
             if (exists)
             {
-                _goodId = Guid.NewGuid();
+                _forum = ForumFixtures.ForumWithNoTopics(_id);
+
+                _id = Guid.NewGuid();
             }
             else
             {
-                _badId = Guid.Empty;
+                _forum = default(Forum);
+
+                _id = Guid.Empty;
             }
         }
 
@@ -320,19 +387,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         {
             if (matches)
             {
-                var match = ForumFixtures.ForumWithNoTopics(_goodId);
-
-                _repository.Stub(r => r.GetById(_goodId)).IgnoreArguments().Return(match);
-
-                _result = _controller.Details(_goodId);
+                _result = _controller.Details(_id);
             }
             else
             {
-                var unmatched = default(Forum);
-
-                _repository.Stub(r => r.GetById(_badId)).IgnoreArguments().Return(unmatched);
-
-                _result = _controller.Details(_badId);
+                _result = _controller.Details(_id);
             }
         }
 
