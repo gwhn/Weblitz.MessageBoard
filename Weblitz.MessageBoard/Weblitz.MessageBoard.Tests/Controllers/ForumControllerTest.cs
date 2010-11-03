@@ -107,6 +107,42 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void ForumGetCreate()
+        {
+            new Story("forum get create")
+                .InOrderTo("start a new discussion")
+                .AsA("administrator")
+                .IWant("to input name of new forum")
+
+                        .WithScenario("new forum")
+                            .Given(ForumRepositoryIsInitialized)
+                            .When(CreateActionIsRequested)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModelShouldContainEmptyInput)
+                .Execute();
+        }
+
+        private void CreateActionIsRequested()
+        {
+            _controller = new ForumController(_repository);
+
+            _result = _controller.Create();
+        }
+
+        private void ViewModelShouldContainEmptyInput()
+        {
+            var result = _result as ViewResult;
+            Assert.IsNotNull(result);
+
+            var model = result.ViewData.Model as ForumInput;
+            Assert.IsNotNull(model);
+
+            Assert.That(model.Id == Guid.Empty);
+            Assert.That(model.Name == null);
+        }
+
         private void ShouldRedirectTo_(string action)
         {
             var result = _result as RedirectToRouteResult;

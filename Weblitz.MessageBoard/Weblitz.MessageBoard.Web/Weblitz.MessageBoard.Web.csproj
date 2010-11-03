@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ForumDetail.cs" />
+    <Compile Include="Models\ForumInput.cs" />
     <Compile Include="Models\ForumSummary.cs" />
     <Compile Include="Models\Mappers\ForumToDetailMapper.cs" />
     <Compile Include="Models\Mappers\ForumToSummaryMapper.cs" />
@@ -86,11 +87,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\sticky.jpg" />
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Forum\Create.aspx" />
     <Content Include="Views\Forum\Details.aspx" />
+    <Content Include="Views\Forum\Forum.ascx" />
     <Content Include="Views\Forum\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

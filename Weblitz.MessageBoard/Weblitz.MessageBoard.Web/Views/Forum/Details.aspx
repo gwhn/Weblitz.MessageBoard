@@ -25,7 +25,7 @@
                 <%
                     if (topic.Sticky)
                     {%>
-                    <img src="/Content/Images/Sticky.jpg" alt="Sticky Topic" width="32" height="30" />
+                    <img src="/Content/Images/sticky.jpg" alt="Sticky Topic" width="32" height="30" />
                 <%
                     }%>
                 </td>

@@ -32,22 +32,32 @@ namespace Weblitz.MessageBoard.Web.Controllers
         }
 
         //
-        // GET: /Forum/Details/59450...95340
+        // GET: /Forum/Details/5945-...-5340
 
         public ActionResult Details(Guid id)
         {
             var forum = _repository.GetById(id);
 
-            if (forum != null)
+            if (forum == null)
             {
-                var details = new ForumToDetailMapper().Map(forum);
+                TempData["Message"] = string.Format("No forum matches ID {0}", id);
 
-                return View(details);                
+                return RedirectToAction("Index");
             }
 
-            TempData["Message"] = string.Format("No forum matches ID {0}", id);
-            
-            return RedirectToAction("Index");
+            var details = new ForumToDetailMapper().Map(forum);
+
+            return View(details);
+        }
+
+        //
+        // GET: /Forum/Create
+
+        public ViewResult Create()
+        {
+            var input = new ForumInput();
+
+            return View(input);
         }
 
     }
