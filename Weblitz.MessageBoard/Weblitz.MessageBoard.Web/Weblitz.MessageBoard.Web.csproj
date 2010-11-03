@@ -82,6 +82,7 @@
     <Compile Include="Models\ForumSummary.cs" />
     <Compile Include="Models\Mappers\ForumToDetailMapper.cs" />
     <Compile Include="Models\Mappers\ForumToSummaryMapper.cs" />
+    <Compile Include="Models\Mappers\InputToForumMapper.cs" />
     <Compile Include="Models\Mappers\TopicToSummaryMapper.cs" />
     <Compile Include="Models\TopicSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

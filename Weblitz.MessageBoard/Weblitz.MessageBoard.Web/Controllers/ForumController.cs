@@ -60,5 +60,23 @@ namespace Weblitz.MessageBoard.Web.Controllers
             return View(input);
         }
 
+        //
+        // POST: /Forum/Create
+
+        [HttpPost]
+        public ActionResult Create(ForumInput input)
+        {
+            if (ModelState.IsValid)
+            {
+                var forum = new InputToForumMapper().Map(input);
+
+                _repository.Save(forum);
+
+                TempData["Message"] = string.Format("Forum {0} created successfully", forum.Name);
+
+                return RedirectToAction("Details", new {forum.Id});
+            }
+            return View(new ForumInput());
+        }
     }
 }

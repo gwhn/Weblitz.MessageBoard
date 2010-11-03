@@ -26,6 +26,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private Guid _goodId;
         private Guid _badId;
         private ForumController _controller;
+        private ForumInput _input;
 
         [Test]
         public void ForumIndex()
@@ -102,7 +103,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                             .When(DetailsActionIsRequestedWith_Id, false)
                             .Then(ShouldReturnRedirectToRouteResult)
-                                .And(ShouldWriteErrorMessage)
+                                .And(Message_Contain_, true, "No forum matches ID")
                                 .And(ShouldRedirectTo_, "Index")
                 .Execute();
         }
@@ -117,14 +118,51 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
                         .WithScenario("new forum")
                             .Given(ForumRepositoryIsInitialized)
-                            .When(CreateActionIsRequested)
+                            .When(CreateActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
                                 .And(ViewModelShouldContainEmptyInput)
                 .Execute();
         }
 
-        private void CreateActionIsRequested()
+        [Test]
+        public void ForumPostCreate()
+        {
+            new Story("forum post create")
+                .InOrderTo("start a new discussion")
+                .AsA("administrator")
+                .IWant("to save new forum input")
+
+                        .WithScenario("create forum")
+                            .Given(_ForumInput, true)
+                                .And(ForumRepositoryIsInitialized)
+                            .When(CreateActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "created successfully")
+                                .And(ShouldRedirectTo_, "Details")
+                .Execute();
+        }
+
+        private void _ForumInput([BooleanParameterFormat("valid", "invalid")] bool valid)
+        {
+            _input = valid ? 
+                new ForumInput {Name = ForumFixtures.ForumWithNoTopics(1).Name} : 
+                new ForumInput {Name = string.Empty};
+        }
+
+        private void CreateActionIsRequestedWithPostVerb()
+        {
+            _controller = new ForumController(_repository);
+
+            _result = _controller.Create(_input);
+        }
+
+        private void ShouldRedirectToDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreateActionIsRequestedWithGetVerb()
         {
             _controller = new ForumController(_repository);
 
@@ -151,9 +189,21 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Assert.That(result.RouteValues["action"].ToString() == action);
         }
 
-        private void ShouldWriteErrorMessage()
+        private void Message_Contain_([BooleanParameterFormat("should", "should not")] bool contains, string text)
         {
-            Assert.That(_controller.TempData.ContainsKey("Message"));
+            if (contains)
+            {
+                Assert.That(_controller.TempData.ContainsKey("Message"));
+
+                var message = _controller.TempData["Message"] as string;
+                Assert.IsNotNull(message);
+
+                Assert.That(message.Contains(text));
+            }
+            else
+            {
+                Assert.IsFalse(_controller.TempData.ContainsKey("Message"));
+            }
         }
 
         private void ShouldReturnRedirectToRouteResult()
