@@ -254,7 +254,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
                                 .And(ForumControllerCallsGetByIdOnRepository)
-                                .And(ForumControllerCallsDeleteOnRepository)
                             .When(DeleteActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -262,6 +261,34 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
 //                        .WithScenario("delete forum with unknown id")
                 .Execute();
+        }
+
+        [Test]
+        public void ForumPostDelete()
+        {
+            new Story("forum post delete")
+                .InOrderTo("remove the subject of discussion")
+                .AsA("administrator")
+                .IWant("to confirm deletion of selected forum")
+
+                        .WithScenario("delete forum successfully")
+                            .Given(ForumRepositoryIsInitialized)
+                                .And(ForumControllerIsInitialized)
+                                .And(IdOfForumThat_Exist, true)
+                                .And(ForumControllerCallsGetByIdOnRepository)
+                                .And(ForumControllerCallsDeleteOnRepository)
+                            .When(DeleteActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "deleted successfully")
+                                .And(ShouldRedirectTo_, "Index")
+
+//                        .WithScenario("fail to delete forum with unknown id")
+                .Execute();
+        }
+
+        private void DeleteActionIsRequestedWithPostVerb()
+        {
+            _result = _controller.Destroy(_id);
         }
 
         private void ForumControllerCallsDeleteOnRepository()

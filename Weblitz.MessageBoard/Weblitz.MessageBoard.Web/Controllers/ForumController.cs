@@ -134,5 +134,20 @@ namespace Weblitz.MessageBoard.Web.Controllers
             return View(display);
         }
 
+        //
+        // POST: /Forum/Delete
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult Destroy(Guid id)
+        {
+            var forum = _repository.GetById(id);
+
+            _repository.Delete(forum);
+
+            TempData["Message"] = "Forum {0} deleted successfully";
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
