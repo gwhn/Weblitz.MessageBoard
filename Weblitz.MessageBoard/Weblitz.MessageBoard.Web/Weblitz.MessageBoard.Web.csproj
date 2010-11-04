@@ -77,9 +77,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CancelNavigation.cs" />
+    <Compile Include="Models\DeleteItem.cs" />
     <Compile Include="Models\ForumDetail.cs" />
     <Compile Include="Models\ForumInput.cs" />
     <Compile Include="Models\ForumSummary.cs" />
+    <Compile Include="Models\Mappers\ForumToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\ForumToDetailMapper.cs" />
     <Compile Include="Models\Mappers\ForumToInputMapper.cs" />
     <Compile Include="Models\Mappers\ForumToSummaryMapper.cs" />
@@ -95,10 +98,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Forum\Create.aspx" />
+    <Content Include="Views\Forum\Delete.aspx" />
     <Content Include="Views\Forum\Details.aspx" />
     <Content Include="Views\Forum\Edit.aspx" />
     <Content Include="Views\Forum\Form.ascx" />
     <Content Include="Views\Forum\Index.aspx" />
+    <Content Include="Views\Shared\DeleteConfirmation.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

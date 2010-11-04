@@ -60,7 +60,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainSummaries, true)
+                                .And(ViewModelShouldContainSummaries)
 
                         .WithScenario("forums but no existing topics")
                             .Given(ForumRepositoryIsInitialized)
@@ -70,7 +70,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainSummaries, true)
+                                .And(ViewModelShouldContainSummaries)
 
                         .WithScenario("forums each with existing topics")
                             .Given(ForumRepositoryIsInitialized)
@@ -81,7 +81,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainSummaries, true)
+                                .And(ViewModelShouldContainSummaries)
 
                         .WithScenario("forums each with existing topics but no existing posts")
                             .Given(ForumRepositoryIsInitialized)
@@ -92,7 +92,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainSummaries, true)
+                                .And(ViewModelShouldContainSummaries)
 
                         .WithScenario("forums each with existing topics each with existing posts")
                             .Given(ForumRepositoryIsInitialized)
@@ -104,7 +104,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainSummaries, true)
+                                .And(ViewModelShouldContainSummaries)
                 .Execute();
         }
 
@@ -173,7 +173,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(Message_Contain_, true, "created successfully")
                                 .And(ShouldRedirectTo_, "Details")
 
-                        .WithScenario("fail to create forum")
+                        .WithScenario("fail to create forum with invalid input")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, false, false)
@@ -203,6 +203,8 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
                                 .And(ViewModelShouldContainPopulatedInput)
+
+//                        .WithScenario("edit forum with unknown id")
                 .Execute();
         }
 
@@ -224,7 +226,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(Message_Contain_, true, "updated successfully")
                                 .And(ShouldRedirectTo_, "Details")
 
-                        .WithScenario("fail to update forum")
+                        .WithScenario("fail to update forum with invalid input")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, false, true)
@@ -234,7 +236,57 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(Message_Contain_, true, "failed to update forum")
                                 .And(ShouldRenderDefaultView)
                                 .And(ViewModelShouldContainPopulatedInput)
+
+//                        .WithScenario("fail to update forum with unknown id")
                 .Execute();
+        }
+
+        [Test]
+        public void ForumGetDelete()
+        {
+            new Story("forum get delete")
+                .InOrderTo("remove the subject of discussion")
+                .AsA("administrator")
+                .IWant("to delete selected forum")
+
+                        .WithScenario("delete forum")
+                            .Given(ForumRepositoryIsInitialized)
+                                .And(ForumControllerIsInitialized)
+                                .And(IdOfForumThat_Exist, true)
+                                .And(ForumControllerCallsGetByIdOnRepository)
+                                .And(ForumControllerCallsDeleteOnRepository)
+                            .When(DeleteActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModelShouldContainDeleteItem)
+
+//                        .WithScenario("delete forum with unknown id")
+                .Execute();
+        }
+
+        private void ForumControllerCallsDeleteOnRepository()
+        {
+            _repository.Stub(r => r.Delete(_forum));
+        }
+
+        private void DeleteActionIsRequestedWithGetVerb()
+        {
+            _result = _controller.Delete(_id);
+        }
+
+        private void ViewModelShouldContainDeleteItem()
+        {
+            var result = _result as ViewResult;
+            Assert.IsNotNull(result);
+
+            var model = result.ViewData.Model as DeleteItem;
+            Assert.IsNotNull(model);
+
+            Assert.That(model.Id != Guid.Empty);
+            Assert.IsNotNull(model.Description);
+            Assert.IsNotNull(model.CancelNavigation);
+            Assert.IsNotNull(model.CancelNavigation.ActionName);
+            Assert.IsNotNull(model.CancelNavigation.ControllerName);
         }
 
         private void EditActionIsRequestedWithPostVerb()
@@ -288,6 +340,10 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private void ForumControllerIsInitialized()
         {
             _controller = new ForumController(_repository);
+
+            var builder = new TestControllerBuilder();
+            builder.InitializeController(_controller);
+            builder.RouteData.Values["Controller"] = "Forum";
         }
 
         private void _InputFor_Forum([BooleanParameterFormat("valid", "invalid")] bool valid,
@@ -391,7 +447,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Assert.IsInstanceOf<ViewResult>(_result);
         }
 
-        private void ViewModel_ContainSummaries([BooleanParameterFormat("should", "should not")] bool contains)
+        private void ViewModelShouldContainSummaries()
         {
             var result = _result as ViewResult;
 
@@ -399,16 +455,10 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Assert.IsNotNull(result.ViewData);
             Assert.IsNotNull(result.ViewData.Model);
 
-            if (contains)
-            {
-                Assert.IsInstanceOf<ForumSummary[]>(result.ViewData.Model);
-                var model = result.ViewData.Model as ForumSummary[];
-                Assert.That(model.Length == _forums.Count);
-            }
-            else
-            {
-                Assert.IsNotInstanceOf<ForumSummary[]>(result.ViewData.Model);
-            }
+            Assert.IsInstanceOf<ForumSummary[]>(result.ViewData.Model);
+            var model = result.ViewData.Model as ForumSummary[];
+            
+            Assert.That(model.Length == _forums.Count);
         }
 
         private void EachForumContains_Topics(int count)
