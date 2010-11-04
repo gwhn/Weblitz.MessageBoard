@@ -27,6 +27,23 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private ForumController _controller;
         private ForumInput _input;
 
+        [SetUp]
+        public void SetUp()
+        {
+            _forums = null;
+            _repository = null;
+            _result = null;
+            _forum = null;
+            _id = Guid.Empty;
+            _controller = null;
+            _input = null;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+        }
+
         [Test]
         public void ForumIndex()
         {
@@ -149,7 +166,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                         .WithScenario("create forum successfully")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
-                                .And(_ForumInput, true)
+                                .And(_InputFor_Forum, true, false)
                                 .And(ForumControllerCallsSaveOnRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
@@ -159,7 +176,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                         .WithScenario("fail to create forum")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
-                                .And(_ForumInput, false)
+                                .And(_InputFor_Forum, false, false)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(Message_Contain_, true, "failed to create forum")
@@ -189,18 +206,61 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void ForumPostEdit()
+        {
+            new Story("forum post edit")
+                .InOrderTo("modify the subject of discussion")
+                .AsA("administrator")
+                .IWant("to save modified forum input")
+
+                        .WithScenario("update forum successfully")
+                            .Given(ForumRepositoryIsInitialized)
+                                .And(ForumControllerIsInitialized)
+                                .And(_InputFor_Forum, true, true)
+                                .And(ForumControllerCallsSaveOnRepository)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "updated successfully")
+                                .And(ShouldRedirectTo_, "Details")
+
+                        .WithScenario("fail to update forum")
+                            .Given(ForumRepositoryIsInitialized)
+                                .And(ForumControllerIsInitialized)
+                                .And(_InputFor_Forum, false, true)
+                                .And(ForumControllerCallsGetByIdOnRepository)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(Message_Contain_, true, "failed to update forum")
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModelShouldContainPopulatedInput)
+                .Execute();
+        }
+
+        private void EditActionIsRequestedWithPostVerb()
+        {
+            _result = _controller.Edit(_input);
+        }
+
         private void ForumControllerCallsSaveOnRepository()
         {
             _repository.Stub(r => r.Save(_forum));
 
-            _forum.GetType()
+            SetEntityId(_forum, Guid.NewGuid());
+        }
+
+        private void SetEntityId(Entity entity, Guid id)
+        {
+            entity.GetType()
                 .GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
-                .SetValue(_forum, Guid.NewGuid(), null);
+                .SetValue(entity, id, null);
         }
 
         private void ForumControllerCallsGetByIdOnRepository()
         {
             _repository.Stub(r => r.GetById(_id)).Return(_forum);
+
+            SetEntityId(_forum, Guid.NewGuid());
         }
 
         private void ForumControllerCallsGetAllOnRepository()
@@ -230,7 +290,8 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             _controller = new ForumController(_repository);
         }
 
-        private void _ForumInput([BooleanParameterFormat("valid", "invalid")] bool valid)
+        private void _InputFor_Forum([BooleanParameterFormat("valid", "invalid")] bool valid,
+            [BooleanParameterFormat("existing", "new")] bool exists)
         {
             if (valid)
             {
@@ -243,6 +304,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 _input = new ForumInput {Name = string.Empty};
 
                 _controller.ModelState.AddModelError("Name", "Name is required");
+            }
+
+            if (exists)
+            {
+                _input.Id = Guid.NewGuid();
             }
         }
 

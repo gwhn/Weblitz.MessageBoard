@@ -32,7 +32,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         }
 
         //
-        // GET: /Forum/Details/5945-...-5340
+        // GET: /Forum/Details/5945..4340
 
         public ActionResult Details(Guid id)
         {
@@ -83,13 +83,37 @@ namespace Weblitz.MessageBoard.Web.Controllers
         }
 
         //
-        // GET: /Forum/Edit/5
+        // GET: /Forum/Edit/5432..8558
 
         public ViewResult Edit(Guid id)
         {
             var forum = _repository.GetById(id);
 
             var input = new ForumToInputMapper().Map(forum);
+
+            return View(input);
+        }
+
+        //
+        // POST: /Forum/Edit
+
+        [HttpPost]
+        public ActionResult Edit(ForumInput input)
+        {
+            if (ModelState.IsValid)
+            {
+                var forum = new InputToForumMapper().Map(input);
+
+                _repository.Save(forum);
+
+                TempData["Message"] = string.Format("Forum {0} updated successfully", forum.Name);
+            
+                return RedirectToAction("Details", new {forum.Id});
+            }
+
+            TempData["Message"] = "Failed to update forum";
+
+            _repository.GetById(input.Id);
 
             return View(input);
         }
