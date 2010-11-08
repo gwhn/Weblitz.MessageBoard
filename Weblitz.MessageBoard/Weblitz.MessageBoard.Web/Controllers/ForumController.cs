@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Web.Models;
 using Weblitz.MessageBoard.Web.Models.Mappers;
@@ -10,9 +11,9 @@ namespace Weblitz.MessageBoard.Web.Controllers
 {
     public class ForumController : Controller
     {
-        private readonly IForumRepository _repository;
+        private readonly IKeyedRepository<Forum, Guid> _repository;
 
-        public ForumController(IForumRepository repository)
+        public ForumController(IKeyedRepository<Forum, Guid> repository)
         {
             _repository = repository;
         }

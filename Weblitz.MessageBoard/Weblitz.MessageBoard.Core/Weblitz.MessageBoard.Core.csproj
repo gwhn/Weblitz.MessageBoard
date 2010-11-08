@@ -54,7 +54,6 @@
     <Compile Include="Domain\Model\IEntity.cs" />
     <Compile Include="Domain\Model\Post.cs" />
     <Compile Include="Domain\Model\Topic.cs" />
-    <Compile Include="Domain\Repositories\IForumRepository.cs" />
     <Compile Include="Domain\Repositories\IKeyedRepository.cs" />
     <Compile Include="Domain\Repositories\IReadOnlyRepository.cs" />
     <Compile Include="Domain\Repositories\IRepository.cs" />

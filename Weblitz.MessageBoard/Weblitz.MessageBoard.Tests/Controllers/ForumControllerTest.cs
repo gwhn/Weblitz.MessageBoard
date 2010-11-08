@@ -20,7 +20,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     public class ForumControllerTest : ControllerTestBase
     {
         private IList<Forum> _forums;
-        private IForumRepository _repository;
+        private IKeyedRepository<Forum, Guid> _repository;
         private ActionResult _result;
         private Forum _forum;
         private Guid _id;
@@ -460,7 +460,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ForumRepositoryIsInitialized()
         {
-            _repository = Stub<IForumRepository>();
+            _repository = Stub<IKeyedRepository<Forum, Guid>>();
         }
 
         private void IndexActionRequested()

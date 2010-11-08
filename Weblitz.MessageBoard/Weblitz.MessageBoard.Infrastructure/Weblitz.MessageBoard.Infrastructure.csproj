@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="DefaultFactoryInitializer.cs" />
     <Compile Include="NHibernate\AuditInterceptor.cs" />
-    <Compile Include="NHibernate\ForumRepository.cs" />
     <Compile Include="NHibernate\Repository.cs" />
     <Compile Include="NHibernate\SessionContextModule.cs" />
     <Compile Include="NHibernate\SessionManager.cs" />
