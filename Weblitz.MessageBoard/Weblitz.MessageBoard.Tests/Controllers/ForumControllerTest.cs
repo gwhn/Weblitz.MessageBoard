@@ -337,14 +337,14 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ForumControllerCallsGetByIdOnRepository()
         {
-            _repository.Stub(r => r.GetById(_id)).Return(_forum);
+            _repository.Stub(r => r.FindBy(_id)).Return(_forum);
 
             SetEntityId(_forum, Guid.NewGuid());
         }
 
         private void ForumControllerCallsGetAllOnRepository()
         {
-            _repository.Stub(r => r.GetAll()).Return(_forums.ToArray());
+            _repository.Stub(r => r.All()).Return(_forums.AsQueryable());
         }
 
         private void EditActionIsRequestedWithGetVerb()

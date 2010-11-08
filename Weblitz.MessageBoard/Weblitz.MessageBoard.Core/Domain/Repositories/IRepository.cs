@@ -1,16 +1,12 @@
-﻿using System;
-using Weblitz.MessageBoard.Core.Domain.Model;
+﻿using System.Collections.Generic;
 
 namespace Weblitz.MessageBoard.Core.Domain.Repositories
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : class
     {
-        T GetById(Guid id);
-
-        void Save(T entity);
-        
-        T[] GetAll();
-        
-        void Delete(T entity);
+        void Save(TEntity entity);
+        void Save(IEnumerable<TEntity> entities);
+        void Delete(TEntity entity);
+        void Delete(IEnumerable<TEntity> entities);
     }
 }

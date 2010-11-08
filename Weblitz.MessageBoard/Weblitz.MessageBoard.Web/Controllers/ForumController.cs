@@ -22,7 +22,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ViewResult Index()
         {
-            var forums = _repository.GetAll();
+            var forums = _repository.All().ToArray();
 
             var summaries = new List<ForumSummary>(forums.Length);
 
@@ -36,7 +36,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ActionResult Details(Guid id)
         {
-            var forum = _repository.GetById(id);
+            var forum = _repository.FindBy(id);
 
             if (forum == null)
             {
@@ -87,7 +87,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ViewResult Edit(Guid id)
         {
-            var forum = _repository.GetById(id);
+            var forum = _repository.FindBy(id);
 
             var input = new ForumToInputMapper().Map(forum);
 
@@ -113,7 +113,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
             TempData["Message"] = "Failed to update forum";
 
-            _repository.GetById(input.Id);
+            _repository.FindBy(input.Id);
 
             return View(input);
         }
@@ -123,7 +123,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ViewResult Delete(Guid id)
         {
-            var forum = _repository.GetById(id);
+            var forum = _repository.FindBy(id);
 
             var display = new ForumToDeleteItemMapper().Map(forum);
 
@@ -140,7 +140,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult Destroy(Guid id)
         {
-            var forum = _repository.GetById(id);
+            var forum = _repository.FindBy(id);
 
             _repository.Delete(forum);
 
