@@ -9,7 +9,7 @@ using Weblitz.MessageBoard.Core.Domain.Repositories;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {
-    public class Repository<TEntity> : IKeyedRepository<TEntity, Guid> where TEntity : Entity
+    public class Repository<TEntity, TKey> : IKeyedRepository<TEntity, TKey> where TEntity : Entity
     {
         protected ISession Session
         {
@@ -57,7 +57,7 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
             }
         }
 
-        public TEntity FindBy(Guid id)
+        public TEntity FindBy(TKey id)
         {
             return Session.Get<TEntity>(id);
         }
