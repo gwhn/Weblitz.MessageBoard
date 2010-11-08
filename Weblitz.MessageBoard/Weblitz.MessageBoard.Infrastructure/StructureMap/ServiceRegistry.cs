@@ -8,7 +8,7 @@ namespace Weblitz.MessageBoard.Infrastructure.StructureMap
     {
         public ServiceRegistry()
         {
-            For(typeof(IRepository<>)).Use(typeof(RepositoryBase<>));
+            For(typeof(IRepository<>)).Use(typeof(Repository<>));
         }
     }
 }

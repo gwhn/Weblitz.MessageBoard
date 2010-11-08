@@ -6,7 +6,7 @@ using Weblitz.MessageBoard.Core.Domain.Repositories;
 
 namespace Weblitz.MessageBoard.Infrastructure.NHibernate
 {
-    public class RepositoryBase<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : Entity
     {
         protected ISession Session
         {
