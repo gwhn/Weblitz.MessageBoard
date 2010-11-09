@@ -27,9 +27,13 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             ForumId = Guid.Empty;
             Result = null;
             Controller = null;
-
-            _topicRepository = null;
             Topic = null;
+            Forums = null;
+            Forum = null;
+            
+            _topicRepository = null;
+            _forumRepository = null;
+            _input = null;
         }
 
         [TearDown]
@@ -104,9 +108,10 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(TopicRepositoryIsInitialized)
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)
-                                .And(ListWith_Forums, 15)
+                                .And(ListWith_Forums, 5)
                                 .And(ShouldCallAllOnForumRepository)
                                 .And(_InputFor_Topic, true, false)
+                                .And(ShouldCallFindByIdOnForumRepository)
                                 .And(ShouldCallSaveOnTopicRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
@@ -149,6 +154,47 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
 //                        .WithScenario("edit topic with unknown id")
                 .Execute();
+        }
+
+        [Test]
+        public void ForumPostEdit()
+        {
+            new Story("topic post edit")
+                .InOrderTo("modify the topic of discussion")
+                .AsA("administrator")
+                .IWant("to save modified topic input")
+
+                        .WithScenario("update topic successfully")
+                            .Given(TopicRepositoryIsInitialized)
+                                .And(ForumRepositoryIsInitialized)
+                                .And(TopicControllerIsInitialized)
+                                .And(ListWith_Forums, 8)
+                                .And(ShouldCallAllOnForumRepository)
+                                .And(_InputFor_Topic, true, true)
+                                .And(ShouldCallSaveOnTopicRepository)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "updated successfully")
+                                .And(ShouldRedirectTo__, "Topic", "Details")
+
+                        .WithScenario("fail to update forum with invalid input")
+                            .Given(TopicRepositoryIsInitialized)
+                                .And(ForumRepositoryIsInitialized)
+                                .And(TopicControllerIsInitialized)
+                                .And(_InputFor_Topic, false, true)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(Message_Contain_, true, "failed to update topic")
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<TopicInput>, true)
+
+//                        .WithScenario("fail to update topic with unknown id")
+                .Execute();
+        }
+
+        private void EditActionIsRequestedWithPostVerb()
+        {
+            Result = (Controller as TopicController).Edit(_input);
         }
 
         private void ShouldCallFindByIdOnForumRepository()

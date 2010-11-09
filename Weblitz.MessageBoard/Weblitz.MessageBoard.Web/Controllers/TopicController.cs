@@ -86,5 +86,27 @@ namespace Weblitz.MessageBoard.Web.Controllers
             return View(input);
         }
 
+        //
+        // POST: /Topic/Edit/5432..9439
+
+        [HttpPost]
+        public ActionResult Edit(TopicInput input)
+        {
+            if (ModelState.IsValid)
+            {
+                var topic = new InputToTopicMapper(_forumRepository).Map(input);
+
+                _topicRepository.Save(topic);
+
+                TempData["Message"] = string.Format("Topic {0} updated successfully", topic.Title);
+
+                return RedirectToAction("Details", new { topic.Id });
+            }
+
+            TempData["Message"] = "Failed to update topic";
+
+            return View(input);
+        }
+
     }
 }

@@ -114,8 +114,6 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
             TempData["Message"] = "Failed to update forum";
 
-            _repository.FindBy(input.Id);
-
             return View(input);
         }
 

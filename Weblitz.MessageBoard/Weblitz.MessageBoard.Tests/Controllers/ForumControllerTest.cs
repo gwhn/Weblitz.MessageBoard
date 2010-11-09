@@ -25,10 +25,10 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             ForumId = Guid.Empty;
             Result = null;
             Controller = null;
-
             Forums = null;
-            _repository = null;
             Forum = null;
+
+            _repository = null;
             _input = null;
         }
 
@@ -224,7 +224,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, false, true)
-                                .And(ShouldCallFindByIdOnForumRepository)
                             .When(EditActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(Message_Contain_, true, "failed to update forum")
