@@ -90,7 +90,13 @@
     <Compile Include="Integration\Mappings\PostMappingTest.cs" />
     <Compile Include="Integration\Mappings\TopicMappingTest.cs" />
     <Compile Include="Integration\DatabaseConfigurationTest.cs" />
+    <Compile Include="Mappers\ForumToDeleteItemMapperTest.cs" />
+    <Compile Include="Mappers\ForumToDetailMapperTest.cs" />
+    <Compile Include="Mappers\ForumToInputMapperTest.cs" />
     <Compile Include="Mappers\ForumToSummaryMapperTest.cs" />
+    <Compile Include="Mappers\InputToSummaryMapperTest.cs" />
+    <Compile Include="Mappers\MapperTestBase.cs" />
+    <Compile Include="Mappers\TopicToSummaryMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="TestBase.cs" />

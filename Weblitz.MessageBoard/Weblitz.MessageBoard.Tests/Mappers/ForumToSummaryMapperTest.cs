@@ -1,18 +1,13 @@
-using System;
-using System.Linq;
 using NUnit.Framework;
 using StoryQ;
-using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Tests.Fixtures;
 using Weblitz.MessageBoard.Web.Models;
 using Weblitz.MessageBoard.Web.Models.Mappers;
 
 namespace Weblitz.MessageBoard.Tests.Mappers
 {
     [TestFixture]
-    public class ForumToSummaryMapperTest : TestBase
+    public class ForumToSummaryMapperTest : MapperTestBase
     {
-        private Forum _forum;
         private ForumSummary _summary;
 
         [Test]
@@ -25,7 +20,7 @@ namespace Weblitz.MessageBoard.Tests.Mappers
 
                         .WithScenario("forum with no topics")
                             .Given(ForumWith_Topics, 0)
-                            .When(ForumIsMapped)
+                            .When(ForumIsMappedToSummary)
                             .Then(SummaryIdShouldMatchForumId)
                                 .And(SummaryNameShouldMatchForumName)
                                 .And(SummaryTopicCountShouldEqual_, 0)
@@ -33,7 +28,7 @@ namespace Weblitz.MessageBoard.Tests.Mappers
 
                         .WithScenario("forum with topics each with no posts")
                             .Given(ForumWith_Topics, 3)
-                            .When(ForumIsMapped)
+                            .When(ForumIsMappedToSummary)
                             .Then(SummaryIdShouldMatchForumId)
                                 .And(SummaryNameShouldMatchForumName)
                                 .And(SummaryTopicCountShouldEqual_, 3)
@@ -42,7 +37,7 @@ namespace Weblitz.MessageBoard.Tests.Mappers
                         .WithScenario("forum with topics each with posts")
                             .Given(ForumWith_Topics, 2)
                                 .And(EachTopicContains_Posts, 3)
-                            .When(ForumIsMapped)
+                            .When(ForumIsMappedToSummary)
                             .Then(SummaryIdShouldMatchForumId)
                                 .And(SummaryNameShouldMatchForumName)
                                 .And(SummaryTopicCountShouldEqual_, 2)
@@ -52,7 +47,7 @@ namespace Weblitz.MessageBoard.Tests.Mappers
                             .Given(ForumWith_Topics, 1)
                                 .And(EachTopicContains_Posts, 2)
                                 .And(EachPostContains_Children, 3)
-                            .When(ForumIsMapped)
+                            .When(ForumIsMappedToSummary)
                             .Then(SummaryIdShouldMatchForumId)
                                 .And(SummaryNameShouldMatchForumName)
                                 .And(SummaryTopicCountShouldEqual_, 1)
@@ -60,29 +55,19 @@ namespace Weblitz.MessageBoard.Tests.Mappers
                 .Execute();
         }
 
-        private void ForumWith_Topics(int count)
+        private void ForumIsMappedToSummary()
         {
-            _forum = ForumFixtures.ForumWithNoTopics(1);
-
-            for (var i = 0; i < count; i++)
-            {
-                _forum.Add(TopicFixtures.TopicWithNoPostsAndNoAttachments(i));
-            }
-        }
-
-        private void ForumIsMapped()
-        {
-            _summary = new ForumToSummaryMapper().Map(_forum);
+            _summary = new ForumToSummaryMapper().Map(Forum);
         }
 
         private void SummaryIdShouldMatchForumId()
         {
-            Assert.That(_summary.Id == _forum.Id);
+            Assert.That(_summary.Id == Forum.Id);
         }
 
         private void SummaryNameShouldMatchForumName()
         {
-            Assert.That(_summary.Name == _forum.Name);
+            Assert.That(_summary.Name == Forum.Name);
         }
 
         private void SummaryTopicCountShouldEqual_(int count)
@@ -93,28 +78,6 @@ namespace Weblitz.MessageBoard.Tests.Mappers
         private void SummaryPostCountShouldEqual_(int count)
         {
             Assert.That(_summary.PostCount == count);
-        }
-
-        private void EachTopicContains_Posts(int count)
-        {
-            foreach (var topic in _forum.Topics)
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    topic.Add(PostFixtures.RootPostWithNoChildren(i));
-                }                
-            }
-        }
-
-        private void EachPostContains_Children(int count)
-        {
-            foreach (var post in _forum.Topics.SelectMany(topic => topic.Posts))
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    post.Add(PostFixtures.BranchPostWithNoChildren(i));
-                }
-            }
         }
     }
 }
