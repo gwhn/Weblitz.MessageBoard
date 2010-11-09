@@ -8,6 +8,7 @@ using NHibernate.Context;
 using NUnit.Framework;
 using StoryQ.Formatting.Parameters;
 using Weblitz.MessageBoard.Core.Domain.Model;
+using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Infrastructure.NHibernate;
 using Weblitz.MessageBoard.Tests.Fixtures;
 
@@ -19,7 +20,10 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         protected ActionResult Result;
 
         protected Controller Controller;
-        
+
+        protected IKeyedRepository<Forum, Guid> ForumRepository;
+        protected IKeyedRepository<Topic, Guid> TopicRepository;
+
         protected Guid ForumId;
         protected Forum Forum;
 
@@ -54,6 +58,16 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             
             session.Close();
             session.Dispose();
+        }
+
+        protected void ForumRepositoryIsInitialized()
+        {
+            ForumRepository = Stub<IKeyedRepository<Forum, Guid>>();
+        }
+
+        protected void TopicRepositoryIsInitialized()
+        {
+            TopicRepository = Stub<IKeyedRepository<Topic, Guid>>();
         }
 
         protected void ListWith_Forums(int count)

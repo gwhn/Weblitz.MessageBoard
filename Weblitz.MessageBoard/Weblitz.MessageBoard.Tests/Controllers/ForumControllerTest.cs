@@ -5,8 +5,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StoryQ;
 using StoryQ.Formatting.Parameters;
-using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Tests.Fixtures;
 using Weblitz.MessageBoard.Web.Controllers;
 using Weblitz.MessageBoard.Web.Models;
@@ -16,7 +14,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     [TestFixture]
     public class ForumControllerTest : ControllerTestBase
     {
-        private IKeyedRepository<Forum, Guid> _repository;
         private ForumInput _input;
         
         [SetUp]
@@ -27,8 +24,8 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Controller = null;
             Forums = null;
             Forum = null;
-
-            _repository = null;
+            ForumRepository = null;
+            
             _input = null;
         }
 
@@ -286,7 +283,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallDeleteOnForumRepository()
         {
-            _repository.Stub(r => r.Delete(Forum));
+            ForumRepository.Stub(r => r.Delete(Forum));
         }
 
         private void DeleteActionIsRequestedWithGetVerb()
@@ -301,21 +298,21 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallSaveOnForumRepository()
         {
-            _repository.Stub(r => r.Save(Forum));
+            ForumRepository.Stub(r => r.Save(Forum));
 
             SetEntityId(Forum, Guid.NewGuid());
         }
 
         private void ShouldCallFindByIdOnForumRepository()
         {
-            _repository.Stub(r => r.FindBy(ForumId)).Return(Forum);
+            ForumRepository.Stub(r => r.FindBy(ForumId)).Return(Forum);
 
             SetEntityId(Forum, Guid.NewGuid());
         }
 
         private void ShouldCallGetAllOnForumRepository()
         {
-            _repository.Stub(r => r.All()).Return(Forums.AsQueryable());
+            ForumRepository.Stub(r => r.All()).Return(Forums.AsQueryable());
         }
 
         private void EditActionIsRequestedWithGetVerb()
@@ -325,7 +322,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ForumControllerIsInitialized()
         {
-            Controller = new ForumController(_repository);
+            Controller = new ForumController(ForumRepository);
 
             var builder = new TestControllerBuilder();
             builder.InitializeController(Controller);
@@ -362,11 +359,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         private void CreateActionIsRequestedWithGetVerb()
         {
             Result = (Controller as ForumController).Create();
-        }
-
-        private void ForumRepositoryIsInitialized()
-        {
-            _repository = Stub<IKeyedRepository<Forum, Guid>>();
         }
 
         private void IndexActionRequested()

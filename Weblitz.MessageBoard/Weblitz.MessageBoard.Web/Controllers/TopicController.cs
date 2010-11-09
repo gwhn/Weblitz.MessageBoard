@@ -109,7 +109,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         }
 
         //
-        // GET: /Topic/Delete/5
+        // GET: /Topic/Delete/5876..8090
 
         public ActionResult Delete(Guid id)
         {

@@ -6,8 +6,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using StoryQ;
 using StoryQ.Formatting.Parameters;
-using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Tests.Fixtures;
 using Weblitz.MessageBoard.Web.Controllers;
 using Weblitz.MessageBoard.Web.Models;
@@ -17,8 +15,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     [TestFixture]
     public class TopicControllerTest : ControllerTestBase
     {
-        private IKeyedRepository<Topic, Guid> _topicRepository;
-        private IKeyedRepository<Forum, Guid> _forumRepository;
         private TopicInput _input;
 
         [SetUp]
@@ -30,9 +26,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Topic = null;
             Forums = null;
             Forum = null;
+            TopicRepository = null;
+            ForumRepository = null;
             
-            _topicRepository = null;
-            _forumRepository = null;
             _input = null;
         }
 
@@ -246,7 +242,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallDeleteOnTopicRepository()
         {
-            _topicRepository.Stub(r => r.Delete(Topic));
+            TopicRepository.Stub(r => r.Delete(Topic));
         }
 
         private void DeleteActionIsRequestedWithGetVerb()
@@ -261,7 +257,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallFindByIdOnForumRepository()
         {
-            _forumRepository.Stub(r => r.FindBy(ForumId)).IgnoreArguments().Return(Forum);
+            ForumRepository.Stub(r => r.FindBy(ForumId)).IgnoreArguments().Return(Forum);
 
             SetEntityId(Forum, Guid.NewGuid());
         }
@@ -278,7 +274,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallSaveOnTopicRepository()
         {
-            _topicRepository.Stub(r => r.Save(Topic));
+            TopicRepository.Stub(r => r.Save(Topic));
         }
 
         private void _InputFor_Topic([BooleanParameterFormat("valid", "invalid")] bool valid,
@@ -299,7 +295,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                  Closed = false,
                                  Sticky = true,
                                  ForumId = Forum.Id,
-                                 Forums = new SelectList(_forumRepository.All().ToArray(), "Id", "Name")
+                                 Forums = new SelectList(ForumRepository.All().ToArray(), "Id", "Name")
                              };
             }
             else
@@ -324,12 +320,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallAllOnForumRepository()
         {
-            _forumRepository.Stub(r => r.All()).Return(Forums.AsQueryable());
-        }
-
-        private void ForumRepositoryIsInitialized()
-        {
-            _forumRepository = Stub<IKeyedRepository<Forum, Guid>>();
+            ForumRepository.Stub(r => r.All()).Return(Forums.AsQueryable());
         }
 
         private void CreateActionIsRequestedWithGetVerb()
@@ -337,14 +328,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Result = (Controller as TopicController).Create(ForumId);
         }
 
-        private void TopicRepositoryIsInitialized()
-        {
-            _topicRepository = Stub<IKeyedRepository<Topic, Guid>>();
-        }
-
         private void TopicControllerIsInitialized()
         {
-            Controller = new TopicController(_topicRepository, _forumRepository);
+            Controller = new TopicController(TopicRepository, ForumRepository);
 
             var builder = new TestControllerBuilder();
             builder.InitializeController(Controller);
@@ -353,7 +339,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ShouldCallFindByIdOnTopicRepository()
         {
-            _topicRepository.Stub(r => r.FindBy(TopicId)).IgnoreArguments().Return(Topic);
+            TopicRepository.Stub(r => r.FindBy(TopicId)).IgnoreArguments().Return(Topic);
 
             SetEntityId(Topic, Guid.NewGuid());
         }
