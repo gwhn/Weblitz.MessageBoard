@@ -157,7 +157,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         }
 
         [Test]
-        public void ForumPostEdit()
+        public void TopicPostEdit()
         {
             new Story("topic post edit")
                 .InOrderTo("modify the topic of discussion")
@@ -193,7 +193,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         }
 
         [Test]
-        public void ForumGetDelete()
+        public void TopicGetDelete()
         {
             new Story("topic get delete")
                 .InOrderTo("remove the topic of discussion")
