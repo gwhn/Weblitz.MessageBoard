@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -21,21 +19,19 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     {
         private IList<Forum> _forums;
         private IKeyedRepository<Forum, Guid> _repository;
-        private ActionResult _result;
         private Forum _forum;
-        private Guid _id;
-        private ForumController _controller;
         private ForumInput _input;
-
+        
         [SetUp]
         public void SetUp()
         {
+            Id = Guid.Empty;
+            Result = null;
+            Controller = null;
+
             _forums = null;
             _repository = null;
-            _result = null;
             _forum = null;
-            _id = Guid.Empty;
-            _controller = null;
             _input = null;
         }
 
@@ -56,43 +52,43 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
-                                .And(ForumControllerCallsGetAllOnRepository)
+                                .And(ForumControllerCallsGetAll)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainSummaries)
+                                .And(ViewModel_Contain<ForumSummary[]>, true)
 
                         .WithScenario("forums but no existing topics")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
-                                .And(ForumControllerCallsGetAllOnRepository)
+                                .And(ForumControllerCallsGetAll)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainSummaries)
+                                .And(ViewModel_Contain<ForumSummary[]>, true)
 
                         .WithScenario("forums each with existing topics")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
                                 .And(EachForumContains_Topics, 2)
-                                .And(ForumControllerCallsGetAllOnRepository)
+                                .And(ForumControllerCallsGetAll)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainSummaries)
+                                .And(ViewModel_Contain<ForumSummary[]>, true)
 
                         .WithScenario("forums each with existing topics but no existing posts")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
                                 .And(EachForumContains_Topics, 2)
-                                .And(ForumControllerCallsGetAllOnRepository)
+                                .And(ForumControllerCallsGetAll)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainSummaries)
+                                .And(ViewModel_Contain<ForumSummary[]>, true)
 
                         .WithScenario("forums each with existing topics each with existing posts")
                             .Given(ForumRepositoryIsInitialized)
@@ -100,11 +96,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ListWith_Forums, 1)
                                 .And(EachForumContains_Topics, 2)
                                 .And(EachTopicContains_Posts, 3)
-                                .And(ForumControllerCallsGetAllOnRepository)
+                                .And(ForumControllerCallsGetAll)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainSummaries)
+                                .And(ViewModel_Contain<ForumSummary[]>, true)
                 .Execute();
         }
 
@@ -120,20 +116,21 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ForumControllerCallsGetByIdOnRepository)
-                            .When(DetailsActionIsRequestedWith_Id, true)
+                                .And(ForumControllerCallsFindById)
+                            .When(DetailsActionIsRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModel_ContainDetails, true)
+                                .And(ViewModel_Contain<ForumDetail>, true)
 
                         .WithScenario("forum not found")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, false)
-                            .When(DetailsActionIsRequestedWith_Id, false)
+                                .And(ForumControllerCallsFindById)
+                            .When(DetailsActionIsRequested)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "No forum matches ID")
-                                .And(ShouldRedirectTo_, "Index")
+                                .And(ShouldRedirectTo__, "Forum", "Index")
                 .Execute();
         }
 
@@ -151,7 +148,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .When(CreateActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainEmptyInput)
+                                .And(ViewModel_Contain<ForumInput>, true)
                 .Execute();
         }
 
@@ -167,11 +164,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, true, false)
-                                .And(ForumControllerCallsSaveOnRepository)
+                                .And(ForumControllerCallsSave)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "created successfully")
-                                .And(ShouldRedirectTo_, "Details")
+                                .And(ShouldRedirectTo__, "Forum", "Details")
 
                         .WithScenario("fail to create forum with invalid input")
                             .Given(ForumRepositoryIsInitialized)
@@ -181,7 +178,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Then(ShouldReturnViewResult)
                                 .And(Message_Contain_, true, "failed to create forum")
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainEmptyInput)
+                                .And(ViewModel_Contain<ForumInput>, true)
                 .Execute();
         }
 
@@ -197,12 +194,12 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ForumControllerCallsGetByIdOnRepository)
-                                .And(ForumControllerCallsSaveOnRepository)
+                                .And(ForumControllerCallsFindById)
+                                .And(ForumControllerCallsSave)
                             .When(EditActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainPopulatedInput)
+                                .And(ViewModel_Contain<ForumInput>, true)
 
 //                        .WithScenario("edit forum with unknown id")
                 .Execute();
@@ -220,22 +217,22 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, true, true)
-                                .And(ForumControllerCallsSaveOnRepository)
+                                .And(ForumControllerCallsSave)
                             .When(EditActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "updated successfully")
-                                .And(ShouldRedirectTo_, "Details")
+                                .And(ShouldRedirectTo__, "Forum", "Details")
 
                         .WithScenario("fail to update forum with invalid input")
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, false, true)
-                                .And(ForumControllerCallsGetByIdOnRepository)
+                                .And(ForumControllerCallsFindById)
                             .When(EditActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(Message_Contain_, true, "failed to update forum")
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainPopulatedInput)
+                                .And(ViewModel_Contain<ForumInput>, true)
 
 //                        .WithScenario("fail to update forum with unknown id")
                 .Execute();
@@ -253,11 +250,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ForumControllerCallsGetByIdOnRepository)
+                                .And(ForumControllerCallsFindById)
                             .When(DeleteActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
-                                .And(ViewModelShouldContainDeleteItem)
+                                .And(ViewModel_Contain<DeleteItem>, true)
 
 //                        .WithScenario("delete forum with unknown id")
                 .Execute();
@@ -275,12 +272,12 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ForumControllerCallsGetByIdOnRepository)
-                                .And(ForumControllerCallsDeleteOnRepository)
+                                .And(ForumControllerCallsFindById)
+                                .And(ForumControllerCallsDelete)
                             .When(DeleteActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "deleted successfully")
-                                .And(ShouldRedirectTo_, "Index")
+                                .And(ShouldRedirectTo__, "Forum", "Index")
 
 //                        .WithScenario("fail to delete forum with unknown id")
                 .Execute();
@@ -288,88 +285,54 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void DeleteActionIsRequestedWithPostVerb()
         {
-            _result = _controller.Destroy(_id);
+            Result = (Controller as ForumController).Destroy(Id);
         }
 
-        private void ForumControllerCallsDeleteOnRepository()
+        private void ForumControllerCallsDelete()
         {
             _repository.Stub(r => r.Delete(_forum));
         }
 
         private void DeleteActionIsRequestedWithGetVerb()
         {
-            _result = _controller.Delete(_id);
-        }
-
-        private void ViewModelShouldContainDeleteItem()
-        {
-            var result = _result as ViewResult;
-            Assert.IsNotNull(result);
-
-            var model = result.ViewData.Model as DeleteItem;
-            Assert.IsNotNull(model);
-
-            Assert.That(model.Id != Guid.Empty);
-            Assert.IsNotNull(model.Description);
-            Assert.IsNotNull(model.CancelNavigation);
-            Assert.IsNotNull(model.CancelNavigation.ActionName);
-            Assert.IsNotNull(model.CancelNavigation.ControllerName);
+            Result = (Controller as ForumController).Delete(Id);
         }
 
         private void EditActionIsRequestedWithPostVerb()
         {
-            _result = _controller.Edit(_input);
+            Result = (Controller as ForumController).Edit(_input);
         }
 
-        private void ForumControllerCallsSaveOnRepository()
+        private void ForumControllerCallsSave()
         {
             _repository.Stub(r => r.Save(_forum));
 
             SetEntityId(_forum, Guid.NewGuid());
         }
 
-        private void SetEntityId(Entity entity, Guid id)
+        private void ForumControllerCallsFindById()
         {
-            entity.GetType()
-                .GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
-                .SetValue(entity, id, null);
-        }
-
-        private void ForumControllerCallsGetByIdOnRepository()
-        {
-            _repository.Stub(r => r.FindBy(_id)).Return(_forum);
+            _repository.Stub(r => r.FindBy(Id)).Return(_forum);
 
             SetEntityId(_forum, Guid.NewGuid());
         }
 
-        private void ForumControllerCallsGetAllOnRepository()
+        private void ForumControllerCallsGetAll()
         {
             _repository.Stub(r => r.All()).Return(_forums.AsQueryable());
         }
 
         private void EditActionIsRequestedWithGetVerb()
         {
-            _result = _controller.Edit(_id);
-        }
-
-        private void ViewModelShouldContainPopulatedInput()
-        {
-            var result = _result as ViewResult;
-            Assert.IsNotNull(result);
-
-            var model = result.ViewData.Model as ForumInput;
-            Assert.IsNotNull(model);
-
-            Assert.That(model.Id != Guid.Empty);
-            Assert.That(model.Name != null);
+            Result = (Controller as ForumController).Edit(Id);
         }
 
         private void ForumControllerIsInitialized()
         {
-            _controller = new ForumController(_repository);
+            Controller = new ForumController(_repository);
 
             var builder = new TestControllerBuilder();
-            builder.InitializeController(_controller);
+            builder.InitializeController(Controller);
             builder.RouteData.Values["Controller"] = "Forum";
         }
 
@@ -386,7 +349,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             {
                 _input = new ForumInput {Name = string.Empty};
 
-                _controller.ModelState.AddModelError("Name", "Name is required");
+                Controller.ModelState.AddModelError("Name", "Name is required");
             }
 
             if (exists)
@@ -397,55 +360,12 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void CreateActionIsRequestedWithPostVerb()
         {
-            _result = _controller.Create(_input);
+            Result = (Controller as ForumController).Create(_input);
         }
 
         private void CreateActionIsRequestedWithGetVerb()
         {
-            _result = _controller.Create();
-        }
-
-        private void ViewModelShouldContainEmptyInput()
-        {
-            var result = _result as ViewResult;
-            Assert.IsNotNull(result);
-
-            var model = result.ViewData.Model as ForumInput;
-            Assert.IsNotNull(model);
-
-            Assert.That(model.Id == Guid.Empty);
-            Assert.That(model.Name == null);
-        }
-
-        private void ShouldRedirectTo_(string action)
-        {
-            var result = _result as RedirectToRouteResult;
-            Assert.IsNotNull(result);
-
-            Assert.That(result.RouteValues["action"].ToString() == action);
-        }
-
-        private void Message_Contain_([BooleanParameterFormat("should", "should not")] bool contains, string text)
-        {
-            if (contains)
-            {
-                Assert.That(_controller.TempData.ContainsKey("Message"));
-
-                var message = _controller.TempData["Message"] as string;
-                Assert.IsNotNull(message);
-
-                Assert.That(message.ToLowerInvariant().Contains(text.ToLowerInvariant()));
-            }
-            else
-            {
-                Assert.IsFalse(_controller.TempData.ContainsKey("Message"));
-            }
-        }
-
-        private void ShouldReturnRedirectToRouteResult()
-        {
-            Assert.IsNotNull(_result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(_result);
+            Result = (Controller as ForumController).Create();
         }
 
         private void ListWith_Forums(int count)
@@ -465,27 +385,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void IndexActionRequested()
         {
-            _result = _controller.Index();
-        }
-
-        private void ShouldReturnViewResult()
-        {
-            Assert.IsNotNull(_result);
-            Assert.IsInstanceOf<ViewResult>(_result);
-        }
-
-        private void ViewModelShouldContainSummaries()
-        {
-            var result = _result as ViewResult;
-
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.ViewData);
-            Assert.IsNotNull(result.ViewData.Model);
-
-            Assert.IsInstanceOf<ForumSummary[]>(result.ViewData.Model);
-            var model = result.ViewData.Model as ForumSummary[];
-            
-            Assert.That(model.Length == _forums.Count);
+            Result = (Controller as ForumController).Index();
         }
 
         private void EachForumContains_Topics(int count)
@@ -514,55 +414,19 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         {
             if (exists)
             {
-                _forum = ForumFixtures.ForumWithNoTopics(_id);
-
-                _id = Guid.NewGuid();
+                Id = Guid.NewGuid();
+                _forum = ForumFixtures.ForumWithNoTopics(Id);
             }
             else
             {
+                Id = Guid.Empty;
                 _forum = default(Forum);
-
-                _id = Guid.Empty;
             }
         }
 
-        private void DetailsActionIsRequestedWith_Id([BooleanParameterFormat("matching", "unmatched")] bool matches)
+        private void DetailsActionIsRequested()
         {
-            if (matches)
-            {
-                _result = _controller.Details(_id);
-            }
-            else
-            {
-                _result = _controller.Details(_id);
-            }
-        }
-
-        private void ShouldRenderDefaultView()
-        {
-            var result = _result as ViewResult;
-
-            Assert.IsNotNull(result);
-
-            Assert.That(result.AssertViewRendered().ViewName == string.Empty);
-        }
-
-        private void ViewModel_ContainDetails([BooleanParameterFormat("should", "should not")] bool contains)
-        {
-            var result = _result as ViewResult;
-
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.ViewData);
-            Assert.IsNotNull(result.ViewData.Model);
-
-            if (contains)
-            {
-                Assert.IsInstanceOf<ForumDetail>(result.ViewData.Model);
-            }
-            else
-            {
-                Assert.IsNotInstanceOf<ForumDetail>(result.ViewData.Model);
-            }
+            Result = (Controller as ForumController).Details(Id);
         }
     }
 }

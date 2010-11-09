@@ -4,7 +4,7 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class TopicFixtures
     {
-        public static Topic TopicWithNoPostsAndNoAttachments(int index)
+        public static Topic TopicWithNoPostsAndNoAttachments(object index)
         {
             return new Topic
                        {

@@ -46,9 +46,9 @@ namespace Weblitz.MessageBoard.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var details = new ForumToDetailMapper().Map(forum);
+            var detail = new ForumToDetailMapper().Map(forum);
 
-            return View(details);
+            return View(detail);
         }
 
         //
@@ -145,7 +145,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
             _repository.Delete(forum);
 
-            TempData["Message"] = "Forum {0} deleted successfully";
+            TempData["Message"] = string.Format("Forum {0} deleted successfully", forum.Name);
 
             return RedirectToAction("Index");
         }
