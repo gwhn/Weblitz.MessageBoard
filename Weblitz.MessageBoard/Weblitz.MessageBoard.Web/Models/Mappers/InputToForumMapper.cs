@@ -7,7 +7,10 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
     {
         public Forum Map(ForumInput source)
         {
-            return new Forum {Name = source.Name};
+            return new Forum
+                       {
+                           Name = source.Name
+                       };
         }
     }
 }

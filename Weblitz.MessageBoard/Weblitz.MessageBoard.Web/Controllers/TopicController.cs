@@ -53,5 +53,27 @@ namespace Weblitz.MessageBoard.Web.Controllers
             return View(input);
         }
 
+        //
+        // POST: /Topic/Create
+
+        [HttpPost]
+        public ActionResult Create(TopicInput input)
+        {
+            if (ModelState.IsValid)
+            {
+                var topic = new InputToTopicMapper(_forumRepository).Map(input);
+
+                _topicRepository.Save(topic);
+
+                TempData["Message"] = string.Format("Topic {0} created successfully", topic.Title);
+
+                return RedirectToAction("Details", new {topic.Id});
+            }
+
+            TempData["Message"] = "Failed to create topic";
+
+            return RedirectToAction("Create", new {input.ForumId});
+        }
+
     }
 }

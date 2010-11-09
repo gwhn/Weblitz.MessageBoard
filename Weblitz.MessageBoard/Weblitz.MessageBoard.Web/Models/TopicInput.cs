@@ -23,7 +23,7 @@ namespace Weblitz.MessageBoard.Web.Models
         [DisplayName("Closed?")]
         public bool Closed { get; set; }
 
-        [ScaffoldColumn(false), DisplayName("Forum")]
+        [Required, ScaffoldColumn(false), DisplayName("Forum")]
         public Guid ForumId { get; set; }
 
         [ScaffoldColumn(false)]
