@@ -5,17 +5,20 @@ using System.Web;
 using System.Web.Mvc;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Core.Domain.Repositories;
+using Weblitz.MessageBoard.Web.Models;
 using Weblitz.MessageBoard.Web.Models.Mappers;
 
 namespace Weblitz.MessageBoard.Web.Controllers
 {
     public class TopicController : Controller
     {
-        private readonly IKeyedRepository<Topic, Guid> _repository;
+        private readonly IKeyedRepository<Topic, Guid> _topicRepository;
+        private readonly IKeyedRepository<Forum, Guid> _forumRepository;
 
-        public TopicController(IKeyedRepository<Topic, Guid> repository)
+        public TopicController(IKeyedRepository<Topic, Guid> topicRepository, IKeyedRepository<Forum, Guid> forumRepository)
         {
-            _repository = repository;
+            _topicRepository = topicRepository;
+            _forumRepository = forumRepository;
         }
 
         //
@@ -23,7 +26,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ActionResult Details(Guid id)
         {
-            var topic = _repository.FindBy(id);
+            var topic = _topicRepository.FindBy(id);
 
             if (topic == null)
             {
@@ -35,6 +38,19 @@ namespace Weblitz.MessageBoard.Web.Controllers
             var detail = new TopicToDetailMapper().Map(topic);
 
             return View(detail);
+        }
+
+        //
+        // GET: /Topic/Create
+
+        public ViewResult Create(Guid forumId)
+        {
+            var input = new TopicInput
+                            {
+                                Forums = new SelectList(_forumRepository.All().OrderBy(f => f.Name).ToList(), "Id", "Name")
+                            };
+
+            return View(input);
         }
 
     }

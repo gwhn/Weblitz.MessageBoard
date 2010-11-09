@@ -93,6 +93,7 @@
     <Compile Include="Models\PostDetail.cs" />
     <Compile Include="Models\PostInput.cs" />
     <Compile Include="Models\TopicDetail.cs" />
+    <Compile Include="Models\TopicInput.cs" />
     <Compile Include="Models\TopicSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -109,7 +110,10 @@
     <Content Include="Views\Forum\Form.ascx" />
     <Content Include="Views\Forum\Index.aspx" />
     <Content Include="Views\Shared\DeleteConfirmation.ascx" />
+    <Content Include="Views\Topic\Create.aspx" />
     <Content Include="Views\Topic\Details.aspx" />
+    <Content Include="Views\Topic\Form.ascx" />
+    <Content Include="Views\Topic\NewPost.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,8 +1,10 @@
-﻿namespace Weblitz.MessageBoard.Web.Models
+﻿using System;
+
+namespace Weblitz.MessageBoard.Web.Models
 {
     public class PostDetail
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Body { get; set; }
 

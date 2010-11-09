@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.TestHelper;
@@ -7,6 +9,7 @@ using NUnit.Framework;
 using StoryQ.Formatting.Parameters;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Infrastructure.NHibernate;
+using Weblitz.MessageBoard.Tests.Fixtures;
 
 namespace Weblitz.MessageBoard.Tests.Controllers
 {
@@ -14,8 +17,16 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     public class ControllerTestBase : TestBase
     {
         protected ActionResult Result;
+
         protected Controller Controller;
-        protected Guid Id;
+        
+        protected Guid ForumId;
+        protected Forum Forum;
+
+        protected Guid TopicId;
+        protected Topic Topic;
+
+        protected IList<Forum> Forums;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
@@ -43,6 +54,69 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             
             session.Close();
             session.Dispose();
+        }
+
+        protected void ListWith_Forums(int count)
+        {
+            Forums = new List<Forum>();
+
+            for (var i = 0; i < count; i++)
+            {
+                Forums.Add(ForumFixtures.ForumWithNoTopics(i));
+            }
+        }
+
+        protected void EachForumContains_Topics(int count)
+        {
+            foreach (var forum in Forums)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    forum.Add(TopicFixtures.TopicWithNoPostsAndNoAttachments(i));
+                }
+            }
+        }
+
+        protected void EachTopicContains_Posts(int count)
+        {
+            foreach (var topic in Forums.SelectMany(forum => forum.Topics))
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    topic.Add(PostFixtures.RootPostWithNoChildren(i));
+                }
+            }
+        }
+
+        protected void IdOfForumThat_Exist([BooleanParameterFormat("does", "does not")] bool exists)
+        {
+            if (exists)
+            {
+                ForumId = Guid.NewGuid();
+                Forum = ForumFixtures.ForumWithNoTopics(ForumId);
+            }
+            else
+            {
+                ForumId = Guid.Empty;
+                Forum = default(Forum);
+            }
+        }
+
+        protected void IdOfTopicThat_Exist([BooleanParameterFormat("does", "does not")] bool exists)
+        {
+            if (exists)
+            {
+                TopicId = Guid.NewGuid();
+                Topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(TopicId);
+
+                ForumId = Guid.NewGuid();
+                Topic.Forum = ForumFixtures.ForumWithNoTopics(ForumId);
+            }
+            else
+            {
+                TopicId = Guid.Empty;
+                Topic = default(Topic);
+            }
         }
 
         protected void ShouldRenderDefaultView()

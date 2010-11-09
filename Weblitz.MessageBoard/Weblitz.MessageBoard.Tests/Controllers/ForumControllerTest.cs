@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
@@ -17,21 +16,19 @@ namespace Weblitz.MessageBoard.Tests.Controllers
     [TestFixture]
     public class ForumControllerTest : ControllerTestBase
     {
-        private IList<Forum> _forums;
         private IKeyedRepository<Forum, Guid> _repository;
-        private Forum _forum;
         private ForumInput _input;
         
         [SetUp]
         public void SetUp()
         {
-            Id = Guid.Empty;
+            ForumId = Guid.Empty;
             Result = null;
             Controller = null;
 
-            _forums = null;
+            Forums = null;
             _repository = null;
-            _forum = null;
+            Forum = null;
             _input = null;
         }
 
@@ -285,17 +282,17 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void DeleteActionIsRequestedWithPostVerb()
         {
-            Result = (Controller as ForumController).Destroy(Id);
+            Result = (Controller as ForumController).Destroy(ForumId);
         }
 
         private void ForumControllerCallsDelete()
         {
-            _repository.Stub(r => r.Delete(_forum));
+            _repository.Stub(r => r.Delete(Forum));
         }
 
         private void DeleteActionIsRequestedWithGetVerb()
         {
-            Result = (Controller as ForumController).Delete(Id);
+            Result = (Controller as ForumController).Delete(ForumId);
         }
 
         private void EditActionIsRequestedWithPostVerb()
@@ -305,26 +302,26 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void ForumControllerCallsSave()
         {
-            _repository.Stub(r => r.Save(_forum));
+            _repository.Stub(r => r.Save(Forum));
 
-            SetEntityId(_forum, Guid.NewGuid());
+            SetEntityId(Forum, Guid.NewGuid());
         }
 
         private void ForumControllerCallsFindById()
         {
-            _repository.Stub(r => r.FindBy(Id)).Return(_forum);
+            _repository.Stub(r => r.FindBy(ForumId)).Return(Forum);
 
-            SetEntityId(_forum, Guid.NewGuid());
+            SetEntityId(Forum, Guid.NewGuid());
         }
 
         private void ForumControllerCallsGetAll()
         {
-            _repository.Stub(r => r.All()).Return(_forums.AsQueryable());
+            _repository.Stub(r => r.All()).Return(Forums.AsQueryable());
         }
 
         private void EditActionIsRequestedWithGetVerb()
         {
-            Result = (Controller as ForumController).Edit(Id);
+            Result = (Controller as ForumController).Edit(ForumId);
         }
 
         private void ForumControllerIsInitialized()
@@ -341,9 +338,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         {
             if (valid)
             {
-                _forum = ForumFixtures.ForumWithNoTopics(1);
+                Forum = ForumFixtures.ForumWithNoTopics(1);
 
-                _input = new ForumInput {Name = _forum.Name};                
+                _input = new ForumInput {Name = Forum.Name};                
             }
             else
             {
@@ -368,16 +365,6 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Result = (Controller as ForumController).Create();
         }
 
-        private void ListWith_Forums(int count)
-        {
-            _forums = new List<Forum>();
-
-            for (var i = 0; i < count; i++)
-            {
-                _forums.Add(ForumFixtures.ForumWithNoTopics(i));
-            }
-        }
-
         private void ForumRepositoryIsInitialized()
         {
             _repository = Stub<IKeyedRepository<Forum, Guid>>();
@@ -388,45 +375,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Result = (Controller as ForumController).Index();
         }
 
-        private void EachForumContains_Topics(int count)
-        {
-            foreach (var forum in _forums)
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    forum.Add(TopicFixtures.TopicWithNoPostsAndNoAttachments(i));
-                }
-            }
-        }
-
-        private void EachTopicContains_Posts(int count)
-        {
-            foreach (var topic in _forums.SelectMany(forum => forum.Topics))
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    topic.Add(PostFixtures.RootPostWithNoChildren(i));
-                }
-            }
-        }
-
-        private void IdOfForumThat_Exist([BooleanParameterFormat("does", "does not")] bool exists)
-        {
-            if (exists)
-            {
-                Id = Guid.NewGuid();
-                _forum = ForumFixtures.ForumWithNoTopics(Id);
-            }
-            else
-            {
-                Id = Guid.Empty;
-                _forum = default(Forum);
-            }
-        }
-
         private void DetailsActionIsRequested()
         {
-            Result = (Controller as ForumController).Details(Id);
+            Result = (Controller as ForumController).Details(ForumId);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             if (source.AuditInfo.CreatedOn.HasValue)
             {
-                detail.PublishedDate = source.AuditInfo.CreatedOn.Value.ToString("dd/MM/YYYY hh:mm tt");                
+                detail.PublishedDate = source.AuditInfo.CreatedOn.Value.ToString("dd/MM/YYYY hh:mm tt");
             }
 
             var posts = source.Posts;
