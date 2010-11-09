@@ -108,5 +108,21 @@ namespace Weblitz.MessageBoard.Web.Controllers
             return View(input);
         }
 
+        //
+        // GET: /Topic/Delete/5
+
+        public ActionResult Delete(Guid id)
+        {
+            var topic = _topicRepository.FindBy(id);
+
+            var display = new TopicToDeleteItemMapper().Map(topic);
+
+            display.CancelNavigation = new CancelNavigation("Details",
+                                                            RouteData.Values["Controller"] as string,
+                                                            new {id});
+
+            return View(display);
+        }
+
     }
 }

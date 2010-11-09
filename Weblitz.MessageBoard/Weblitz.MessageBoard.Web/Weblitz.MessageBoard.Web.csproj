@@ -90,6 +90,7 @@
     <Compile Include="Models\Mappers\InputToForumMapper.cs" />
     <Compile Include="Models\Mappers\InputToTopicMapper.cs" />
     <Compile Include="Models\Mappers\PostToDetailMapper.cs" />
+    <Compile Include="Models\Mappers\TopicToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\TopicToDetailMapper.cs" />
     <Compile Include="Models\Mappers\TopicToSummaryMapper.cs" />
     <Compile Include="Models\PostDetail.cs" />
@@ -113,6 +114,7 @@
     <Content Include="Views\Forum\Index.aspx" />
     <Content Include="Views\Shared\DeleteConfirmation.ascx" />
     <Content Include="Views\Topic\Create.aspx" />
+    <Content Include="Views\Topic\Delete.aspx" />
     <Content Include="Views\Topic\Details.aspx" />
     <Content Include="Views\Topic\Edit.aspx" />
     <Content Include="Views\Topic\Form.ascx" />

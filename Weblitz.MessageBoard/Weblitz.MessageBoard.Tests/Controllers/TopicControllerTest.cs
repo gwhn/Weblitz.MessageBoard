@@ -192,6 +192,34 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void ForumGetDelete()
+        {
+            new Story("topic get delete")
+                .InOrderTo("remove the topic of discussion")
+                .AsA("administrator")
+                .IWant("to delete selected topic")
+
+                        .WithScenario("delete topic")
+                            .Given(TopicRepositoryIsInitialized)
+                                .And(ForumRepositoryIsInitialized)
+                                .And(TopicControllerIsInitialized)
+                                .And(IdOfTopicThat_Exist, true)
+                                .And(ShouldCallFindByIdOnTopicRepository)
+                            .When(DeleteActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<DeleteItem>, true)
+
+//                        .WithScenario("delete forum with unknown id")
+                .Execute();
+        }
+
+        private void DeleteActionIsRequestedWithGetVerb()
+        {
+            Result = (Controller as TopicController).Delete(TopicId);
+        }
+
         private void EditActionIsRequestedWithPostVerb()
         {
             Result = (Controller as TopicController).Edit(_input);

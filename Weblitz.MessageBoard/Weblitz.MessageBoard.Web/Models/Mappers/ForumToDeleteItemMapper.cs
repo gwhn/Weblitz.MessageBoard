@@ -1,5 +1,4 @@
-﻿using System;
-using Weblitz.MessageBoard.Core.Domain;
+﻿using Weblitz.MessageBoard.Core.Domain;
 using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Web.Models.Mappers
