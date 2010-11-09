@@ -215,6 +215,40 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void TopicPostDelete()
+        {
+            new Story("topic post delete")
+                .InOrderTo("remove the topic of discussion")
+                .AsA("administrator")
+                .IWant("to confirm deletion of selected topic")
+
+                        .WithScenario("delete topic successfully")
+                            .Given(TopicRepositoryIsInitialized)
+                                .And(ForumRepositoryIsInitialized)
+                                .And(TopicControllerIsInitialized)
+                                .And(IdOfTopicThat_Exist, true)
+                                .And(ShouldCallFindByIdOnTopicRepository)
+                                .And(ShouldCallDeleteOnTopicRepository)
+                            .When(DeleteActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "deleted successfully")
+                                .And(ShouldRedirectTo__, "Forum", "Details")
+
+//                        .WithScenario("fail to delete topic with unknown id")
+                .Execute();
+        }
+
+        private void DeleteActionIsRequestedWithPostVerb()
+        {
+            Result = (Controller as TopicController).Destroy(TopicId);
+        }
+
+        private void ShouldCallDeleteOnTopicRepository()
+        {
+            _topicRepository.Stub(r => r.Delete(Topic));
+        }
+
         private void DeleteActionIsRequestedWithGetVerb()
         {
             Result = (Controller as TopicController).Delete(TopicId);
