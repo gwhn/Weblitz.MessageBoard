@@ -73,6 +73,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
+    <Compile Include="Controllers\TopicToInputMapper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -113,6 +114,7 @@
     <Content Include="Views\Shared\DeleteConfirmation.ascx" />
     <Content Include="Views\Topic\Create.aspx" />
     <Content Include="Views\Topic\Details.aspx" />
+    <Content Include="Views\Topic\Edit.aspx" />
     <Content Include="Views\Topic\Form.ascx" />
     <Content Include="Views\Topic\NewPost.ascx" />
     <Content Include="Web.config" />

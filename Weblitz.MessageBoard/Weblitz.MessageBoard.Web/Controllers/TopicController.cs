@@ -45,10 +45,9 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ViewResult Create(Guid forumId)
         {
-            var input = new TopicInput
-                            {
-                                Forums = new SelectList(_forumRepository.All().OrderBy(f => f.Name).ToList(), "Id", "Name")
-                            };
+            var topic = new Topic {Forum = _forumRepository.FindBy(forumId)};
+
+            var input = new TopicToInputMapper(_forumRepository).Map(topic);
 
             return View(input);
         }
@@ -73,6 +72,18 @@ namespace Weblitz.MessageBoard.Web.Controllers
             TempData["Message"] = "Failed to create topic";
 
             return RedirectToAction("Create", new {input.ForumId});
+        }
+
+        //
+        // GET: /Topic/Edit/5432..7890
+
+        public ActionResult Edit(Guid id)
+        {
+            var topic = _topicRepository.FindBy(id);
+
+            var input = new TopicToInputMapper(_forumRepository).Map(topic);
+
+            return View(input);
         }
 
     }

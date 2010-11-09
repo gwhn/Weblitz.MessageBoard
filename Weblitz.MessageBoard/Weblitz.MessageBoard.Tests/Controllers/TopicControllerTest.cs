@@ -50,7 +50,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)
                                 .And(IdOfTopicThat_Exist, true)
-                                .And(TopicControllerCallsFindByIdOnTopicRepository)
+                                .And(ShouldCallFindByIdOnTopicRepository)
                             .When(DetailsActionIsRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -61,7 +61,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)
                                 .And(IdOfTopicThat_Exist, false)
-                                .And(TopicControllerCallsFindByIdOnTopicRepository)
+                                .And(ShouldCallFindByIdOnTopicRepository)
                             .When(DetailsActionIsRequested)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "No topic matches ID")
@@ -82,8 +82,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
+                                .And(ShouldCallFindByIdOnForumRepository)
                                 .And(ListWith_Forums, 3)
-                                .And(TopicControllerCallsAllOnForumRepository)
+                                .And(ShouldCallAllOnForumRepository)
                             .When(CreateActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -92,7 +93,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         }
 
         [Test]
-        public void ForumPostCreate()
+        public void TopicPostCreate()
         {
             new Story("topic post create")
                 .InOrderTo("start a new topic of discussion")
@@ -104,9 +105,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)
                                 .And(ListWith_Forums, 15)
-                                .And(TopicControllerCallsAllOnForumRepository)
+                                .And(ShouldCallAllOnForumRepository)
                                 .And(_InputFor_Topic, true, false)
-                                .And(TopicControllerCallsSaveOnForumRepository)
+                                .And(ShouldCallSaveOnTopicRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "created successfully")
@@ -124,12 +125,50 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void TopicGetEdit()
+        {
+            new Story("topic get edit")
+                .InOrderTo("modify the topic of discussion")
+                .AsA("administrator")
+                .IWant("to input modified topic data")
+
+                        .WithScenario("edit topic")
+                            .Given(TopicRepositoryIsInitialized)
+                                .And(ForumRepositoryIsInitialized)
+                                .And(TopicControllerIsInitialized)
+                                .And(IdOfTopicThat_Exist, true)
+                                .And(ListWith_Forums, 15)
+                                .And(ShouldCallAllOnForumRepository)
+                                .And(ShouldCallFindByIdOnTopicRepository)
+                                .And(ShouldCallSaveOnTopicRepository)
+                            .When(EditActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<TopicInput>, true)
+
+//                        .WithScenario("edit topic with unknown id")
+                .Execute();
+        }
+
+        private void ShouldCallFindByIdOnForumRepository()
+        {
+            _forumRepository.Stub(r => r.FindBy(ForumId)).IgnoreArguments().Return(Forum);
+
+            SetEntityId(Forum, Guid.NewGuid());
+        }
+
+        private void EditActionIsRequestedWithGetVerb()
+        {
+            Result = (Controller as TopicController).Edit(TopicId);
+        }
+
         private void CreateActionIsRequestedWithPostVerb()
         {
             Result = (Controller as TopicController).Create(_input);
         }
 
-        private void TopicControllerCallsSaveOnForumRepository()
+        private void ShouldCallSaveOnTopicRepository()
         {
             _topicRepository.Stub(r => r.Save(Topic));
         }
@@ -175,7 +214,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             }
         }
 
-        private void TopicControllerCallsAllOnForumRepository()
+        private void ShouldCallAllOnForumRepository()
         {
             _forumRepository.Stub(r => r.All()).Return(Forums.AsQueryable());
         }
@@ -204,9 +243,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             builder.RouteData.Values["Controller"] = "Topic";
         }
 
-        private void TopicControllerCallsFindByIdOnTopicRepository()
+        private void ShouldCallFindByIdOnTopicRepository()
         {
-            _topicRepository.Stub(r => r.FindBy(ForumId)).Return(Topic);
+            _topicRepository.Stub(r => r.FindBy(TopicId)).IgnoreArguments().Return(Topic);
 
             SetEntityId(Topic, Guid.NewGuid());
         }
