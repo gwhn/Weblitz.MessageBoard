@@ -23,12 +23,19 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         protected IKeyedRepository<Forum, Guid> ForumRepository;
         protected IKeyedRepository<Topic, Guid> TopicRepository;
+        protected IKeyedRepository<Post, Guid> PostRepository;
 
         protected Guid ForumId;
         protected Forum Forum;
 
         protected Guid TopicId;
         protected Topic Topic;
+
+        protected Guid PostId;
+        protected Post Post;
+
+        protected Guid ParentId;
+        protected Post Parent;
 
         protected IList<Forum> Forums;
 
@@ -68,6 +75,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         protected void TopicRepositoryIsInitialized()
         {
             TopicRepository = Stub<IKeyedRepository<Topic, Guid>>();
+        }
+
+        protected void PostRepositoryIsInitialized()
+        {
+            PostRepository = Stub<IKeyedRepository<Post, Guid>>();
         }
 
         protected void ListWith_Forums(int count)
@@ -130,6 +142,27 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             {
                 TopicId = Guid.Empty;
                 Topic = default(Topic);
+            }
+        }
+
+        protected void IdOfPostThat_Exist([BooleanParameterFormat("does", "does not")] bool exists)
+        {
+            if (exists)
+            {
+                TopicId = Guid.NewGuid();
+                Topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(TopicId);
+
+                ForumId = Guid.NewGuid();
+                Topic.Forum = ForumFixtures.ForumWithNoTopics(ForumId);
+
+                PostId = Guid.NewGuid();
+                Post = PostFixtures.RootPostWithNoChildren(PostId);
+                Post.Topic = Topic;
+            }
+            else
+            {
+                PostId = Guid.Empty;
+                Post = default(Post);
             }
         }
 

@@ -9,13 +9,14 @@
         <h2><%:Model.Title%></h2>
         <div class="body"><%:Model.Body%></div>
         <div class="meta">
-            <div class="forum"><%:Model.Forum%></div>
+            <div class="forum"><%:Model.ForumName%></div>
             <div class="author"><%:Model.Author%></div>
             <div class="date"><%:Model.PublishedDate%></div>
         </div>
         <ul class="options">
             <li><%=Html.ActionLink("Edit", "Edit", new {Model.Id})%></li>
             <li><%=Html.ActionLink("Delete", "Delete", new {Model.Id})%></li>
+            <li><%=Html.ActionLink("New Post", "Create", "Post", new {TopicId = Model.Id}, null)%></li>
         </ul>
     </div>
     <div class="postslist">
@@ -30,8 +31,10 @@
                 <div class="date"><%:post.PublishedDate%></div>
             </div>
             <ul class="options">
+                <li><%=Html.ActionLink("View", "Details", "Post", new {post.Id}, null)%></li>
                 <li><%=Html.ActionLink("Edit", "Edit", "Post", new {post.Id}, null)%></li>
                 <li><%=Html.ActionLink("Delete", "Delete", "Post", new {post.Id}, null)%></li>
+                <li><%=Html.ActionLink("Reply", "Create", "Post", new {TopicId = Model.Id, ParentId = post.Id}, null)%></li>
                 <li>
                 <%
                 using (Html.BeginForm("Flag", "Post", new {post.Id}))
@@ -45,6 +48,4 @@
         <%
             }%>
     </div>
-    <%
-            Html.RenderPartial("NewPost", Model.NewPost);%>
 </asp:Content>

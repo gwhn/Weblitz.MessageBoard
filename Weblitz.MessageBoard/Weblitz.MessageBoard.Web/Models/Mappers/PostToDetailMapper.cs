@@ -1,5 +1,4 @@
-﻿using System;
-using Weblitz.MessageBoard.Core.Domain;
+﻿using Weblitz.MessageBoard.Core.Domain;
 using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Web.Models.Mappers
@@ -14,7 +13,9 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
                              {
                                  Id = source.Id,
                                  Author = source.AuditInfo.CreatedBy,
-                                 Body = source.Body
+                                 Body = source.Body,
+                                 ForumName = source.Topic.Forum.Name,
+                                 TopicTitle = source.Topic.Title
                              };
 
             if (source.AuditInfo.CreatedOn.HasValue)

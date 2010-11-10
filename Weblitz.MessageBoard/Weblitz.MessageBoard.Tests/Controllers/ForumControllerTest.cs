@@ -46,7 +46,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
-                                .And(ShouldCallGetAllOnForumRepository)
+                                .And(CallToGetAllOnForumRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -56,7 +56,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
-                                .And(ShouldCallGetAllOnForumRepository)
+                                .And(CallToGetAllOnForumRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -67,7 +67,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 0)
                                 .And(EachForumContains_Topics, 2)
-                                .And(ShouldCallGetAllOnForumRepository)
+                                .And(CallToGetAllOnForumRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -78,7 +78,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ForumControllerIsInitialized)
                                 .And(ListWith_Forums, 3)
                                 .And(EachForumContains_Topics, 2)
-                                .And(ShouldCallGetAllOnForumRepository)
+                                .And(CallToGetAllOnForumRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -90,7 +90,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ListWith_Forums, 1)
                                 .And(EachForumContains_Topics, 2)
                                 .And(EachTopicContains_Posts, 3)
-                                .And(ShouldCallGetAllOnForumRepository)
+                                .And(CallToGetAllOnForumRepository)
                             .When(IndexActionRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -110,7 +110,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ShouldCallFindByIdOnForumRepository)
+                                .And(CallToFindByIdOnForumRepository)
                             .When(DetailsActionIsRequested)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -120,7 +120,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, false)
-                                .And(ShouldCallFindByIdOnForumRepository)
+                                .And(CallToFindByIdOnForumRepository)
                             .When(DetailsActionIsRequested)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "No forum matches ID")
@@ -158,7 +158,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, true, false)
-                                .And(ShouldCallSaveOnForumRepository)
+                                .And(CallToSaveOnForumRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "created successfully")
@@ -188,8 +188,8 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ShouldCallFindByIdOnForumRepository)
-                                .And(ShouldCallSaveOnForumRepository)
+                                .And(CallToFindByIdOnForumRepository)
+                                .And(CallToSaveOnForumRepository)
                             .When(EditActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -211,7 +211,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(_InputFor_Forum, true, true)
-                                .And(ShouldCallSaveOnForumRepository)
+                                .And(CallToSaveOnForumRepository)
                             .When(EditActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "updated successfully")
@@ -243,7 +243,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ShouldCallFindByIdOnForumRepository)
+                                .And(CallToFindByIdOnForumRepository)
                             .When(DeleteActionIsRequestedWithGetVerb)
                             .Then(ShouldReturnViewResult)
                                 .And(ShouldRenderDefaultView)
@@ -265,8 +265,8 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                             .Given(ForumRepositoryIsInitialized)
                                 .And(ForumControllerIsInitialized)
                                 .And(IdOfForumThat_Exist, true)
-                                .And(ShouldCallFindByIdOnForumRepository)
-                                .And(ShouldCallDeleteOnForumRepository)
+                                .And(CallToFindByIdOnForumRepository)
+                                .And(CallToDeleteOnForumRepository)
                             .When(DeleteActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "deleted successfully")
@@ -281,7 +281,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Result = (Controller as ForumController).Destroy(ForumId);
         }
 
-        private void ShouldCallDeleteOnForumRepository()
+        private void CallToDeleteOnForumRepository()
         {
             ForumRepository.Stub(r => r.Delete(Forum));
         }
@@ -296,21 +296,21 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             Result = (Controller as ForumController).Edit(_input);
         }
 
-        private void ShouldCallSaveOnForumRepository()
+        private void CallToSaveOnForumRepository()
         {
             ForumRepository.Stub(r => r.Save(Forum));
 
             SetEntityId(Forum, Guid.NewGuid());
         }
 
-        private void ShouldCallFindByIdOnForumRepository()
+        private void CallToFindByIdOnForumRepository()
         {
             ForumRepository.Stub(r => r.FindBy(ForumId)).Return(Forum);
 
             SetEntityId(Forum, Guid.NewGuid());
         }
 
-        private void ShouldCallGetAllOnForumRepository()
+        private void CallToGetAllOnForumRepository()
         {
             ForumRepository.Stub(r => r.All()).Return(Forums.AsQueryable());
         }

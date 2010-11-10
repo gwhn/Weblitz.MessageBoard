@@ -12,8 +12,11 @@ namespace Weblitz.MessageBoard.Web.Models
         [ScaffoldColumn(false)]
         public Guid TopicId { get; set; }
 
-        [Required, StringLength(256), DisplayName("Name")]
-        public string Author { get; set; }
+        [ScaffoldColumn(false)]
+        public Guid? ParentId { get; set; }
+
+        [Required, StringLength(256)]
+        public string Name { get; set; }
 
         [Required, DataType(DataType.MultilineText)]
         public string Body { get; set; }

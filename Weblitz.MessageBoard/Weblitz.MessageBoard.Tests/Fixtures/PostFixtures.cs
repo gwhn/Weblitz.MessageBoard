@@ -1,10 +1,11 @@
+using System;
 using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Tests.Fixtures
 {
     public static class PostFixtures
     {
-        public static Post RootPostWithNoChildren(int index)
+        public static Post RootPostWithNoChildren(object index)
         {
             return new Post
                        {
@@ -13,7 +14,7 @@ namespace Weblitz.MessageBoard.Tests.Fixtures
                        };
         }
 
-        public static Post BranchPostWithNoChildren(int index)
+        public static Post BranchPostWithNoChildren(object index)
         {
             return new Post
                        {

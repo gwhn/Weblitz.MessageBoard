@@ -10,14 +10,12 @@ namespace Weblitz.MessageBoard.Web.Models
 
         public string Body { get; set; }
 
-        public string Forum { get; set; }
+        public string ForumName { get; set; }
 
         public string Author { get; set; }
 
         public string PublishedDate { get; set; }
 
         public PostDetail[] Posts { get; set; }
-
-        public PostInput NewPost { get; set; }
     }
 }

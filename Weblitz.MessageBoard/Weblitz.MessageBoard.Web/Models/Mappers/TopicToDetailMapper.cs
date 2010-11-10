@@ -16,9 +16,8 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
                                  Id = source.Id,
                                  Author = source.AuditInfo.CreatedBy,
                                  Body = source.Body,
-                                 Forum = source.Forum.Name,
-                                 Title = source.Title,
-                                 NewPost = new PostInput {TopicId = source.Id}
+                                 ForumName = source.Forum.Name,
+                                 Title = source.Title
                              };
 
             if (source.AuditInfo.CreatedOn.HasValue)

@@ -88,8 +88,11 @@
     <Compile Include="Models\Mappers\ForumToInputMapper.cs" />
     <Compile Include="Models\Mappers\ForumToSummaryMapper.cs" />
     <Compile Include="Models\Mappers\InputToForumMapper.cs" />
+    <Compile Include="Models\Mappers\InputToPostMapper.cs" />
     <Compile Include="Models\Mappers\InputToTopicMapper.cs" />
+    <Compile Include="Models\Mappers\PostToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\PostToDetailMapper.cs" />
+    <Compile Include="Models\Mappers\PostToInputMapper.cs" />
     <Compile Include="Models\Mappers\TopicToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\TopicToDetailMapper.cs" />
     <Compile Include="Models\Mappers\TopicToSummaryMapper.cs" />
@@ -112,13 +115,17 @@
     <Content Include="Views\Forum\Edit.aspx" />
     <Content Include="Views\Forum\Form.ascx" />
     <Content Include="Views\Forum\Index.aspx" />
+    <Content Include="Views\Post\Create.aspx" />
+    <Content Include="Views\Post\Delete.aspx" />
+    <Content Include="Views\Post\Details.aspx" />
+    <Content Include="Views\Post\Edit.aspx" />
+    <Content Include="Views\Post\Form.ascx" />
     <Content Include="Views\Shared\DeleteConfirmation.ascx" />
     <Content Include="Views\Topic\Create.aspx" />
     <Content Include="Views\Topic\Delete.aspx" />
     <Content Include="Views\Topic\Details.aspx" />
     <Content Include="Views\Topic\Edit.aspx" />
     <Content Include="Views\Topic\Form.ascx" />
-    <Content Include="Views\Topic\NewPost.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

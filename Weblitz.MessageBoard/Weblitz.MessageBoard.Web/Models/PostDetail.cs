@@ -6,6 +6,10 @@ namespace Weblitz.MessageBoard.Web.Models
     {
         public Guid Id { get; set; }
 
+        public string ForumName { get; set; }
+
+        public string TopicTitle { get; set; }
+
         public string Body { get; set; }
 
         public string Author { get; set; }
