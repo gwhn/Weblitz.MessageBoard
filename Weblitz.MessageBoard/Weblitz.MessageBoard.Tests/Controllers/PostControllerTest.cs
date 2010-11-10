@@ -101,11 +101,11 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .AsA("user")
                 .IWant("to save new post input")
 
-                        .WithScenario("create post successfully")
+                        .WithScenario("create post to topic successfully")
                             .Given(PostRepositoryIsInitialized)
                                 .And(TopicRepositoryIsInitialized)
                                 .And(PostControllerIsInitialized)
-                                .And(_InputFor_PostToTopic, true, false)
+                                .And(_InputFor_Post_Parent, true, false, false)
                                 .And(CallToFindByIdOnTopicRepository)
                                 .And(CallToSaveOnPostRepository)
                             .When(CreateActionIsRequestedWithPostVerb)
@@ -113,11 +113,34 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(Message_Contain_, true, "created successfully")
                                 .And(ShouldRedirectTo__, "Post", "Details")
 
-                        .WithScenario("fail to create post with invalid input")
+                        .WithScenario("fail to create post to topic with invalid input")
                             .Given(PostRepositoryIsInitialized)
                                 .And(TopicRepositoryIsInitialized)
                                 .And(PostControllerIsInitialized)
-                                .And(_InputFor_PostToTopic, false, false)
+                                .And(_InputFor_Post_Parent, false, false, false)
+                            .When(CreateActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "failed to create post")
+                                .And(ShouldRedirectTo__, "Post", "Create")
+
+                        .WithScenario("create post to parent post successfully")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(_InputFor_Post_Parent, true, false, true)
+                                .And(CallToFindByIdOnTopicRepository)
+                                .And(CallToFindByIdOnPostRepository)
+                                .And(CallToSaveOnPostRepository)
+                            .When(CreateActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "created successfully")
+                                .And(ShouldRedirectTo__, "Post", "Details")
+
+                        .WithScenario("fail to create post to parent post with invalid input")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(_InputFor_Post_Parent, false, false, true)
                             .When(CreateActionIsRequestedWithPostVerb)
                             .Then(ShouldReturnRedirectToRouteResult)
                                 .And(Message_Contain_, true, "failed to create post")
@@ -135,8 +158,9 @@ namespace Weblitz.MessageBoard.Tests.Controllers
             PostRepository.Stub(r => r.Save(Post));
         }
 
-        private void _InputFor_PostToTopic([BooleanParameterFormat("valid", "invalid")] bool valid,
-            [BooleanParameterFormat("existing", "new")] bool exists)
+        private void _InputFor_Post_Parent([BooleanParameterFormat("valid", "invalid")] bool valid,
+            [BooleanParameterFormat("existing", "new")] bool exists, 
+            [BooleanParameterFormat("with", "without")] bool belongs)
         {
             if (valid)
             {
@@ -145,52 +169,51 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 Topic = TopicFixtures.TopicWithNoPostsAndNoAttachments(1);
                 Topic.Forum = Forum;
 
-                Post = PostFixtures.RootPostWithNoChildren(1);
-                Post.Topic = Topic;
-
-                _input = new PostInput
+                if (belongs)
                 {
-                    Body = Post.Body,
-                    Name = Post.AuditInfo.CreatedBy,
-                    ParentId = null,
-                    TopicId = Topic.Id
-                };
+                    Parent = PostFixtures.RootPostWithNoChildren(1);
+                    Parent.Topic = Topic;
+
+                    Post = PostFixtures.BranchPostWithNoChildren(1);
+                    Post.Topic = Topic;
+                    Post.Parent = Parent;
+
+                    _input = new PostInput
+                    {
+                        Body = Post.Body,
+                        ParentId = Post.Parent.Id,
+                        TopicId = Topic.Id
+                    };                    
+                }
+                else
+                {
+                    Post = PostFixtures.RootPostWithNoChildren(1);
+                    Post.Topic = Topic;
+
+                    _input = new PostInput
+                    {
+                        Body = Post.Body,
+                        ParentId = null,
+                        TopicId = Topic.Id
+                    };
+                }
+
             }
             else
             {
                 _input = new PostInput
                              {
                                  Body = string.Empty,
-                                 Name = string.Empty,
                                  TopicId = Guid.Empty
                              };
 
                 Controller.ModelState.AddModelError("Title", "Title is required");
-                Controller.ModelState.AddModelError("Name", "Name is required");
                 Controller.ModelState.AddModelError("TopicId", "Topic is required");
             }
 
             if (exists)
             {
                 _input.Id = Guid.NewGuid();
-            }
-        }
-
-        private void _InputFor_PostToParentPost([BooleanParameterFormat("valid", "invalid")] bool valid,
-            [BooleanParameterFormat("existing", "new")] bool exists)
-        {
-            if (valid)
-            {
-                
-            }
-            else
-            {
-                
-            }
-
-            if (exists)
-            {
-                
             }
         }
 

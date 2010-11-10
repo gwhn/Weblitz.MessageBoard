@@ -16,7 +16,7 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
                            Title = source.Title,
                            Sticky = source.Sticky,
                            Closed = source.Closed,
-                           PostCount = Post.Count(source.Posts)
+                           PostCount = source.Posts.Length
                        };
         }
     }

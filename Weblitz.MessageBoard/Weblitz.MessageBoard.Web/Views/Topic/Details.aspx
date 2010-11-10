@@ -23,29 +23,8 @@
         <h3>Posts</h3>
         <%
             foreach (var post in Model.Posts)
-            {%>
-        <div class="post">
-            <div class="body"><%:post.Body%></div>
-            <div class="meta">
-                <div class="author"><%:post.Author%></div>
-                <div class="date"><%:post.PublishedDate%></div>
-            </div>
-            <ul class="options">
-                <li><%=Html.ActionLink("View", "Details", "Post", new {post.Id}, null)%></li>
-                <li><%=Html.ActionLink("Edit", "Edit", "Post", new {post.Id}, null)%></li>
-                <li><%=Html.ActionLink("Delete", "Delete", "Post", new {post.Id}, null)%></li>
-                <li><%=Html.ActionLink("Reply", "Create", "Post", new {TopicId = Model.Id, ParentId = post.Id}, null)%></li>
-                <li>
-                <%
-                using (Html.BeginForm("Flag", "Post", new {post.Id}))
-                {%>
-                    <input type="submit" value="Flag" />
-                <%
-                }%>
-                </li>
-            </ul>
-        </div>  
-        <%
+            {
+                Html.RenderPartial("Post", post);
             }%>
     </div>
 </asp:Content>

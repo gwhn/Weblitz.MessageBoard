@@ -23,7 +23,7 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             foreach (var posts in topics.Select(topic => topic.Posts))
             {
-                summary.PostCount += Post.Count(posts);
+                summary.PostCount += posts.Length;
             }
 
             return summary;

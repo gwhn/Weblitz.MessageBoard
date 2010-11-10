@@ -46,7 +46,9 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
         public ViewResult Create(Guid topicId, Guid? parentId)
         {
-            var post = new Post {Topic = _topicRepository.FindBy(topicId)};
+            var topic = _topicRepository.FindBy(topicId);
+
+            var post = new Post{Topic = topic};
 
             if (parentId.HasValue)
             {

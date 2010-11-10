@@ -11,7 +11,6 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
                             {
                                 Id = source.Id,
                                 TopicId = source.Topic.Id,
-                                Name = source.AuditInfo.CreatedBy,
                                 Body = source.Body
                             };
 

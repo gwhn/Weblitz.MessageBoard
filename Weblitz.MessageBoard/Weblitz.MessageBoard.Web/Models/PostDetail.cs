@@ -8,6 +8,8 @@ namespace Weblitz.MessageBoard.Web.Models
 
         public string ForumName { get; set; }
 
+        public Guid TopicId { get; set; }
+
         public string TopicTitle { get; set; }
 
         public string Body { get; set; }
@@ -15,5 +17,9 @@ namespace Weblitz.MessageBoard.Web.Models
         public string Author { get; set; }
 
         public string PublishedDate { get; set; }
+
+        public PostDetail[] Children { get; set; }
+
+        public int Level { get; set; }
     }
 }
