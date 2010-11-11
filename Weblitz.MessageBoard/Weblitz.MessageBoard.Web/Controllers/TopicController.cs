@@ -60,7 +60,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var topic = new InputToTopicMapper(_forumRepository).Map(input);
+                var topic = new InputToTopicMapper(_topicRepository, _forumRepository).Map(input);
 
                 _topicRepository.Save(topic);
 
@@ -94,8 +94,8 @@ namespace Weblitz.MessageBoard.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var topic = new InputToTopicMapper(_forumRepository).Map(input);
-
+                var topic = new InputToTopicMapper(_topicRepository, _forumRepository).Map(input);
+                
                 _topicRepository.Save(topic);
 
                 TempData["Message"] = string.Format("Topic {0} updated successfully", topic.Title);

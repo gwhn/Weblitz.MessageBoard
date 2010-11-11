@@ -148,6 +148,73 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                 .Execute();
         }
 
+        [Test]
+        public void TopicGetEdit()
+        {
+            new Story("post get edit")
+                .InOrderTo("modify a post")
+                .AsA("user")
+                .IWant("to input modified post data")
+
+                        .WithScenario("edit post")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(IdOfPostThat_Exist, true)
+                                .And(CallToFindByIdOnPostRepository)
+                            .When(EditActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<PostInput>, true)
+
+//                        .WithScenario("edit post with unknown id")
+                .Execute();
+        }
+
+        [Test]
+        public void TopicPostEdit()
+        {
+            new Story("post post edit")
+                .InOrderTo("modify a post")
+                .AsA("user")
+                .IWant("to save modified post input")
+
+                        .WithScenario("update post successfully")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(_InputFor_Post_Parent, true, true, false)
+                                .And(CallToSaveOnPostRepository)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "updated successfully")
+                                .And(ShouldRedirectTo__, "Post", "Details")
+
+                        .WithScenario("fail to update post with invalid input")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(_InputFor_Post_Parent, false, true, false)
+                            .When(EditActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(Message_Contain_, true, "failed to update post")
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<PostInput>, true)
+
+//                        .WithScenario("fail to update topic with unknown id")
+                .Execute();
+        }
+
+        private void EditActionIsRequestedWithPostVerb()
+        {
+            Result = (Controller as PostController).Edit(_input);
+        }
+
+        private void EditActionIsRequestedWithGetVerb()
+        {
+            Result = (Controller as PostController).Edit(PostId);
+        }
+
         private void CreateActionIsRequestedWithPostVerb()
         {
             Result = (Controller as PostController).Create(_input);

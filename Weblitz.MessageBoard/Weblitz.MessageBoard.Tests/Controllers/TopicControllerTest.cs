@@ -173,7 +173,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(Message_Contain_, true, "updated successfully")
                                 .And(ShouldRedirectTo__, "Topic", "Details")
 
-                        .WithScenario("fail to update forum with invalid input")
+                        .WithScenario("fail to update topic with invalid input")
                             .Given(TopicRepositoryIsInitialized)
                                 .And(ForumRepositoryIsInitialized)
                                 .And(TopicControllerIsInitialized)

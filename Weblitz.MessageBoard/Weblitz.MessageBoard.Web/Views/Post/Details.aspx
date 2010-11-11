@@ -16,15 +16,6 @@
         <ul class="options">
             <li><%=Html.ActionLink("Edit", "Edit", new {Model.Id})%></li>
             <li><%=Html.ActionLink("Delete", "Delete", new {Model.Id})%></li>
-            <li><%=Html.ActionLink("Reply", "Create", "Post", new {Model.TopicId, ParentId = Model.Id}, null)%></li>
-            <li>
-            <%
-            using (Html.BeginForm("Flag", "Post", new {Model.Id}))
-            {%>
-                <input type="submit" value="Flag" />
-            <%
-            }%>
-            </li>
         </ul>
     </div>
 </asp:Content>

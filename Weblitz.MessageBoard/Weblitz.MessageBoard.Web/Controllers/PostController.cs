@@ -48,7 +48,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         {
             var topic = _topicRepository.FindBy(topicId);
 
-            var post = new Post{Topic = topic};
+            var post = new Post {Topic = topic};
 
             if (parentId.HasValue)
             {

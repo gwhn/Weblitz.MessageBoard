@@ -69,7 +69,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var forum = new InputToForumMapper().Map(input);
+                var forum = new InputToForumMapper(_repository).Map(input);
 
                 _repository.Save(forum);
 
@@ -103,7 +103,7 @@ namespace Weblitz.MessageBoard.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var forum = new InputToForumMapper().Map(input);
+                var forum = new InputToForumMapper(_repository).Map(input);
 
                 _repository.Save(forum);
 

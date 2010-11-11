@@ -21,10 +21,7 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             summary.TopicCount = topics.Length;
 
-            foreach (var posts in topics.Select(topic => topic.Posts))
-            {
-                summary.PostCount += posts.Length;
-            }
+            summary.PostCount = topics.Sum(t => t.Posts.Length + t.Posts.Sum(p => p.Children.Length));
 
             return summary;
         }

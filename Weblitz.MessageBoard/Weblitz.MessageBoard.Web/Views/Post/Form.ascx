@@ -3,7 +3,7 @@
 <%
     Html.EnableClientValidation();%>
 <%
-    using (Html.BeginForm("Create", "Post", new {Model.TopicId, Model.ParentId}))
+    using (Html.BeginForm(new {Model.Id, Model.TopicId, Model.ParentId}))
     {%>
     <fieldset>
         <%=Html.EditorForModel()%>

@@ -10,7 +10,8 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
         private readonly IKeyedRepository<Post, Guid> _postRepository;
         private readonly IKeyedRepository<Topic, Guid> _topicRepository;
 
-        public InputToPostMapper(IKeyedRepository<Post, Guid> postRepository, IKeyedRepository<Topic, Guid> topicRepository)
+        public InputToPostMapper(IKeyedRepository<Post, Guid> postRepository,
+                                 IKeyedRepository<Topic, Guid> topicRepository)
         {
             _postRepository = postRepository;
             _topicRepository = topicRepository;
@@ -18,17 +19,20 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
         public Post Map(PostInput source)
         {
-            var post = new Post
-                           {
-                               Body = source.Body,
-                               Topic = _topicRepository.FindBy(source.TopicId)
-                           };
+            var post = _postRepository.FindBy(source.Id) ?? new Post();
+
+            if (post.Topic == null || post.Topic.Id != source.TopicId)
+            {
+                post.Topic = _topicRepository.FindBy(source.TopicId);
+            }
 
             if (source.ParentId.HasValue)
             {
                 post.Parent = _postRepository.FindBy(source.ParentId.Value);
             }
- 
+
+            post.Body = source.Body;
+
             return post;
         }
     }
