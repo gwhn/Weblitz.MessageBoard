@@ -35,11 +35,13 @@ namespace Weblitz.MessageBoard.Web.Controllers
         //
         // GET: /Forum/Details/5945..4340
 
-        public ActionResult Details(Forum forum)
+        public ActionResult Details(Guid id)
         {
+            var forum = _repository.FindBy(id);
+
             if (forum == null)
             {
-                TempData["Message"] = string.Format("No forum matches ID {0}", forum.Id);
+                TempData["Message"] = string.Format("No forum matches ID {0}", id);
 
                 return RedirectToAction("Index");
             }
@@ -48,22 +50,6 @@ namespace Weblitz.MessageBoard.Web.Controllers
 
             return View(detail);
         }
-
-//        public ActionResult Details(Guid id)
-//        {
-//            var forum = _repository.FindBy(id);
-//
-//            if (forum == null)
-//            {
-//                TempData["Message"] = string.Format("No forum matches ID {0}", id);
-//
-//                return RedirectToAction("Index");
-//            }
-//
-//            var detail = new ForumToDetailMapper().Map(forum);
-//
-//            return View(detail);
-//        }
 
         //
         // GET: /Forum/Create

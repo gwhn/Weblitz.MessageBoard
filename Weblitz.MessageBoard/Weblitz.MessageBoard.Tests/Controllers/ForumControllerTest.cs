@@ -368,7 +368,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void DetailsActionIsRequested()
         {
-            Result = (Controller as ForumController).Details(Forum);
+            Result = (Controller as ForumController).Details(ForumId);
         }
     }
 }

@@ -1,14 +1,7 @@
-﻿using Weblitz.MessageBoard.Core.Domain.Model;
-
-namespace Weblitz.MessageBoard.Core.Domain.Repositories
+﻿namespace Weblitz.MessageBoard.Core.Domain.Repositories
 {
-    public interface IKeyedRepository<in TKey>
+    public interface IKeyedRepository<TEntity, in TKey> : IRepository<TEntity> where TEntity : class
     {
-        Entity FindBy(TKey id);
-    }
-
-    public interface IKeyedRepository<TEntity, in TKey> : IRepository<TEntity>, IKeyedRepository<TKey> where TEntity : class
-    {
-        new TEntity FindBy(TKey id);
+        TEntity FindBy(TKey id);
     }
 }
