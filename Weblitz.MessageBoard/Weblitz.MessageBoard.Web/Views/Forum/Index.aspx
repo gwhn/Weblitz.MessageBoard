@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Weblitz.MessageBoard.Web.Models.ForumSummary[]>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<MvcContrib.Pagination.IPagination<Weblitz.MessageBoard.Web.Models.ForumSummary>>" %>
+<%@ Import Namespace="MvcContrib.UI.Pager" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Forum Index
@@ -26,6 +27,9 @@
             }%>
         </tbody>
     </table>
+
+    <%=Html.Pager(Model)%>
+    
     <ul class="options">
         <li><%=Html.ActionLink("New Forum", "Create")%></li>
     </ul>

@@ -363,7 +363,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
 
         private void IndexActionRequested()
         {
-            Result = (Controller as ForumController).Index();
+            Result = (Controller as ForumController).Index(0);
         }
 
         private void DetailsActionIsRequested()

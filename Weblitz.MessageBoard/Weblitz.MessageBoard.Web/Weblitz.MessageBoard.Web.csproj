@@ -34,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcContrib">
+      <HintPath>..\..\..\..\Components\MVCContrib.release\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\..\..\Components\StructureMap2.6.1\deploy\StructureMap.dll</HintPath>
     </Reference>

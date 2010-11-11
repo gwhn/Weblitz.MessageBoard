@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MvcContrib.Pagination;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Web.Models;
@@ -21,16 +22,31 @@ namespace Weblitz.MessageBoard.Web.Controllers
         //
         // GET: /Forum/
 
-        public ViewResult Index()
+        public ViewResult Index(int? page)
         {
-            var forums = _repository.All().ToArray();
+            const int count = 5;
 
-            var summaries = new List<ForumSummary>(forums.Length);
+            var forums = _repository.All();
+
+            var summaries = new List<ForumSummary>(forums.Count());
 
             summaries.AddRange(forums.Select(forum => new ForumToSummaryMapper().Map(forum)));
 
-            return View(summaries.ToArray());
+            return View(summaries.AsPagination(page ?? 1, count));
         }
+
+//        public ViewResult Index(int? page)
+//        {
+//            const int count = 5;
+//
+//            var forums = _repository.All().Skip((page ?? 0) * count).Take(count).ToArray();
+//
+//            var summaries = new List<ForumSummary>(forums.Length);
+//
+//            summaries.AddRange(forums.Select(forum => new ForumToSummaryMapper().Map(forum)));
+//
+//            return View(summaries.ToArray());
+//        }
 
         //
         // GET: /Forum/Details/5945..4340
