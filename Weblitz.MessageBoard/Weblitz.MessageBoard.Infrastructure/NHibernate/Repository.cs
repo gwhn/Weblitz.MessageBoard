@@ -61,5 +61,10 @@ namespace Weblitz.MessageBoard.Infrastructure.NHibernate
         {
             return Session.Get<TEntity>(id);
         }
+
+        Entity IKeyedRepository<TKey>.FindBy(TKey id)
+        {
+            return FindBy(id);
+        }
     }
 }

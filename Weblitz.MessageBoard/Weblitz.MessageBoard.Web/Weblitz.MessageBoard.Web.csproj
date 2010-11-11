@@ -79,6 +79,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Binders\EntityModelBinder.cs" />
     <Compile Include="Models\CancelNavigation.cs" />
     <Compile Include="Models\DeleteItem.cs" />
     <Compile Include="Models\ForumDetail.cs" />

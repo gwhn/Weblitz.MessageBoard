@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Weblitz.MessageBoard.Web.Controllers.Factories;
+using Weblitz.MessageBoard.Web.Models.Binders;
 
 namespace Weblitz.MessageBoard.Web
 {
@@ -28,6 +29,8 @@ namespace Weblitz.MessageBoard.Web
             RegisterRoutes(RouteTable.Routes);
 
             ControllerBuilder.Current.SetControllerFactory(new ControllerFactory());
+
+            ModelBinders.Binders.DefaultBinder = new EntityModelBinder();
         }
     }
 }
