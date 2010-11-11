@@ -14,6 +14,16 @@ namespace Weblitz.MessageBoard.Core.Domain.Model
 
         public virtual int Version { get; protected set; }
 
+        public virtual object Actual
+        {
+            get { return this; }
+        }
+
+        public virtual T As<T>() where T : Entity
+        {
+            return this as T;
+        }
+
         public virtual bool Equals(Entity other)
         {
             if (ReferenceEquals(null, other)) return false;

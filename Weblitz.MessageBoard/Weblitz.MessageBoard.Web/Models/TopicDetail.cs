@@ -1,4 +1,5 @@
 using System;
+using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Web.Models
 {
@@ -17,5 +18,7 @@ namespace Weblitz.MessageBoard.Web.Models
         public string PublishedDate { get; set; }
 
         public PostDetail[] Posts { get; set; }
+
+        public Attachment[] Attachments { get; set; }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Weblitz.MessageBoard.Core.Domain.Model;
 using Weblitz.MessageBoard.Core.Domain.Repositories;

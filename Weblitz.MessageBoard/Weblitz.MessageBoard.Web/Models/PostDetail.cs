@@ -1,4 +1,5 @@
 ﻿using System;
+using Weblitz.MessageBoard.Core.Domain.Model;
 
 namespace Weblitz.MessageBoard.Web.Models
 {
@@ -21,5 +22,7 @@ namespace Weblitz.MessageBoard.Web.Models
         public PostDetail[] Children { get; set; }
 
         public int Level { get; set; }
+
+        public Attachment[] Attachments { get; set; }
     }
 }

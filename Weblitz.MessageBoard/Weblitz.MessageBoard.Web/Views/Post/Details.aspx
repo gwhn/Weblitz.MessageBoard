@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="post">
-        <h2><%:Model.TopicTitle%></h2>
+        <h2><%=Html.ActionLink(Model.TopicTitle, "Details", "Topic", new {Id = Model.TopicId}, null)%></h2>
         <div class="body"><%:Model.Body%></div>
         <div class="meta">
             <div class="forum"><%:Model.ForumName%></div>
@@ -16,6 +16,8 @@
         <ul class="options">
             <li><%=Html.ActionLink("Edit", "Edit", new {Model.Id})%></li>
             <li><%=Html.ActionLink("Delete", "Delete", new {Model.Id})%></li>
+            <li><%=Html.ActionLink("New Attachment", "Create", "Attachment", new {EntryId = Model.Id}, null)%></li>
         </ul>
     </div>
+    <%Html.RenderPartial("Attachments", Model.Attachments);%>
 </asp:Content>

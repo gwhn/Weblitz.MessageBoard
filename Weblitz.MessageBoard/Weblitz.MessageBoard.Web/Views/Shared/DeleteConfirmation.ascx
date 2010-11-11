@@ -1,6 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Weblitz.MessageBoard.Web.Models.DeleteItem>" %>
 
-<h2>Delete <%:Model.CancelNavigation.ControllerName%></h2>
 <%
     using (Html.BeginForm())
     {%>

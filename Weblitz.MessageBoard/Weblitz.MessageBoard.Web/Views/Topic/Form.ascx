@@ -14,7 +14,7 @@
         </div>
         <%=Html.EditorForModel()%>
         <ul class="options">
-            <li><%=Html.ActionLink("Cancel", "Details", "Forum", new {Model.ForumId})%></li>
+            <li><%=Html.ActionLink("Cancel", "Details", "Forum", new {Id = Model.ForumId}, null)%></li>
             <li><input type="submit" value="Save" /></li>
         </ul>
     </fieldset>  

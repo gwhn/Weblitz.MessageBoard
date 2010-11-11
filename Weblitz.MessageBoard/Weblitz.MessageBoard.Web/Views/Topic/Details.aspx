@@ -17,14 +17,9 @@
             <li><%=Html.ActionLink("Edit", "Edit", new {Model.Id})%></li>
             <li><%=Html.ActionLink("Delete", "Delete", new {Model.Id})%></li>
             <li><%=Html.ActionLink("New Post", "Create", "Post", new {TopicId = Model.Id}, null)%></li>
+            <li><%=Html.ActionLink("New Attachment", "Create", "Attachment", new {EntryId = Model.Id}, null)%></li>
         </ul>
     </div>
-    <div class="postslist">
-        <h3>Posts</h3>
-        <%
-            foreach (var post in Model.Posts)
-            {
-                Html.RenderPartial("Post", post);
-            }%>
-    </div>
+    <%Html.RenderPartial("Attachments", Model.Attachments);%>
+    <%Html.RenderPartial("Posts", Model.Posts);%>
 </asp:Content>

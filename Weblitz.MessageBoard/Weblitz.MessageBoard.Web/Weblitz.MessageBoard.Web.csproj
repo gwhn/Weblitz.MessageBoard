@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\Factories\ControllerFactory.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Models\ForumDetail.cs" />
     <Compile Include="Models\ForumInput.cs" />
     <Compile Include="Models\ForumSummary.cs" />
+    <Compile Include="Models\Mappers\AttachmentToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\ForumToDeleteItemMapper.cs" />
     <Compile Include="Models\Mappers\ForumToDetailMapper.cs" />
     <Compile Include="Models\Mappers\ForumToInputMapper.cs" />
@@ -109,6 +111,8 @@
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Attachment\Create.aspx" />
+    <Content Include="Views\Attachment\Delete.aspx" />
     <Content Include="Views\Forum\Create.aspx" />
     <Content Include="Views\Forum\Delete.aspx" />
     <Content Include="Views\Forum\Details.aspx" />
@@ -121,12 +125,14 @@
     <Content Include="Views\Post\Edit.aspx" />
     <Content Include="Views\Post\Form.ascx" />
     <Content Include="Views\Shared\DeleteConfirmation.ascx" />
+    <Content Include="Views\Shared\Attachments.ascx" />
     <Content Include="Views\Topic\Create.aspx" />
     <Content Include="Views\Topic\Delete.aspx" />
     <Content Include="Views\Topic\Details.aspx" />
     <Content Include="Views\Topic\Edit.aspx" />
     <Content Include="Views\Topic\Form.ascx" />
     <Content Include="Views\Topic\Post.ascx" />
+    <Content Include="Views\Topic\Posts.ascx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -159,7 +165,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weblitz.MessageBoard.Core\Weblitz.MessageBoard.Core.csproj">

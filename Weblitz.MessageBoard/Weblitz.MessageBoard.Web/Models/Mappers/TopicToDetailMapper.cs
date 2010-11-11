@@ -33,6 +33,8 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             detail.Posts = postDetails.ToArray();
 
+            detail.Attachments = source.Attachments;
+
             return detail;
         }
     }
