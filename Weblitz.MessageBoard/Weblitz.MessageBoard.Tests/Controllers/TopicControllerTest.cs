@@ -207,7 +207,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ShouldRenderDefaultView)
                                 .And(ViewModel_Contain<DeleteItem>, true)
 
-//                        .WithScenario("delete forum with unknown id")
+//                        .WithScenario("delete topic with unknown id")
                 .Execute();
         }
 

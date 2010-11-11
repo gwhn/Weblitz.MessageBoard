@@ -51,7 +51,7 @@ namespace Weblitz.MessageBoard.Tests.Mappers
                             .Then(SummaryIdShouldMatchForumId)
                                 .And(SummaryNameShouldMatchForumName)
                                 .And(SummaryTopicCountShouldEqual_, 1)
-                                .And(SummaryPostCountShouldEqual_, 8)
+                                .And(SummaryPostCountShouldEqual_, 2)
                 .Execute();
         }
 

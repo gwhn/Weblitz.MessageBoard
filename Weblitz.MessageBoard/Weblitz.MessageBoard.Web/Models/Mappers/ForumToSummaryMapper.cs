@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Weblitz.MessageBoard.Core.Domain;
 using Weblitz.MessageBoard.Core.Domain.Model;
@@ -21,7 +20,7 @@ namespace Weblitz.MessageBoard.Web.Models.Mappers
 
             summary.TopicCount = topics.Length;
 
-            summary.PostCount = topics.Sum(t => t.Posts.Length + t.Posts.Sum(p => p.Children.Length));
+            summary.PostCount = topics.Sum(t => t.Posts.Length);
 
             return summary;
         }

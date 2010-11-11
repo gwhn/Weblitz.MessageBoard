@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StoryQ;
 using StoryQ.Formatting.Parameters;
-using Weblitz.MessageBoard.Core.Domain.Model;
-using Weblitz.MessageBoard.Core.Domain.Repositories;
 using Weblitz.MessageBoard.Tests.Fixtures;
 using Weblitz.MessageBoard.Web.Controllers;
 using Weblitz.MessageBoard.Web.Models;
@@ -149,7 +144,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         }
 
         [Test]
-        public void TopicGetEdit()
+        public void PostGetEdit()
         {
             new Story("post get edit")
                 .InOrderTo("modify a post")
@@ -172,7 +167,7 @@ namespace Weblitz.MessageBoard.Tests.Controllers
         }
 
         [Test]
-        public void TopicPostEdit()
+        public void PostPostEdit()
         {
             new Story("post post edit")
                 .InOrderTo("modify a post")
@@ -201,8 +196,70 @@ namespace Weblitz.MessageBoard.Tests.Controllers
                                 .And(ShouldRenderDefaultView)
                                 .And(ViewModel_Contain<PostInput>, true)
 
-//                        .WithScenario("fail to update topic with unknown id")
+//                        .WithScenario("fail to update post with unknown id")
                 .Execute();
+        }
+
+        [Test]
+        public void PostGetDelete()
+        {
+            new Story("post get delete")
+                .InOrderTo("remove a post on a topic")
+                .AsA("user")
+                .IWant("to delete selected post")
+
+                        .WithScenario("delete post")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(IdOfPostThat_Exist, true)
+                                .And(CallToFindByIdOnPostRepository)
+                            .When(DeleteActionIsRequestedWithGetVerb)
+                            .Then(ShouldReturnViewResult)
+                                .And(ShouldRenderDefaultView)
+                                .And(ViewModel_Contain<DeleteItem>, true)
+
+//                        .WithScenario("delete post with unknown id")
+                .Execute();
+        }
+
+        [Test]
+        public void PostPostDelete()
+        {
+            new Story("post post delete")
+                .InOrderTo("remove a post on a topic")
+                .AsA("user")
+                .IWant("to confirm deletion of selected post")
+
+                        .WithScenario("delete topic successfully")
+                            .Given(PostRepositoryIsInitialized)
+                                .And(TopicRepositoryIsInitialized)
+                                .And(PostControllerIsInitialized)
+                                .And(IdOfPostThat_Exist, true)
+                                .And(CallToFindByIdOnPostRepository)
+                                .And(CallToDeleteOnPostRepository)
+                            .When(DeleteActionIsRequestedWithPostVerb)
+                            .Then(ShouldReturnRedirectToRouteResult)
+                                .And(Message_Contain_, true, "deleted successfully")
+                                .And(ShouldRedirectTo__, "Topic", "Details")
+
+//                        .WithScenario("fail to delete post with unknown id")
+                .Execute();
+        }
+
+        private void DeleteActionIsRequestedWithPostVerb()
+        {
+            Result = (Controller as PostController).Destroy(PostId);
+        }
+
+        private void CallToDeleteOnPostRepository()
+        {
+            PostRepository.Stub(r => r.Delete(Post));
+        }
+
+        private void DeleteActionIsRequestedWithGetVerb()
+        {
+            Result = (Controller as PostController).Delete(PostId);
         }
 
         private void EditActionIsRequestedWithPostVerb()
