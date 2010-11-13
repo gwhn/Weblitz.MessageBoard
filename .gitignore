@@ -5,7 +5,7 @@
 *.suo
 
 _ReSharper.Weblitz.MessageBoard
-**/**/bin
+**/bin
 
-**/**/obj
-Weblitz.MessageBoard/Weblitz.MessageBoard.Web/App_Data/Attachments
+**/obj
+Weblitz.MessageBoard.Web/App_Data/Attachments
