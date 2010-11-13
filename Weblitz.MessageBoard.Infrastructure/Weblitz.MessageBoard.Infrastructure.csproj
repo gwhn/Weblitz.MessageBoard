@@ -33,14 +33,14 @@
   <ItemGroup>
     <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Components\NHibernate-3.0.0.Beta2-bin\Required_Bins\NHibernate.dll</HintPath>
+      <HintPath>..\lib\NHibernate\Required_Bins\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Components\NHibernate-3.0.0.Beta2-bin\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
+      <HintPath>..\lib\NHibernate\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
-      <HintPath>..\..\..\..\Components\StructureMap2.6.1\deploy\StructureMap.dll</HintPath>
+      <HintPath>..\lib\StructureMap\deploy\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

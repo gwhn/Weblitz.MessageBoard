@@ -33,27 +33,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\lib\NHibernate\Required_Bins\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="MvcContrib.TestHelper">
-      <HintPath>..\..\..\..\Components\MVCContrib.release\MvcContrib.TestHelper.dll</HintPath>
+      <HintPath>..\lib\MVCContrib\MvcContrib.TestHelper.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Components\NHibernate-3.0.0.Beta2-bin\Required_Bins\NHibernate.dll</HintPath>
+      <HintPath>..\lib\NHibernate\Required_Bins\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Components\NHibernate-3.0.0.Beta2-bin\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
+      <HintPath>..\lib\NHibernate\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\nunit\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\..\Components\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\lib\RhinoMocks\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="StoryQ">
-      <HintPath>..\..\..\..\Components\StoryQ-2.0.4\StoryQ.dll</HintPath>
+      <HintPath>..\lib\StoryQ\StoryQ.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">

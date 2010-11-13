@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections">
-      <HintPath>..\Weblitz.MessageBoard.Tests\bin\Debug\Iesi.Collections.dll</HintPath>
+      <HintPath>..\lib\NHibernate\Required_Bins\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
